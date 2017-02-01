@@ -1,0 +1,21 @@
+################################################
+#Lab_02 UML
+#
+################################################
+#Variables:
+#int numPins
+#int numFrame
+#int numThrow
+#int finalScore
+#
+#int Array[ ][ ] frames
+#
+################################################
+#Methods:
+#public void Throw(int i)
+#public Boolean isStrike( )
+#public Boolean isSpare( )
+#public int updateScore( ) 
+#
+#	
+################################################
