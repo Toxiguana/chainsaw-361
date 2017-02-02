@@ -57,6 +57,6 @@ public class bowling {
 	}
 	
 	public void updateScore(){
-		
+		finalScore++;
 	}
 }
