@@ -107,72 +107,99 @@ public class test {
 	public void testStrikeOnLastFrames(){
 		// stike on 8th frame
 		b = new bowling();
+		//1
 		b.throwBall(3);
 		b.throwBall(3);
+		//2
 		b.throwBall(3);
 		b.throwBall(3);
+		//3
 		b.throwBall(3);
 		b.throwBall(3);
+		//4
 		b.throwBall(3);
 		b.throwBall(3);
+		//5
 		b.throwBall(3);
 		b.throwBall(3);
+		//6
 		b.throwBall(3);
 		b.throwBall(3);
+		//7
 		b.throwBall(3);
 		b.throwBall(3);
+		//8
 		b.throwBall(10);
-		b.throwBall(0);
+		//9
 		b.throwBall(3);
 		b.throwBall(3);
+		//10
 		b.throwBall(3);
 		b.throwBall(3);
 		assertSame(76, b.finalScore);
 		// stike on 9th frame
 		b = new bowling();
+		//1
 		b.throwBall(3);
 		b.throwBall(3);
+		//2
 		b.throwBall(3);
 		b.throwBall(3);
+		//3
 		b.throwBall(3);
 		b.throwBall(3);
+		//4
 		b.throwBall(3);
 		b.throwBall(3);
+		//5
 		b.throwBall(3);
 		b.throwBall(3);
+		//6
 		b.throwBall(3);
 		b.throwBall(3);
+		//7
 		b.throwBall(3);
 		b.throwBall(3);
+		//8
 		b.throwBall(3);
 		b.throwBall(3);
+		//9
 		b.throwBall(10);
-		b.throwBall(0);
+		//10
 		b.throwBall(3);
 		b.throwBall(3);
 		assertSame(70, b.finalScore);
 		// stike on 10th frame
 		b = new bowling();
+		//1
 		b.throwBall(3);
 		b.throwBall(3);
+		//2
 		b.throwBall(3);
 		b.throwBall(3);
+		//3
 		b.throwBall(3);
 		b.throwBall(3);
+		//4
 		b.throwBall(3);
 		b.throwBall(3);
+		//5
 		b.throwBall(3);
 		b.throwBall(3);
+		//6
 		b.throwBall(3);
 		b.throwBall(3);
+		//7
 		b.throwBall(3);
 		b.throwBall(3);
+		//8
 		b.throwBall(3);
 		b.throwBall(3);
+		//9
 		b.throwBall(3);
 		b.throwBall(3);
+		//10
 		b.throwBall(10);
-		b.throwBall(0);
 		assertSame(76, b.finalScore);
 	}
 	@Test(expected = IllegalStateException.class)

@@ -18,6 +18,9 @@ public class bowling {
 		if(score < 0 || score > 10){
 			throw new IllegalArgumentException();
 		}
+		if(numFrame > 10){
+			throw new IllegalStateException();
+		}
 		//throw 1 - strike
 		//throw 1 - other
 			//update numThrow, numPins
