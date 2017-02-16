@@ -4,6 +4,8 @@ public class Bank {
 	ArrayList<Account> accounts = new ArrayList<Account>();
 
 	public void createAccount(int accountNumber, int PIN,double startBal){
+		//you should probably search accounts and make sure that there aren't any accounts with the same account number 
+		//that you are trying to create.
 		accounts.add(new Account(accountNumber, PIN, startBal));
 	}
 	public class Account{
@@ -45,6 +47,6 @@ public class Bank {
 				}
 			}
 		}
-		return false;
+		throw new IllegalStateException("Account number not found");
 	}
 }
