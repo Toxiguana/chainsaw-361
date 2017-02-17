@@ -34,6 +34,17 @@ public class Bank {
 		}
 
 	}
+	public boolean validatePin(int accountnumber, int pin){
+		for(Account a:accounts){
+			if(a.accountNumber == accountnumber){
+				if(a.PINCode == pin){
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean validatePin(int accountnumber, int pin, double amount){
 		for(Account a:accounts){
 			if(a.accountNumber == accountnumber){
