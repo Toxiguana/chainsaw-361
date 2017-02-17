@@ -1,8 +1,7 @@
-import java.util.ArrayList;
 
 public class Bank {
-	ArrayList<Account> accounts = new ArrayList<Account>();
 
+<<<<<<< HEAD
 	public void createAccount(int accountNumber, int PIN,double startBal){
 		//you should probably search accounts and make sure that there aren't any accounts with the same account number 
 		//that you are trying to create.
@@ -60,4 +59,6 @@ public class Bank {
 		}
 		throw new IllegalStateException("Account number not found");
 	}
+=======
+>>>>>>> branch 'master' of https://github.com/Toxiguana/chainsaw-361.git
 }

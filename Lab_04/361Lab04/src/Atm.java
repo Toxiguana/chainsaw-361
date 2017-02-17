@@ -19,7 +19,7 @@ public class Atm {
 		pin=stdIn.nextInt();
 		System.out.print("Please enter the amount you want to talk out");
 		amount=stdIn.nextDouble();
-		b.validatePin(, pin, amount)
+//		b.validatePin(, pin, amount)
 	}
 	
 	public void deposit(){
