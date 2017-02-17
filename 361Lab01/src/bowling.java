@@ -5,6 +5,8 @@ public class bowling {
 	public int numThrow;
 	public int finalScore;
 	public int[][] frames;
+	public int countStrike;
+	public int countSpare;
 	
 	public bowling(){
 		numPins = 0;
@@ -12,6 +14,8 @@ public class bowling {
 		numThrow = 1;
 		finalScore = 0;
 		frames = new int[2][10];
+		countStrike = 0;
+		countSpare = 0;
 	}
 	
 	public void throwBall(int score){
@@ -33,6 +37,7 @@ public class bowling {
 				numThrow = 1;
 				numFrame++;
 				//strike count
+				countStrike = 1;
 			}
 			else{
 				numThrow = 2;
@@ -52,6 +57,7 @@ public class bowling {
 			
 			if(score + numPins == 10){
 				//spare count
+				countSpare = 1;
 			}
 			numThrow = 1;
 			numFrame++;
@@ -60,6 +66,28 @@ public class bowling {
 	}
 	
 	public void updateScore(){
-		finalScore++;
+		int i = frames[numThrow-1][numFrame-1];
+		finalScore += i;
+		
+		if(countStrike > 0){
+			if(countStrike == 1 || countStrike == 2 || countStrike == 3){
+				finalScore += i;
+				countStrike++;
+			}
+			else if(countStrike == 4){
+				finalScore += i;
+				countStrike = 0;
+			}
+		}
+		if(countSpare > 0){
+			if(countSpare == 1){
+				finalScore += i;
+				countSpare++;
+			}
+			else if(countSpare == 2){
+				finalScore += i;
+				countSpare = 0;
+			}
+		}
 	}
 }
