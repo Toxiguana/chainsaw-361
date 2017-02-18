@@ -33,13 +33,5 @@ public class Tests {
        b.validatePin(6789, 4321, 20);
        assertSame();     //assert balance == balance+20;
     }
-//    Show the results for the following tests:
-//        a.
-//        Successful validate and withdrawal of $20 from account 1234;
-//        b.
-//        Successful validate and withdrawal of $80 from account 1234;
-//        c.
-//        Incorrect validation on account 6789;
-//        d.
-//        Successful deposit of $20 to account 6789
+
 }
