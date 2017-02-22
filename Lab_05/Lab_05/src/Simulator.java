@@ -33,15 +33,19 @@ public class Simulator {
 				if (s.contains("n")){
 					String amount[] = s.split(" ");
 					Integer arg = Integer.parseInt(amount[1]); 
+					if(bank.validateAccount(arg)==false){
+						///TODO: What are we supposed to do if it's false?
+					}
+									
 				}
 				if (s.contains("w")){
-
+					//TODO
 				}
 				if (s.contains("cb")){
-
+					//TODO
 				}
 				if (s.contains("ca")){
-
+					//TODO
 				}
 
 			}
@@ -51,8 +55,7 @@ public class Simulator {
 			e.printStackTrace();
 			throw new RuntimeException("file not found");
 		}
-
-
+		//TODO
 	}
 
 }
