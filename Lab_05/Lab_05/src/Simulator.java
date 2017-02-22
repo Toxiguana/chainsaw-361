@@ -5,11 +5,19 @@ import java.io.IOException;
 
 
 public class Simulator {
-	
+
+	private ATM atm = new ATM();
+	private Bank bank = new Bank();
+
+	//////////////////////////////////////////////
+
 	public void display(String in){
 		System.out.println(in);
 	}
 
+	public void print(String in){
+		System.out.println("PRINT: " + in);
+	}
 
 	public void load(File file){
 
@@ -19,10 +27,12 @@ public class Simulator {
 				String s = f.nextLine();
 				if (s.contains("cr")){
 					String amount[] = s.split(" ");
-				Integer arg = Integer.parseInt(amount[1]); 
+					Integer arg = Integer.parseInt(amount[1]); 
+					bank.validateAccount(arg);
 				}
 				if (s.contains("n")){
-					
+					String amount[] = s.split(" ");
+					Integer arg = Integer.parseInt(amount[1]); 
 				}
 				if (s.contains("w")){
 
