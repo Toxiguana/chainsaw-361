@@ -5,6 +5,10 @@ import java.io.IOException;
 
 
 public class Simulator {
+	
+	public void display(String in){
+		System.out.println(in);
+	}
 
 
 	public void load(File file){
@@ -18,7 +22,7 @@ public class Simulator {
 				Integer arg = Integer.parseInt(amount[1]); 
 				}
 				if (s.contains("n")){
-
+					
 				}
 				if (s.contains("w")){
 
