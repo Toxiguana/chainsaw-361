@@ -7,6 +7,7 @@ public class ATM {
 	public static void main (String args[]){
 		Bank Bank = new Bank();
 		Scanner s = new Scanner(System.in);
+		Printer Printer = new Printer();
 
 		Bank.createAccount(1234, 6789, 80.0);
 		Bank.createAccount(6789, 4321, 60.0);
@@ -16,10 +17,10 @@ public class ATM {
 		Account a = null;
 		
 		while(run){ //main loop
-			accountNum = 0000;
+			accountNum = 0000; //re-initialize all the variables at the beginning of the loop for safety
 			pinCode = 0000;
 			a = null;
-//=====================================================================			
+//===================================================================== Get Account Number
 			while(a==null){ //Account Number loop
 				accountNum = promptInt(s, "Please enter 4-digit Account Number ('c' to cancel)");
 				if(accountNum == -1){ //if user enters 'c' to cancel, breaks out of Account Number loop
@@ -33,7 +34,7 @@ public class ATM {
 			if(accountNum == -1){ //resets main loop to beginning if the user cancels
 				continue;
 			}
-//=====================================================================			
+//===================================================================== Get PIN code
 			while(!Bank.validatePin(a, pinCode)){ //pin code loop
 				pinCode = promptInt(s, "Please enter your 4-digit PIN code ('c' to cancel)");
 				if(pinCode == -1){ //if user enters 'c' to cancel, breaks out of pin code loop
@@ -43,69 +44,34 @@ public class ATM {
 			if(pinCode == -1){ //resets main loop to beginning if user cancels
 				continue;
 			}
-//=====================================================================
+//===================================================================== Do Transaction
 			boolean cont = true;
+			double amount = 0.00;
 			while(cont){
 				String in = promptString(s, "Enter 'w' for Withdraw 'b' to check balance or 'c' to cancel");
-				if(in.equals("c")){
+				if(in.equals("c")){ //user cancels
 					cont = false;
 				}
-				else if(in.equals("b")){
-					System.out.print(a.getBalance());
+				else if(in.equals("b")){ //user checks balance
+					System.out.println("current Balance is $" + a.getBalance());
 				}
-				else if(in.equals("w")){
+				else if(in.equals("w")){ //user withdraws
 					double value = promptDouble(s, "Enter dollar amount to Withdraw ($0.00)");
 					if(a.withdraw(value)){
 						System.out.println("success, you have withdrawn $" + value);
+						amount += value;
 					}
 					else{
 						System.out.println("error: insufficient funds");
 					}
 				}
 			}
-//====================================================================== OLD CODE
-//			if(Bank.validateAccount(accountNum)){
-//				Account a2 = null;
-//				for(Account a:Bank.accounts){
-//					if(a.accountNum == accountNum){
-//						a2 = a;
-//					}
-//				}
-//				boolean b = false;
-//				while(b == false){
-//					pinCode = promptInt(s, "Please input 4-digit PIN Code (0000).");
-//					try{
-//						b = Bank.validatePin(accountNum, pinCode);
-//						b = true;
-//					}catch(IllegalArgumentException e){
-//					}
-//				}
-//				String in = promptString(s, "Input 'w' for Withdrawal or 'd' for Deposit.");
-//				if(in.equals("w")){
-//					boolean b2 = false;
-//					while(!b2){
-//						double value = promptDouble(s, "Insert dollar amount to Withdraw (0.00).");
-//						double newVal = value*-1;
-//						b2 = a2.doOperation(newVal);
-//						if(b2 == false){
-//							System.out.println("Could not complete transaction! Enter a different amount (0.00).");
-//							System.out.println("");
-//						}
-//					}
-//					System.out.println("Successful Transaction! You're account balance is now $" + a2.getBalance()
-//					+ ". Please take your receipt!");
-//				}
-//				else{
-//					double value = promptDouble(s, "Insert dollar amount to Deposit (0.00).");
-//					a2.doOperation(value);
-//					System.out.println("Successful Transaction! You're account balance is now $" + a2.getBalance() 
-//					+ ". Please take your receipt!");
-//				}
-//			}
-//			else{
-//				continue; //returns back to beginning of loop if invalid account number or pin
-//			}
-//			run = false;
+			if(amount > 0){
+				Printer.print("Withdraw", amount);
+			}
+			else{
+				Printer.print("Cancel", 0.00);
+			}
 		}	
 		s.close();
 	}
@@ -123,6 +89,12 @@ public class ATM {
 				input = s.nextInt();
 			}
 			else if(s.hasNext("c")){
+				s.next(); //very important, moves to the next user input so it doesn't keep reading the same value forever
+				return -1;
+			}
+			else if(s.hasNext("q")){
+				s.next();
+				run = false; //stops the main loop
 				return -1;
 			}
 		}while(input < 0 || String.valueOf(input).length() != 4); //Re-prompts user if int is negative or not 4 digits
@@ -136,7 +108,7 @@ public class ATM {
 			if(s.hasNext()){
 				input = s.next();
 			}
-		}while(!input.equals("w") && !input.equals("b") && !input.equals("c"));
+		}while(!input.equals("w") && !input.equals("b") && !input.equals("c")); //re-prompts the user if the allowed string is not detected
 		return input;
 	}
 
@@ -147,11 +119,7 @@ public class ATM {
 			if(s.hasNextDouble()){
 				input = s.nextDouble();
 			}
-		}while(input < 0); //Re-prompts user if double is negative
+		}while(input < 0); //Re-prompts user if input is negative
 		return input;
-	}
-	
-	public static void display(String s){
-		System.out.println(s);
 	}
 }
