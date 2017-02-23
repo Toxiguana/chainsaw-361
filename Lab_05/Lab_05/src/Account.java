@@ -10,20 +10,17 @@ public class Account {
 		bal = startBal;
 	}
 	
-	public boolean doOperation(double amount){
-		if(amount < 0){ //withdrawal
-			if(bal + amount >= 0){
-				bal += amount;
+	public boolean withdrawal(double amount){
+		if(amount >= 0){
+			if(bal - amount >= 0){
+				bal -= amount;
 				return true;
 			}
 			else{
 				return false;
 			}
 		}
-		else{
-			bal += amount;
-			return true;
-		}
+		return false;
 	}
 	public double getBalance(){
 		return bal;
