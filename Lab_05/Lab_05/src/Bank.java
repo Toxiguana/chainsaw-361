@@ -14,27 +14,27 @@ public class Bank {
 		return new1;
 	}
 	
-	public Account validateAccount(int acc) throws Exception{
+	/**
+	 * 
+	 * @param acc : account number to validate
+	 * @return the account object if it is found, or null if the account is not found
+	 */
+	public Account validateAccount(int acc){
 		for(Account a:accounts){
 			if(a.accountNum == acc){
 				return a;
 			}
 		}
-		throw new Exception("account not found");
+		return null;
 	}
 	
-	public boolean validatePin(int acc, int PINC){
-		for(Account a:accounts){
-			if(a.accountNum == acc){
-				if(a.PIN == PINC){
-//					throw new IllegalArgumentException("Bad pin number");
-					return true;
-				}
-				else{
-					return false;
-				}
-			}
+	public boolean validatePin(Account acc, int PINC){
+		if(acc.PIN == PINC){
+			return true;
 		}
-		return false;
+		else{
+			return false;
+		}
 	}
+
 }
