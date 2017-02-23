@@ -35,8 +35,13 @@ public class ATM {
 				continue;
 			}
 //===================================================================== Get PIN code
-			while(!Bank.validatePin(a, pinCode)){ //pin code loop
+			boolean pinloop = false;
+			while(!pinloop){ //pin code loop
 				pinCode = promptInt(s, "Please enter your 4-digit PIN code ('c' to cancel)");
+				pinloop = Bank.validatePin(a, pinCode);
+				if(!pinloop){
+					System.out.println("Error: incorrect PIN code");
+				}
 				if(pinCode == -1){ //if user enters 'c' to cancel, breaks out of pin code loop
 					break;
 				}
@@ -62,7 +67,7 @@ public class ATM {
 						amount += value;
 					}
 					else{
-						System.out.println("error: insufficient funds");
+						System.out.println("Error: insufficient funds");
 					}
 				}
 			}
@@ -75,11 +80,14 @@ public class ATM {
 		}	
 		s.close();
 	}
+//==================================================================== Helper Methods
 	/**
 	 * Method to prompt user to input a value and re-prompts if more or less than 4 digits are inputted.
+	 * If user inputs "c", returns -1 in order to trigger cancel event
+	 * If user inputs "q", sets global variable 'run' to false in order to allow the program to finish
 	 * @param s : Scanner to use in method
 	 * @param prompt : String containing directions to print to user
-	 * @return int inputted by user or -1 if user enters "c"
+	 * @return int inputted by user or -1 if user enters "c" or "q"
 	 */
 	public static int promptInt(Scanner s, String prompt){
 		int input = 0;
@@ -101,6 +109,12 @@ public class ATM {
 		return input;
 	}
 
+	/**
+	 * Method to prompt the user to input a String.  Re-prompts the user if input does not match hard coded values.
+	 * @param s : scanner to use in method
+	 * @param prompt : String which will be printed to user
+	 * @return String inputted by the user
+	 */
 	public static String promptString(Scanner s, String prompt){
 		String input = "";
 		do{
@@ -112,6 +126,12 @@ public class ATM {
 		return input;
 	}
 
+	/**
+	 * Method to prompt the user to input a double.  Re-prompts the user if input is negative.
+	 * @param s : scanner to use in method
+	 * @param prompt : String which will be printed to user
+	 * @return double inputted by user
+	 */
 	public static double promptDouble(Scanner s, String prompt){
 		double input = 0;
 		do{
