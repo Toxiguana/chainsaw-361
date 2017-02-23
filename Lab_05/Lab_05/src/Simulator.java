@@ -30,7 +30,7 @@ public class Simulator {
 		System.out.println("PRINT: " + in);
 	}
 
-	public void load(File file){
+	public boolean load(File file){
 
 		try {
 			Scanner f = new Scanner(file);
@@ -79,10 +79,11 @@ public class Simulator {
 				}
 
 			}
-
+			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			throw new RuntimeException("file not found");
+//			throw new RuntimeException("file not found");
+			return false;
 		}
 	} //end load method
 }
