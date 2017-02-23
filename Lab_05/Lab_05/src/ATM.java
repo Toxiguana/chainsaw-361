@@ -13,9 +13,24 @@ public class ATM {
 
 		int accountNum = 0000;
 		int pinCode = 0000;
-		while(run){
-			accountNum = promptInt(s, "Please input 4-digit Account Number (0000).");
-
+		
+		while(run){ //main loop
+			
+			accountNum = promptInt(s, "Please enter 4-digit Account Number (0000).");
+			while(!Bank.validateAccount(accountNum)){
+				accountNum = promptInt(s, "Invalid Account Number.  Please enter a valid 4-digit Account Number (0000)");
+			}
+			
+			pinCode = promptInt(s, "Please enter your 4-digit PIN Code");
+			while(!Bank.validatePin(accountNum, pinCode)){
+				pinCode = promptInt(s, "Invalid PIN code.  Please re-enter your 4-digit PIN code");
+			}
+			
+			String in = promptString(s, "Enter 'w' for Withdraw or 'd' for Deposit");
+			if(in.equals("w")){
+				double value = promptDouble(s, "Enter dollar amount to Withdraw ($0.00)");
+			}
+			
 			if(Bank.validateAccount(accountNum)){
 				Account a2 = null;
 				for(Account a:Bank.accounts){
@@ -98,5 +113,9 @@ public class ATM {
 			}
 		}while(input < 0); //Re-prompts user if double is negative
 		return input;
+	}
+	
+	public static void display(String s){
+		System.out.println(s);
 	}
 }
