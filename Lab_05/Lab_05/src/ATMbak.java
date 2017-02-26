@@ -1,7 +1,6 @@
-import java.io.File;
 import java.util.Scanner;
 
-public class ATM {
+public class ATMbak {
 
 	static boolean run = true;
 
@@ -9,7 +8,6 @@ public class ATM {
 		Bank Bank = new Bank();
 		Scanner s = new Scanner(System.in);
 		Printer Printer = new Printer();
-		Simulator Simulator = new Simulator();
 
 		Bank.createAccount(1234, 6789, 80.0);
 		Bank.createAccount(6789, 4321, 60.0);
@@ -17,12 +15,6 @@ public class ATM {
 		int accountNum = 0000;
 		int pinCode = 0000;
 		Account a = null;
-		
-		if(promptBoolean(s, "load file? (y/n)")){
-			File file = new File("transactions.txt");
-			Simulator.load(file);
-		}
-		else{
 		
 		while(run){ //main loop
 			accountNum = 0000; //re-initialize all the variables at the beginning of the loop for safety
@@ -85,8 +77,7 @@ public class ATM {
 			else{
 				Printer.print("Cancel", 0.00);
 			}
-		}
-	}
+		}	
 		s.close();
 	}
 //==================================================================== Helper Methods
@@ -133,20 +124,6 @@ public class ATM {
 			}
 		}while(!input.equals("w") && !input.equals("b") && !input.equals("c")); //re-prompts the user if the allowed string is not detected
 		return input;
-	}
-	
-	public static boolean promptBoolean(Scanner s, String prompt){
-		String input = "";
-		do{
-			System.out.println(prompt);
-			if(s.hasNext()){
-				input = s.next();
-			}
-		}while(!input.equals("y") && !input.equals("n")); //re-prompts the user if the allowed string is not detected
-		if(input.equals("y")){
-			return true;
-		}
-		return false;
 	}
 
 	/**
