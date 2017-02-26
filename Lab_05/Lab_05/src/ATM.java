@@ -9,7 +9,6 @@ public class ATM {
 		Bank Bank = new Bank();
 		Scanner s = new Scanner(System.in);
 		Printer Printer = new Printer();
-		Simulator Simulator = new Simulator();
 
 		Bank.createAccount(1234, 6789, 80.0);
 		Bank.createAccount(6789, 4321, 60.0);
@@ -19,6 +18,7 @@ public class ATM {
 		Account a = null;
 		
 		if(promptBoolean(s, "load file? (y/n)")){
+			Simulator Simulator = new Simulator(Bank);
 			File file = new File("transactions.txt");
 			Simulator.load(file);
 		}

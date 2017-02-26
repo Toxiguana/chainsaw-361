@@ -6,16 +6,16 @@ import java.io.IOException;
 
 public class Simulator {
 
-	private ATM atm;
+//	private ATM atm;
 	private Bank bank;
 	private int accountNum;
 	private int state; 
 	private Account acc;
 	//////////////////////////////////////////////
 
-	public Simulator(){
-		atm = new ATM();
-		bank = new Bank();
+	public Simulator(Bank b){
+//		atm = new ATM();
+		bank = b;
 //		bank.createAccount(1234, 6789, 80.0);
 //		bank.createAccount(6789, 4321, 60.0);
 		accountNum = 0;
