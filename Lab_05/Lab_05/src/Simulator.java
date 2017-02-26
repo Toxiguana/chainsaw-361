@@ -68,7 +68,7 @@ public class Simulator {
 						}
 					}
 					else if(state == 3){
-						acc.withdrawal(arg);
+						acc.withdraw(arg);
 						state = 2;
 					}
 					
