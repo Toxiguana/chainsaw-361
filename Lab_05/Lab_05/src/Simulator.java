@@ -22,8 +22,19 @@ public class Simulator {
 		state = 0; //0 - need Card#, 1 - need PIN, 2 - need Trans, 3 - need amount
 	}
 	
-	public void display(String in){
-		System.out.println(in);
+	public void display(int i){
+		if(i == 0){
+			//nothing
+		}
+		else if(i == 1){
+			System.out.println("Enter Pin.");
+		}
+		else if(i == 2){
+			System.out.println("Choose Transaction.");
+		}
+		else if(i == 3){
+			System.out.println("Amount?");
+		}
 	}
 
 	public void print(String in){
@@ -40,51 +51,47 @@ public class Simulator {
 					
 					String amount[] = s.split(" ");
 					Integer arg = Integer.parseInt(amount[2]); 
-					acc=bank.validateAccount(arg);
-					if(acc!= null){
+					acc = bank.validateAccount(arg);
+					if(acc != null){
 						state = 1;
 					}
-					else{
-						
-					}
-					//if not validated correctly we just wait for another one.
-					//ATM.display(state)
-						//hopefully this will print to the screen the message like "Enter Pin."
+				
+					display(state);
 				}
 				if (s.contains("NUM")){
 					
 					String amount[] = s.split(" ");
-					Integer arg = Integer.parseInt(amount[1]); 
+					Integer arg = Integer.parseInt(amount[2]); 
+					if(state == 1){
+						if(bank.validatePin(acc, arg)){
+							state = 2;
+						}
+					}
+					else if(state == 3){
+						acc.withdrawal(arg);
+						state = 2;
+					}
 					
-					//this is different for different states.
-					//state = 1 -> validate PIN, set state == 2
-					
-					//state = 3 -> get Amount, do withdrawal, then set state back to 2
-							
-					//ATM.display(state) 
-						//print "Choose Transaction." 
-						//no matter what, this should happen for both if the PIN/Amount is valid									
+					display(state);
 				}
 				if (s.contains("W")){
-					//set state to 3
+					state = 3;
+					display(state);
 					
 				}
 				if (s.contains("CB")){
-					//Account.getBalance();
-					//set state to 2
+					acc.getBalance();
+					state = 2;
 					
-					//ATM.display(state) 
-						//print "Choose Transaction." 
+					display(state);
 				}
 				if (s.contains("CANCEL")){
-					//set state to 0
+					state = 0;
 				}
 
 			}
 			return true;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-//			throw new RuntimeException("file not found");
 			return false;
 		}
 	} //end load method
