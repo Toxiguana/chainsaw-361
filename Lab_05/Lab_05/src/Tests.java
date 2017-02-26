@@ -30,12 +30,12 @@ public class Tests {
 		assertEquals(60.0, a2.getBalance(), 0);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void incorrectValidation() {
 		b = new Bank();
 		a1 = b.createAccount(1234, 6789, 80.0);
 		a2 = b.createAccount(6789, 4321, 60.0);
-		b.validatePin(a2, 6969);
+		assertFalse(b.validatePin(a2, 6969));
 	}
 
 //	@Test
