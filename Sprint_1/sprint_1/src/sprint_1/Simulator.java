@@ -15,10 +15,12 @@ public class Simulator {
 		if(inputType.equalsIgnoreCase("U")||inputType.equalsIgnoreCase("T"){
 			inputloop=false;
 		}
+		//test
+		
 	}
 	if(inputType.equalsIgnoreCase("U")){
 		System.out.println("Enter a Command");
-		System.out.println(x);
+		System.out.println("");
 		
 	}
 	if(inputType.equalsIgnoreCase("T")){
