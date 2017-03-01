@@ -18,7 +18,7 @@ public class Simulator {
 	}
 	if(inputType.equalsIgnoreCase("U")){
 		System.out.println("Enter a Command");
-		System.o
+		System.out.println(x);
 		
 	}
 	if(inputType.equalsIgnoreCase("T")){
