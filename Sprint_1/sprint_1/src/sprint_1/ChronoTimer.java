@@ -1,13 +1,27 @@
-import java.util.Collection;
-import java.util.Timer;
 
 package sprint_1;
 
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.Timer;
+
+
 public class ChronoTimer {
-	
-	Queue Racers = new Queue();
-	
-	
+	static Boolean power;
+	Queue<String> myQueue = new LinkedList<String>();
+	public static void main(String [] args){
+		Simulator sim= new Simulator();
+		String command;
+		power=false;
+		do{
+			command=sim.getInput();
+			if(command==""){
+				break;
+			}
+			System.out.println(command);
+		}while(true);
+	}
 	
 	
 	public static void ind(){
