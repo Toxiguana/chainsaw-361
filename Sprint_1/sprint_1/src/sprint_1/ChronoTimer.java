@@ -11,13 +11,18 @@ import java.util.Timer;
 
 public class ChronoTimer {
 
-	Queue<Racer> racers = new LinkedList<Racer>();
+	Queue<Racer> racerQueue = new LinkedList<Racer>();
+	Queue<Racer> racerRun = new LinkedList<Racer>();
+	Queue<Racer> racerFinish = new LinkedList<Racer>();
 	private static boolean power = false;
-	
+
 	Time t = new Time();
 	private boolean[][] enabled = new boolean[2][4];
 	private double[][] times = new double[2][4];
-//	Queue<String> myQueue = new LinkedList<String>();
+	
+	private int minutes = 0;
+	private double seconds = 0.0;
+	//	Queue<String> myQueue = new LinkedList<String>();
 
 	public static void main(String args[]){
 		//make sure to print results to console, use Time.computeTime
@@ -54,37 +59,83 @@ public class ChronoTimer {
 		//sets all variables to initial values
 		//boolean on
 		//other variables to initialize?
-		//empty the racers
+		racerQueue = new LinkedList<Racer>();
+		racerRun = new LinkedList<Racer>();
+		racerFinish = new LinkedList<Racer>();
+		enabled = new boolean[2][4];
+		times = new double[2][4];
 	}
 
-	public void setTime(){
+	public void setTime(int min, double sec){
 		//allows user to set time
+		minutes = min;
+		seconds = sec;
 	}
 
-	public void dnfRacer(String RacerNum){
-		//sets end time of specified racer to DNF, not return to queue
+	public void dnfRacer(){
+		//sets end time of next racer to finish to DNF, not return to queue
+		Racer r = racerRun.remove();
+		r.setEnd(-1);
+		r.setStart(2);
+		racerFinish.add(r);
 	}
 
-	public void cancelRacer(String RacerNum){
+	public void cancelRacer(){
 		//discard current race for racer and put back in queue as next to start
+		Queue<Racer> newQueue = new LinkedList<Racer>();
+		Racer r = racerRun.remove();
+		r.setStart(0.0);
+		r.setState(0);
+		newQueue.add(r);
+		while(!racerQueue.isEmpty()){
+			Racer r1 = racerQueue.remove();
+			newQueue.add(r1);
+		}
+		racerQueue = newQueue;
 	}
 
 	public void togChannel(int channelNum){
 		//enable or disable the channel
-		
+		boolean enable = enabled[0][channelNum/2];
+
+		if(channelNum % 2 != 0 && enable == false){ //odd & disabled
+			enabled[0][channelNum/2] = true;
+		}
+		else if(channelNum % 2 != 0 && enable == true){ //odd & enabled
+			enabled[0][channelNum/2] = false;
+		}
+		else if(channelNum % 2 != 0 && enable == false){ //even & disabled
+			enabled[1][(channelNum/2)-1] = true;
+		}
+		else if(channelNum % 2 != 0 && enable == true){ //even & enabled
+			enabled[1][(channelNum/2)-1] = false;
+		}
 	}
 
 	public void trigChannel(int channelNum){
-		//trigger the channel number
+		//trigger the channel number & pulls racer from queue
 		//if odd number, is a start time
 		//if even number, is an end time //I checked in the explanation and this is actually a thing
+		
 		if(channelNum % 2 != 0){ //odd
-			double start = t.start();
-			times[0][channelNum/2] = start;
+			if(enabled[0][channelNum/2]){
+				Racer r = racerQueue.remove();
+				double start = t.start();
+				times[0][channelNum/2] = start;
+				r.setStart(start);
+				r.setState(1);
+				racerRun.add(r);
+			}
 		}
 		else if(channelNum % 2 != 0){ //even
-			double end = t.end();
-			times[1][(channelNum/2)-1] = end;
+			if(enabled[0][(channelNum/2)-1]){
+				Racer r1 = racerRun.remove();
+				double end = t.end();
+				times[1][(channelNum/2)-1] = end;
+				r1.setEnd(end);
+				r1.setState(2);
+				racerFinish.add(r1);
+			}
 		}
 	}
 
@@ -97,7 +148,9 @@ public class ChronoTimer {
 		//triggers channel 2
 		trigChannel(2);
 	}
+	
+	public void addRacer(int racerNum){ //num
+		Racer r = new Racer(racerNum, 0.0, 0.0, "0", 0);
+		racerQueue.add(r);
+	}
 }
-
-
-
