@@ -96,13 +96,12 @@ public class Simulator {
 				fileNameLoop = false;
 				try{
 					file = new File(filename);
+					fileNameLoop = false;
 				}catch(NullPointerException ex){
 					System.out.println("Invalid file name"); 
-					// do you want to change the fileNameLoop to true here?
 				}
 			}
 			Scanner reader = null;
-			//is this reading the file?
 			try{
 				reader = new Scanner(new FileReader(file));
 			}catch(IOException e){}

@@ -11,38 +11,50 @@ import java.util.Timer;
 
 public class ChronoTimer {
 
-	//		Queue<Racer> racers = new LinkedList<Racer>();
-	//		private boolean on = false;
-	static Boolean power;
-	Queue<String> myQueue = new LinkedList<String>();
+	Queue<Racer> racers = new LinkedList<Racer>();
+	private static boolean power = false;
+	
+	Time t = new Time();
+	private boolean[][] enabled = new boolean[2][4];
+	private double[][] times = new double[2][4];
+//	Queue<String> myQueue = new LinkedList<String>();
 
 	public static void main(String args[]){
 		//make sure to print results to console, use Time.computeTime
-		Simulator sim= new Simulator();
+		Simulator sim = new Simulator();
 		String command;
-		power=false;
+		power = false;
 		do{
-			command=sim.getInput();
-			if(command==""){
+			command = sim.getInput();
+			if(command == ""){
 				break;
 			}
 			System.out.println(command);
+			//need something here to do things.
 		}while(true);
 	}
 
 	public void power(){
 		//if(on) -> turn off //stay in simulator
 		//else if(off) -> turn on
+		if(power){
+			power = false;
+		}
+		else{
+			power = true;
+		}
 	}
 
 	public void exit(){
 		//"quits program" //exit simulator
+		System.exit(0);
 	}
 
 	public void reset(){
 		//sets all variables to initial values
 		//boolean on
 		//other variables to initialize?
+		//empty the racers
 	}
 
 	public void setTime(){
@@ -59,20 +71,31 @@ public class ChronoTimer {
 
 	public void togChannel(int channelNum){
 		//enable or disable the channel
+		
 	}
 
 	public void trigChannel(int channelNum){
 		//trigger the channel number
 		//if odd number, is a start time
 		//if even number, is an end time //I checked in the explanation and this is actually a thing
+		if(channelNum % 2 != 0){ //odd
+			double start = t.start();
+			times[0][channelNum/2] = start;
+		}
+		else if(channelNum % 2 != 0){ //even
+			double end = t.end();
+			times[1][(channelNum/2)-1] = end;
+		}
 	}
 
 	public void start(){
 		//triggers channel 1
+		trigChannel(1);
 	}
 
 	public void finish(){
 		//triggers channel 2
+		trigChannel(2);
 	}
 }
 
