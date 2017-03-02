@@ -14,5 +14,18 @@ public class Racer {
 		endTime = enT;
 		elapsedTime = elT;
 		stateRacer = sR;
+	
+		void setStart(double sT){
+			this.startTime = sT;
+		}
+		
+		void setState(int st){
+			this.stateRacer = st;
+		}
+		
+		void setEnd(double enT){
+			this.endTime = enT;
+		}
+	
 	}
 }
