@@ -1,5 +1,6 @@
 package sprint_1;
 
+import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -11,9 +12,9 @@ import java.util.Timer;
 
 public class ChronoTimer {
 
-	static Queue<Racer> racerQueue = new LinkedList<Racer>();
-	static Queue<Racer> racerRun = new LinkedList<Racer>();
-	static Queue<Racer> racerFinish = new LinkedList<Racer>();
+	Queue<Racer> racerQueue = new LinkedList<Racer>();
+	Queue<Racer> racerRun = new LinkedList<Racer>();
+	Queue<Racer> racerFinish = new LinkedList<Racer>();
 	private static boolean power = false;
 	Time t = new Time();
 	private boolean[][] enabled = new boolean[2][4];
@@ -43,6 +44,12 @@ public class ChronoTimer {
 //			}
 //		}
 		
+	}
+	public boolean getEnabled(int i, int j){
+		return enabled[i][j];
+	}
+	public double getTimes(int i, int j){
+		return times[i][j];
 	}
 	public void sendCommand(String command){
 		if(command.contains("Power")){
@@ -106,6 +113,11 @@ public class ChronoTimer {
 		}
 		else{
 			power = true;
+			for(int i = 0; i< 2; i++){
+				for(int j = 0; j < 4; j++){
+					enabled[i][j] = false;
+				}
+			}
 		}
 	}
 
@@ -175,7 +187,7 @@ public class ChronoTimer {
 	}
 
 
-	public void trigChannel(int channelNum){
+	public boolean trigChannel(int channelNum){
 		//trigger the channel number & pulls racer from queue
 		//if odd number, is a start time
 		//if even number, is an end time //I checked in the explanation and this is actually a thing
@@ -188,9 +200,10 @@ public class ChronoTimer {
 				r.setStart(start);
 				r.setState(1);
 				racerRun.add(r);
+				return true;
 			}
 		}
-		else if(channelNum % 2 != 0){ //even
+		else if(channelNum % 2 == 0){ //even
 			if(enabled[0][(channelNum/2)-1]){
 				Racer r1 = racerRun.remove();
 				double end = t.end();
@@ -198,8 +211,10 @@ public class ChronoTimer {
 				r1.setEnd(end);
 				r1.setState(2);
 				racerFinish.add(r1);
+				return true;
 			}
 		}
+		return false;
 	}
 
 	public void start(){
