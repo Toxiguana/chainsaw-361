@@ -61,7 +61,7 @@ public class Simulator {
 					return "DNF";
 				case 6:
 					return "Cancel";
-				case 7:
+				case 8:
 					while(true){
 						System.out.print("What channel do you want to trigger/enable?");
 						int triggerInput = input.nextInt();
@@ -72,12 +72,12 @@ public class Simulator {
 							System.out.println("Invalid Input");
 						}
 					}
-				case 8:
+				case 7:
 					while(true){
 						System.out.print("What channel do you want to toggle?");
 						int toggleInput = input.nextInt();
 						if(toggleInput >= 1 && toggleInput <= 8){
-							return "Trigger " + toggleInput;
+							return "Toggle " + toggleInput;
 						}
 						else{
 							System.out.println("Invalid Input");

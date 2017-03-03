@@ -103,7 +103,7 @@ public class ChronoTimer {
 		}
 		else if(command.contains("Num") || command.contains("NUM")){
 			String[] num = command.split(" ");
-			int i = Integer.parseInt(num[1]);
+			int i = Integer.parseInt(num[1]);//this is not good for user input
 			addRacer(i);
 			System.out.println("Num " + i + " Added");
 		}
