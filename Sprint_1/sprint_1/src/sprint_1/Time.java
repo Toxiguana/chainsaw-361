@@ -4,28 +4,18 @@ public class Time {
 //	It is recommended that you create a Time class to handle complex time 
 //	management.
 	
-	public double start(){
-//		double start = 0.0;
-		
-		long s = System.currentTimeMillis();
-//		System.out.println(s); //one millisecond == 1 1000th of a second
+	public double start(){		
+		long s = System.currentTimeMillis(); //one millisecond == 1 1000th of a second
 		double sec = s/1000.0;
-//		System.out.println(sec);
 		double round = Math.round(sec*100.0)/100.0;
-//		System.out.println(round);
-//		start = round;
 		
 		return round;
 	}
 	
 	public double end(){
-		
-		long s = System.currentTimeMillis();
-//		System.out.println(s); //one millisecond == 1 1000th of a second
+		long s = System.currentTimeMillis(); //one millisecond == 1 1000th of a second
 		double sec = s/1000.0;
-//		System.out.println(sec);
 		double round = Math.round(sec*100.0)/100.0;
-//		System.out.println(round);
 		
 		return round;
 	}
