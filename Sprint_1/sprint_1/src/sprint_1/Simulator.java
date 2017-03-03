@@ -52,7 +52,10 @@ public class Simulator {
 				case 3:
 					return "Reset";
 				case 4: 
-					return "Time";
+					System.out.println("What is the time? (minutes:seconds)");
+					String time=input.nextLine();
+					time=input.nextLine();
+					return "Time "+time;
 				case 5:
 					return "DNF";
 				case 6:
