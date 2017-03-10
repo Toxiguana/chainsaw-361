@@ -10,7 +10,7 @@ public class MainDirectory {
 	private ArrayList<Employee> employees = new ArrayList<Employee>();
 	private String stuff =  "";
 	
-	public boolean add(String lN, String fN, int pN, String d){
+	public boolean add(String lN, String fN, String pN, String d){
 		Employee e = new Employee(lN, fN, pN, d);
 		employees.add(e);
 

@@ -11,7 +11,7 @@ public class DirectoryProxy {
 		m.end();
 	}
 	
-	public boolean add(String lastName, String firstName, int phoneNumber, String department){
+	public boolean add(String lastName, String firstName, String phoneNumber, String department){
 		return m.add(lastName, firstName, phoneNumber, department);
 	}
 	
