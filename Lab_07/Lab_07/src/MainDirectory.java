@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Collection;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -25,7 +24,8 @@ public class MainDirectory {
 	public void print(){
 		//print things
 		ArrayList<Employee> em = (g.fromJson(stuff, new TypeToken<Collection<Employee>>(){}.getType()));
-		
+		EmployeeComparator ec = new EmployeeComparator();
+		em.sort(ec);
 		if(em != null && !em.isEmpty()){
 			for(Employee e: em) {
 				System.out.println(e);

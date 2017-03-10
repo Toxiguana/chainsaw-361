@@ -4,31 +4,55 @@ import java.util.Scanner;
 public class DirectoryEditor {
 	static boolean run = true;
 	DirectoryProxy d = new DirectoryProxy();
-	boolean addloop=false;
 	public static void main(String[] args) {
 		DirectoryProxy d = new DirectoryProxy();
 		Scanner s = new Scanner(System.in);
 
 		if(promptBoolean(s, "load file? (y/n)")){
-			//			Simulator Simulator = new Simulator(Bank);
-			//			File file = new File("transactions.txt");
-			//			Simulator.load(file);
+						Simulator Simulator = new Simulator();
+						Simulator.getInput();
 		}
 		else{
 			while(run){
-				String in = promptString(s, "Please enter a command", "add", "clr", "print", "quit");
+				String in = promptString(s, "Please enter a command (add, print, clr, quit)", "add", "clr", "print", "quit");
 				switch(in.toLowerCase()){
 				case "add": 
 					System.out.println("ADD");
-					String butt = promptString(s, "name");
-					System.out.println(butt);
+					boolean cont = true;
+					while(cont){
+						String firstName = promptString(s, "First Name");
+						if(firstName.equals("end")){
+							d.end();
+							break;
+						}
+						String lastName = promptString(s, "Last Name");
+						if(lastName.equals("end")){
+							d.end();
+							break;
+						}
+						String department = promptString(s, "Department");
+						if(department.equals("end")){
+							d.end();
+							break;
+						}
+						String phoneNumber = promptString(s, "Phone Number");
+						if(phoneNumber.equals("end")){
+							d.end();
+							break;
+						}
+						d.add(lastName, firstName, phoneNumber, department);
+					}
 					break;
+					
 				case "clr":
-					System.out.println("CLR");
+					d.clear();
+					System.out.println("directory cleared");
 					break;
 				case "print":
+					d.print();
 					break;
 				case "quit":
+					run = false;
 					break;
 				}
 			}
@@ -36,27 +60,27 @@ public class DirectoryEditor {
 	}
 
 	public void sendCommand(String line){
-		while(addloop){
-			if(line.contains("END")){
-				d.end();
-			}
-			else{
-				String[] s = line.split(" ");
-				String firstName=s[0];
-				String lastName=s[1];
-				String department=s[2];
-				String phoneNumber=s[3];
-				d.add(lastName, firstName, phoneNumber,department);
-			}
+		if(line.contains("END")){
+//			System.out.println("END");
+			d.end();
 		}
-		if(line.contains("CLR")){
+		else if(line.contains("CLR")){
+//			System.out.println("CLR");
 			d.clear();
 		}
 		else if(line.contains("ADD")){
-			addloop=true;
+//			System.out.println("ADD");
 		}
 		else if(line.contains("PRINT")){
 			d.print();
+		}
+		else{
+			String[] s = line.split(" ");
+			String firstName=s[0];
+			String lastName=s[1];
+			String department=s[2];
+			String phoneNumber=s[3];
+			d.add(lastName, firstName, phoneNumber,department);
 		}
 	}
 	/**
