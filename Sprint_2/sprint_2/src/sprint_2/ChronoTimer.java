@@ -1,5 +1,6 @@
 package sprint_2;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -10,6 +11,8 @@ public class ChronoTimer {
 	Queue<Racer> racerRun1 = new LinkedList<Racer>();
 	Queue<Racer> racerRun2 = new LinkedList<Racer>();
 	Queue<Racer> racerFinish = new LinkedList<Racer>();
+	
+	ArrayList<String> Event_list = new ArrayList<String>();
 	
 	private boolean power = false;
 	Time t = new Time();
@@ -337,6 +340,15 @@ public class ChronoTimer {
 			racerQueue2.add(r);
 			queueNum = 1;
 		}
+		
+	}
+	public void Store(String racer_name, String occurance, String time)
+	{
+		
+	}
+	
+	public void Print(String racer_name, String occurance, String time)
+	{
 		
 	}
 }
