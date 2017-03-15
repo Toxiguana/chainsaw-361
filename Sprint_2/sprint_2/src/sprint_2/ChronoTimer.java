@@ -5,22 +5,24 @@ import java.util.Queue;
 
 public class ChronoTimer {
 
-	Queue<Racer> racerQueue1 = new LinkedList<Racer>();
-	Queue<Racer> racerQueue2 = new LinkedList<Racer>();
-	Queue<Racer> racerRun1 = new LinkedList<Racer>();
-	Queue<Racer> racerRun2 = new LinkedList<Racer>();
-	Queue<Racer> racerFinish = new LinkedList<Racer>();
+	//Queues of Racers
+	Queue<Racer> racerQueue1 = new LinkedList<Racer>(); //beginning1
+	Queue<Racer> racerQueue2 = new LinkedList<Racer>(); //beginning2
+	Queue<Racer> racerRun1 = new LinkedList<Racer>(); //running1
+	Queue<Racer> racerRun2 = new LinkedList<Racer>(); //running2
+	Queue<Racer> racerFinish = new LinkedList<Racer>(); //done
+	
 	
 	private boolean power = false;
-	Time t = new Time();
+	Time t = new Time(); //time instance to do functions
 	
-	private boolean[][] enabled = new boolean[2][4];
-	private double[][] times = new double[2][4];
-	private boolean[] available = new boolean[4];
+	private boolean[][] enabled = new boolean[2][4]; //array holding enable for each channel
+	private double[][] times = new double[2][4]; //array holding start & end times //used for testing
+	private boolean[] available = new boolean[4]; //array holding whether pair of channels is available
 	
-	private int runType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run
-	private int queueNum = 1;
-	private int queueRunNum = 1;
+	public int runType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run
+	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
+	private int queueRunNum = 1; //keeps track of which running queue to add racer pulled from wait queue to
 
 	private int hours = 0;
 	private int minutes = 0;
@@ -41,15 +43,15 @@ public class ChronoTimer {
 		}while(true);
 	}
 
-	public boolean getEnabled(int i, int j){
+	public boolean getEnabled(int i, int j){ //returns enabled at a given index //used for testing
 		return enabled[i][j];
 	}
 
-	public double getTimes(int i, int j){
+	public double getTimes(int i, int j){ //returns time at a given index //used for testing
 		return times[i][j];
 	}
 	
-	public boolean getAvailable(int i){
+	public boolean getAvailable(int i){ //returns available at a given index //used for testing
 		return available[i];
 	}
 
@@ -138,7 +140,7 @@ public class ChronoTimer {
 
 	public void exit(){
 		//"quits program" //exit simulator
-		if(isPowerOn()) throw new IllegalStateException();
+		if(!isPowerOn()) throw new IllegalStateException();
 		System.exit(0);
 	}
 
@@ -175,40 +177,38 @@ public class ChronoTimer {
 	}
 
 	public void dnfRacer(){
-		//sets end time of next racer to finish to DNF, not return to queue
+		//sets end time of next racer to finish to DNF (-1), not return to queue
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 		
-		if(runType == 3){
-			if(!racerRun1.isEmpty()){
-				Racer r = racerRun1.remove();
-				r.setEnd(-1);
-				r.setState(2);
-				racerFinish.add(r);
-			}
-			if(!racerRun2.isEmpty()){
-				Racer r = racerRun2.remove();
-				r.setEnd(-1);
-				r.setState(2);
-				racerFinish.add(r);
-			}
-		}
-		else if(runType == 1 || runType == 2){
+		if(runType == 1 || runType == 2){ //IND or PARIND implementation
 			Racer r = racerRun1.remove();
 			r.setEnd(-1);
 			r.setState(2);
 			racerFinish.add(r);
 		}
-		
-		
+		else if(runType == 3){ //used when ending run, empties both run queues
+			while(!racerRun1.isEmpty()){
+				Racer r = racerRun1.remove();
+				r.setEnd(-1);
+				r.setState(2);
+				racerFinish.add(r);
+			}
+			while(!racerRun2.isEmpty()){
+				Racer r = racerRun2.remove();
+				r.setEnd(-1);
+				r.setState(2);
+				racerFinish.add(r);
+			}
+		}		
 	}
 
 	public void cancelRacer(){
-		//discard current race for racer and put back in queue as next to start
+		//discard current race for first racer and put back in queue as next to start
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
-		if(runType == 1 || runType == 2){
+		if(runType == 1 || runType == 2){ //does same thing for both IND & PARIND
 			Queue<Racer> newQueue = new LinkedList<Racer>();
 			Racer r = racerRun1.remove();
 			times = new double[2][4]; //will be different for more than one racer
@@ -220,6 +220,7 @@ public class ChronoTimer {
 				newQueue.add(r1);
 			}
 			racerQueue1 = newQueue;
+			available[0] = true;
 		}
 	}
 
@@ -228,7 +229,7 @@ public class ChronoTimer {
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
-		if(runType == 1 || runType == 2){
+		if(runType == 1 || runType == 2){ //same thing for IND & PARIND
 			boolean enable = enabled[0][channelNum/2];
 
 			if(channelNum % 2 != 0 && enable == false){ //odd & disabled
@@ -252,15 +253,18 @@ public class ChronoTimer {
 		//if even number, is an end time
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
-		
-		if(channelNum % 2 != 0){ //odd
+
+		if(channelNum % 2 != 0){ //odd, start
 			if(racerQueue1.isEmpty() && racerQueue2.isEmpty()){
 				System.out.println("No Racers in the Queue"); 
 				return false;
 			}
-			if(enabled[0][channelNum/2] && available[channelNum/2]){
+			if(enabled[0][channelNum/2] && available[channelNum/2]){ //enabled & available
 				Racer r = null;
-				if(queueRunNum == 1){
+				if(runType == 1){//IND
+					if(racerQueue1.isEmpty()){
+						return false;
+					}
 					r = racerQueue1.remove();
 					double start = t.start();
 					times[0][channelNum/2] = start;
@@ -271,21 +275,40 @@ public class ChronoTimer {
 					queueRunNum = 2;
 					return true;
 				}
-				else if(queueRunNum == 2){
-					r = racerQueue2.remove();
-					double start = t.start();
-					times[0][channelNum/2] = start;
-					r.setStart(start);
-					r.setState(1);
-					racerRun2.add(r);
-					available[channelNum/2] = false;
-					queueRunNum = 1;
-					return true;
-				}				
-			}
+				else if(runType == 2){//PARIND
+					if(queueRunNum == 1){//switches pulling from between 2 diff queues
+						if(racerQueue1.isEmpty()){
+							return false;
+						}
+						r = racerQueue1.remove();
+						double start = t.start();
+						times[0][channelNum/2] = start;
+						r.setStart(start);
+						r.setState(1);
+						racerRun1.add(r);
+						available[channelNum/2] = false;
+						queueRunNum = 2;
+						return true;
+					}
+					else if(queueRunNum == 2){
+						if(racerQueue2.isEmpty()){
+							return false;
+						}
+						r = racerQueue2.remove();
+						double start = t.start();
+						times[0][channelNum/2] = start;
+						r.setStart(start);
+						r.setState(1);
+						racerRun2.add(r);
+						available[channelNum/2] = false;
+						queueRunNum = 1;
+						return true;
+					}				
+				}}
+
 		}
-		else if(channelNum % 2 == 0){ //even
-			if(enabled[1][(channelNum/2)-1] && !available[(channelNum/2)-1]){
+		else if(channelNum % 2 == 0){ //even, end
+			if(enabled[1][(channelNum/2)-1] && !available[(channelNum/2)-1]){//enabled & not available
 				Racer r1 = racerRun1.remove();
 				double end = t.end();
 				times[1][(channelNum/2)-1] = end;
@@ -299,7 +322,7 @@ public class ChronoTimer {
 		return false;
 	}
 	
-	public boolean trigPARINDChannel(int numRacers){
+	public boolean trigPARINDChannel(int numRacers){ //PARIND
 		boolean b = false;
 		for(int i = 1; i <= numRacers; i++){
 			b = trigChannel(i);
@@ -329,14 +352,18 @@ public class ChronoTimer {
 		if(runType == 0) throw new IllegalStateException();
 
 		Racer r = new Racer(racerNum, 0.0, 0.0, "0", 0);
-		if(queueNum == 1){
+		if(runType == 1){ //IND, just add
 			racerQueue1.add(r);
-			queueNum = 2;
 		}
-		else if(queueNum == 2){
-			racerQueue2.add(r);
-			queueNum = 1;
-		}
-		
+		else if(runType == 2){ //PARIND add to one queue, then the other, etc.
+			if(queueNum == 1){
+				racerQueue1.add(r);
+				queueNum = 2;
+			}
+			else if(queueNum == 2){
+				racerQueue2.add(r);
+				queueNum = 1;
+			}
+		}		
 	}
 }
