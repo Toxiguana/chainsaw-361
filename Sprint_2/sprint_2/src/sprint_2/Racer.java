@@ -31,4 +31,7 @@ public class Racer {
 	public void setElapsed(double sT, double enT){
 		this.elapsedTime = t.computeTime(sT, enT);
 	}
+	public int getNum(){
+		return numRacer;
+	}
 }

@@ -3,20 +3,24 @@ package sprint_2;
 import java.util.LinkedList;
 import java.util.Queue;
 
-//one stream of racers (only IND) that can start, finish, cancel and not finish (DNF).
-//For each event handle the response in the Chronotimer.
-//You should be able to detect a start, a finish (with times) and calculate the total time for a race.
-
 public class ChronoTimer {
 
-	Queue<Racer> racerQueue = new LinkedList<Racer>();
-	Queue<Racer> racerRun = new LinkedList<Racer>();
+	Queue<Racer> racerQueue1 = new LinkedList<Racer>();
+	Queue<Racer> racerQueue2 = new LinkedList<Racer>();
+	Queue<Racer> racerRun1 = new LinkedList<Racer>();
+	Queue<Racer> racerRun2 = new LinkedList<Racer>();
 	Queue<Racer> racerFinish = new LinkedList<Racer>();
+	
 	private boolean power = false;
 	Time t = new Time();
+	
 	private boolean[][] enabled = new boolean[2][4];
 	private double[][] times = new double[2][4];
 	private boolean[] available = new boolean[4];
+	
+	private int runType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run
+	private int queueNum = 1;
+	private int queueRunNum = 1;
 
 	private int hours = 0;
 	private int minutes = 0;
@@ -44,8 +48,12 @@ public class ChronoTimer {
 	public double getTimes(int i, int j){
 		return times[i][j];
 	}
+	
+	public boolean getAvailable(int i){
+		return available[i];
+	}
 
-	public void sendCommand(String command){
+	public void sendCommand(String command){//needs to be finished
 		if(command.contains("Power") || command.contains("POWER")){
 			power();
 			boolean b = isPowerOn();
@@ -109,6 +117,7 @@ public class ChronoTimer {
 		}
 
 	}
+	
 	public boolean isPowerOn(){
 		return power;
 	}
@@ -122,7 +131,7 @@ public class ChronoTimer {
 		else{
 			power = true;
 			for(int i = 0; i < available.length; i++){
-				available[i] = true;
+				available[i] = true; //setting all available indexes to true cuz start as false
 			}
 		}
 	}
@@ -137,20 +146,29 @@ public class ChronoTimer {
 		//sets all variables to initial values
 		if(!isPowerOn()) throw new IllegalStateException();
 
-		racerQueue = new LinkedList<Racer>();
-		racerRun = new LinkedList<Racer>();
+		racerQueue1 = new LinkedList<Racer>();
+		racerQueue2 = new LinkedList<Racer>();
+		racerRun1 = new LinkedList<Racer>();
+		racerRun2 = new LinkedList<Racer>();
 		racerFinish = new LinkedList<Racer>();
+		
 		enabled = new boolean[2][4];
 		times = new double[2][4];
 		available = new boolean[4];
+		
 		hours = 0;
 		minutes = 0;
 		seconds = 0.0;
+		
+		runType = 0;
+		queueNum = 1;
+		queueRunNum = 1;
 	}
 
 	public void setTime(int hrs, int min, double sec){
 		//allows user to set time
 		if(!isPowerOn()) throw new IllegalStateException();
+		
 		hours = hrs;
 		minutes = min;
 		seconds = sec;
@@ -159,44 +177,72 @@ public class ChronoTimer {
 	public void dnfRacer(){
 		//sets end time of next racer to finish to DNF, not return to queue
 		if(!isPowerOn()) throw new IllegalStateException();
-		Racer r = racerRun.remove();
-		r.setEnd(-1);
-		r.setState(2);
-		racerFinish.add(r);
+		if(runType == 0) throw new IllegalStateException();
+		
+		if(runType == 3){
+			if(!racerRun1.isEmpty()){
+				Racer r = racerRun1.remove();
+				r.setEnd(-1);
+				r.setState(2);
+				racerFinish.add(r);
+			}
+			if(!racerRun2.isEmpty()){
+				Racer r = racerRun2.remove();
+				r.setEnd(-1);
+				r.setState(2);
+				racerFinish.add(r);
+			}
+		}
+		else if(runType == 1 || runType == 2){
+			Racer r = racerRun1.remove();
+			r.setEnd(-1);
+			r.setState(2);
+			racerFinish.add(r);
+		}
+		
+		
 	}
 
 	public void cancelRacer(){
 		//discard current race for racer and put back in queue as next to start
 		if(!isPowerOn()) throw new IllegalStateException();
-		Queue<Racer> newQueue = new LinkedList<Racer>();
-		Racer r = racerRun.remove();
-		times = new double[2][4]; //will be different for more than one racer
-		r.setStart(0.0);
-		r.setState(0);
-		newQueue.add(r);
-		while(!racerQueue.isEmpty()){
-			Racer r1 = racerQueue.remove();
-			newQueue.add(r1);
+		if(runType == 0) throw new IllegalStateException();
+
+		if(runType == 1 || runType == 2){
+			Queue<Racer> newQueue = new LinkedList<Racer>();
+			Racer r = racerRun1.remove();
+			times = new double[2][4]; //will be different for more than one racer
+			r.setStart(0.0);
+			r.setState(0);
+			newQueue.add(r);
+			while(!racerQueue1.isEmpty()){
+				Racer r1 = racerQueue1.remove();
+				newQueue.add(r1);
+			}
+			racerQueue1 = newQueue;
 		}
-		racerQueue = newQueue;
 	}
 
 	public void togChannel(int channelNum){
 		//enable or disable the channel
 		if(!isPowerOn()) throw new IllegalStateException();
-		boolean enable = enabled[0][channelNum/2];
+		if(runType == 0) throw new IllegalStateException();
 
-		if(channelNum % 2 != 0 && enable == false){ //odd & disabled
-			enabled[0][channelNum/2] = true;
-		}
-		else if(channelNum % 2 != 0 && enable == true){ //odd & enabled
-			enabled[0][channelNum/2] = false;
-		}
-		else if(channelNum % 2 == 0 && enable == false){ //even & disabled
-			enabled[1][(channelNum/2)-1] = true;
-		}
-		else if(channelNum % 2 == 0 && enable == true){ //even & enabled
-			enabled[1][(channelNum/2)-1] = false;
+		if(runType == 1 || runType == 2){
+			boolean enable = enabled[0][channelNum/2];
+
+			if(channelNum % 2 != 0 && enable == false){ //odd & disabled
+				enabled[0][channelNum/2] = true;
+			}
+			else if(channelNum % 2 != 0 && enable == true){ //odd & enabled
+				enabled[0][channelNum/2] = false;
+			}
+			else if(channelNum % 2 == 0 && enable == false){ //even & disabled
+				enabled[1][(channelNum/2)-1] = true;
+			}
+			else if(channelNum % 2 == 0 && enable == true){ //even & enabled
+				enabled[1][(channelNum/2)-1] = false;
+			}
 		}
 	}
 
@@ -205,26 +251,42 @@ public class ChronoTimer {
 		//if odd number, is a start time
 		//if even number, is an end time
 		if(!isPowerOn()) throw new IllegalStateException();
+		if(runType == 0) throw new IllegalStateException();
 		
 		if(channelNum % 2 != 0){ //odd
-			if(racerQueue.isEmpty()){
+			if(racerQueue1.isEmpty() && racerQueue2.isEmpty()){
 				System.out.println("No Racers in the Queue"); 
 				return false;
 			}
 			if(enabled[0][channelNum/2] && available[channelNum/2]){
-				Racer r = racerQueue.remove();
-				double start = t.start();
-				times[0][channelNum/2] = start;
-				r.setStart(start);
-				r.setState(1);
-				racerRun.add(r);
-				available[channelNum/2] = false;
-				return true;
+				Racer r = null;
+				if(queueRunNum == 1){
+					r = racerQueue1.remove();
+					double start = t.start();
+					times[0][channelNum/2] = start;
+					r.setStart(start);
+					r.setState(1);
+					racerRun1.add(r);
+					available[channelNum/2] = false;
+					queueRunNum = 2;
+					return true;
+				}
+				else if(queueRunNum == 2){
+					r = racerQueue2.remove();
+					double start = t.start();
+					times[0][channelNum/2] = start;
+					r.setStart(start);
+					r.setState(1);
+					racerRun2.add(r);
+					available[channelNum/2] = false;
+					queueRunNum = 1;
+					return true;
+				}				
 			}
 		}
 		else if(channelNum % 2 == 0){ //even
 			if(enabled[1][(channelNum/2)-1] && !available[(channelNum/2)-1]){
-				Racer r1 = racerRun.remove();
+				Racer r1 = racerRun1.remove();
 				double end = t.end();
 				times[1][(channelNum/2)-1] = end;
 				r1.setEnd(end);
@@ -236,23 +298,45 @@ public class ChronoTimer {
 		}
 		return false;
 	}
+	
+	public boolean trigPARINDChannel(int numRacers){
+		boolean b = false;
+		for(int i = 1; i <= numRacers; i++){
+			b = trigChannel(i);
+		}
+		return b;
+	}
 
 	public void start(){
 		//triggers channel 1
 		if(!isPowerOn()) throw new IllegalStateException();
+		if(runType == 0) throw new IllegalStateException();
+
 		trigChannel(1);
 	}
 
 	public void finish(){
 		//triggers channel 2
 		if(!isPowerOn()) throw new IllegalStateException();
+		if(runType == 0) throw new IllegalStateException();
+
 		trigChannel(2);
 	}
 
 	public void addRacer(int racerNum){ //num
 		//adds racer to queue
 		if(!isPowerOn()) throw new IllegalStateException();
+		if(runType == 0) throw new IllegalStateException();
+
 		Racer r = new Racer(racerNum, 0.0, 0.0, "0", 0);
-		racerQueue.add(r);
+		if(queueNum == 1){
+			racerQueue1.add(r);
+			queueNum = 2;
+		}
+		else if(queueNum == 2){
+			racerQueue2.add(r);
+			queueNum = 1;
+		}
+		
 	}
 }
