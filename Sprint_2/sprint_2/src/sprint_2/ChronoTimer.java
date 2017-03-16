@@ -12,16 +12,18 @@ public class ChronoTimer {
 	Queue<Racer> racerRun1 = new LinkedList<Racer>(); //running1
 	Queue<Racer> racerRun2 = new LinkedList<Racer>(); //running2
 	Queue<Racer> racerFinish = new LinkedList<Racer>(); //done
+
 	
 	Queue<String> Event_list = new LinkedList<String>();
 	
+
 	private boolean power = false;
 	Time t = new Time(); //time instance to do functions
-	
+
 	private boolean[][] enabled = new boolean[2][4]; //array holding enable for each channel
 	private double[][] times = new double[2][4]; //array holding start & end times //used for testing
 	private boolean[] available = new boolean[4]; //array holding whether pair of channels is available
-	
+
 	public int runType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run
 	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
 	private int queueRunNum = 1; //keeps track of which running queue to add racer pulled from wait queue to
@@ -52,7 +54,7 @@ public class ChronoTimer {
 	public double getTimes(int i, int j){ //returns time at a given index //used for testing
 		return times[i][j];
 	}
-	
+
 	public boolean getAvailable(int i){ //returns available at a given index //used for testing
 		return available[i];
 	}
@@ -63,12 +65,12 @@ public class ChronoTimer {
 			boolean b = isPowerOn();
 			if(b == true) System.out.println("Power On");
 			else System.out.println("Power Off");
-			
+
 		}
 		else if(command.contains("Exit") || command.contains("EXIT")){
 			System.out.println("Exit");
 			exit();
-			
+
 		}
 		else if(command.contains("Reset") || command.contains("RESET")){
 			reset();
@@ -103,7 +105,7 @@ public class ChronoTimer {
 			boolean b = trigChannel(channel);
 			if(b == true) System.out.println("Trigger Channel " + channel + " was successful!");
 			else System.out.println("Triggering Channel " + channel + " was not successful.");
-			
+
 		}
 		else if(command.contains("Start") || command.contains("START")){
 			start();
@@ -121,7 +123,7 @@ public class ChronoTimer {
 		}
 
 	}
-	
+
 	public boolean isPowerOn(){
 		
 		if(power)
@@ -168,15 +170,15 @@ public class ChronoTimer {
 		racerRun1 = new LinkedList<Racer>();
 		racerRun2 = new LinkedList<Racer>();
 		racerFinish = new LinkedList<Racer>();
-		
+
 		enabled = new boolean[2][4];
 		times = new double[2][4];
 		available = new boolean[4];
-		
+
 		hours = 0;
 		minutes = 0;
 		seconds = 0.0;
-		
+
 		runType = 0;
 		queueNum = 1;
 		queueRunNum = 1;
@@ -186,7 +188,7 @@ public class ChronoTimer {
 		//allows user to set time
 		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
-		
+
 		hours = hrs;
 		minutes = min;
 		seconds = sec;
@@ -197,7 +199,7 @@ public class ChronoTimer {
 		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
-		
+
 		if(runType == 1 || runType == 2){ //IND or PARIND implementation
 			Racer r = racerRun1.remove();
 			r.setEnd(-1);
@@ -341,6 +343,7 @@ public class ChronoTimer {
 		}
 		return false;
 	}
+
 	
 //	public boolean trigPARINDChannel(int numRacers){ //PARIND
 //		boolean b = false;
@@ -349,6 +352,15 @@ public class ChronoTimer {
 //		}
 //		return b;
 //	}
+
+
+	public boolean trigPARINDChannel(int numRacers){ //PARIND
+		boolean b = false;
+		for(int i = 1; i <= numRacers; i++){
+			b = trigChannel(i);
+		}
+		return b;
+	}
 
 	public void start(){
 		//triggers channel 1
@@ -389,11 +401,38 @@ public class ChronoTimer {
 	}
 	public void store(String racer_name, String occurance, String time)
 	{
-		
+	
 	}
 	
 	public void print(String racer_name, String occurance, String time)
 	{
-		
+	
+	}
+
+	public void newRun(){
+		double start1;
+		double start2;
+		if(!racerQueue1.isEmpty()){
+			racerRun1.add(racerQueue1.remove());
+			start1 = t.start();
+		}
+		if(!racerQueue2.isEmpty()){
+			racerRun2.add(racerQueue2.remove());
+			racerRun2.add(racerQueue2.remove());
+			start1 = t.start();
+			start2 = t.start();
+		}
+	}
+
+	public void endRun(){
+		if(!racerRun1.isEmpty()){
+			racerRun1.remove();	
+
+		}
+		if(!racerRun2.isEmpty()){
+			racerRun2.remove();
+			
+		}
+
 	}
 }
