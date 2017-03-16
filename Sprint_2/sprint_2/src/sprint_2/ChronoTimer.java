@@ -125,44 +125,47 @@ public class ChronoTimer {
 	}
 
 	public boolean isPowerOn(){
-		
-		if(power)
-			{
-				Event_list.add("Power is on at: " + t);
-			}
-		else
-			{
-				//nothing... duh
-			}
-		
+	
 		return power;
 	}
 
 	public void power(){
 		//if(on) -> turn off //stay in simulator
 		//else if(off) -> turn on
-		//STORE
 		if(power){
 			power = false;
+			//STORE
+			Event_list.add(t + "Power on");
+			
 		}
 		else{
 			power = true;
 			for(int i = 0; i < available.length; i++){
 				available[i] = true; //setting all available indexes to true cuz start as false
 			}
+			//STORE
+			Event_list.add(t + "Power off");
 		}
 	}
 
 	public void exit(){
 		//"quits program" //exit simulator
 		//STORE
+		Event_list.add(t + "Exit");
+		
 		if(!isPowerOn()) throw new IllegalStateException();
 		System.exit(0);
+		
+		
+
 	}
 
 	public void reset(){
 		//sets all variables to initial values
 		//STORE
+		Event_list.add(t + "Reset");
+
+		
 		if(!isPowerOn()) throw new IllegalStateException();
 
 		racerQueue1 = new LinkedList<Racer>();
@@ -187,16 +190,22 @@ public class ChronoTimer {
 	public void setTime(int hrs, int min, double sec){
 		//allows user to set time
 		//STORE
+		Event_list.add(t + "Set Time to: " + hrs + ":" + min + ":" + sec);
+
 		if(!isPowerOn()) throw new IllegalStateException();
 
 		hours = hrs;
 		minutes = min;
 		seconds = sec;
+		
 	}
 
 	public void dnfRacer(){
 		//sets end time of next racer to finish to DNF (-1), not return to queue
 		//STORE
+		Event_list.add(t + "Racer" + /*r +*/ " did not finish");
+
+		
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
@@ -225,6 +234,9 @@ public class ChronoTimer {
 	public void cancelRacer(){
 		//discard current race for first racer and put back in queue as next to start
 		//STORE
+		Event_list.add(t + "Racer has been canceled");
+
+		
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
@@ -247,6 +259,9 @@ public class ChronoTimer {
 	public void togChannel(int channelNum){
 		//enable or disable the channel
 		//STORE
+		
+		// I do not understand this method well enough to assign it statements
+		
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
@@ -256,15 +271,19 @@ public class ChronoTimer {
 			if(channelNum % 2 != 0 && enable == false){ //odd & disabled
 				enabled[0][channelNum/2] = true;
 			}
+			
 			else if(channelNum % 2 != 0 && enable == true){ //odd & enabled
 				enabled[0][channelNum/2] = false;
 			}
+			
 			else if(channelNum % 2 == 0 && enable == false){ //even & disabled
 				enabled[1][(channelNum/2)-1] = true;
 			}
+			
 			else if(channelNum % 2 == 0 && enable == true){ //even & enabled
 				enabled[1][(channelNum/2)-1] = false;
 			}
+			
 		}
 	}
 
@@ -272,15 +291,23 @@ public class ChronoTimer {
 		//trigger the channel number & pulls racer from queue
 		//if odd number, is a start time
 		//if even number, is an end time
-		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
 		if(channelNum % 2 != 0){ //odd, start
 			if(racerQueue1.isEmpty() && racerQueue2.isEmpty()){
-				System.out.println("No Racers in the Queue"); 
+				//System.out.println("No Racers in the Queue"); 
+				
+				//STORE
+
+				Event_list.add(t + "Trigger has been activated and is a start time");
+				
 				return false;
 			}
+
+			
+
+			
 			if(enabled[0][channelNum/2] && available[channelNum/2]){ //enabled & available
 				Racer r = null;
 				if(runType == 1){//IND
@@ -338,6 +365,11 @@ public class ChronoTimer {
 				r1.setState(2);
 				racerFinish.add(r1);
 				available[(channelNum/2)-1] = true;
+				
+				//STORE
+
+				Event_list.add(t + "Trigger has been activated and is an end time");
+				
 				return true;
 			}
 		}
@@ -352,15 +384,6 @@ public class ChronoTimer {
 //		}
 //		return b;
 //	}
-
-
-	public boolean trigPARINDChannel(int numRacers){ //PARIND
-		boolean b = false;
-		for(int i = 1; i <= numRacers; i++){
-			b = trigChannel(i);
-		}
-		return b;
-	}
 
 	public void start(){
 		//triggers channel 1
@@ -380,33 +403,50 @@ public class ChronoTimer {
 
 	public void addRacer(int racerNum){ //num
 		//adds racer to queue
-		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
 		Racer r = new Racer(racerNum, 0.0, 0.0, "0", 0);
 		if(runType == 1){ //IND, just add
 			racerQueue1.add(r);
+			//STORE
+
+			Event_list.add(t + "Racer has been added to IND event");
+			
 		}
 		else if(runType == 2){ //PARIND add to one queue, then the other, etc.
 			if(queueNum == 1){
 				racerQueue1.add(r);
 				queueNum = 2;
+				
+				//STORE
+
+				Event_list.add(t + "Racers have been added to PARIND event");
+				
 			}
 			else if(queueNum == 2){
 				racerQueue2.add(r);
 				queueNum = 1;
+				
+				//STORE
+
+				Event_list.add(t + "Racers have been added");
 			}
 		}		
 	}
 	public void store(String racer_name, String occurance, String time)
 	{
-	
+		
 	}
-	
+	///Please Check this method and the stuff that comes in, pretty sure it works but you need to check it 
+	/// this was the simplest way to do it I think
 	public void print(String racer_name, String occurance, String time)
 	{
-	
+		while(Event_list.poll() != null)
+		{
+			System.out.print(Event_list.poll());
+			System.out.println();
+		}
 	}
 
 	public void newRun(){
