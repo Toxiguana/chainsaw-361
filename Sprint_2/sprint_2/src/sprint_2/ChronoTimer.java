@@ -13,7 +13,7 @@ public class ChronoTimer {
 	Queue<Racer> racerRun2 = new LinkedList<Racer>(); //running2
 	Queue<Racer> racerFinish = new LinkedList<Racer>(); //done
 	
-	ArrayList<String> Event_list = new ArrayList<String>();
+	Queue<String> Event_list = new LinkedList<String>();
 	
 	private boolean power = false;
 	Time t = new Time(); //time instance to do functions
@@ -123,12 +123,23 @@ public class ChronoTimer {
 	}
 	
 	public boolean isPowerOn(){
+		
+		if(power)
+			{
+				Event_list.add("Power is on at: " + t);
+			}
+		else
+			{
+				//nothing... duh
+			}
+		
 		return power;
 	}
 
 	public void power(){
 		//if(on) -> turn off //stay in simulator
 		//else if(off) -> turn on
+		//STORE
 		if(power){
 			power = false;
 		}
@@ -142,12 +153,14 @@ public class ChronoTimer {
 
 	public void exit(){
 		//"quits program" //exit simulator
+		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 		System.exit(0);
 	}
 
 	public void reset(){
 		//sets all variables to initial values
+		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 
 		racerQueue1 = new LinkedList<Racer>();
@@ -171,6 +184,7 @@ public class ChronoTimer {
 
 	public void setTime(int hrs, int min, double sec){
 		//allows user to set time
+		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 		
 		hours = hrs;
@@ -180,6 +194,7 @@ public class ChronoTimer {
 
 	public void dnfRacer(){
 		//sets end time of next racer to finish to DNF (-1), not return to queue
+		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 		
@@ -207,6 +222,7 @@ public class ChronoTimer {
 
 	public void cancelRacer(){
 		//discard current race for first racer and put back in queue as next to start
+		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
@@ -228,6 +244,7 @@ public class ChronoTimer {
 
 	public void togChannel(int channelNum){
 		//enable or disable the channel
+		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
@@ -253,6 +270,7 @@ public class ChronoTimer {
 		//trigger the channel number & pulls racer from queue
 		//if odd number, is a start time
 		//if even number, is an end time
+		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
@@ -324,13 +342,13 @@ public class ChronoTimer {
 		return false;
 	}
 	
-	public boolean trigPARINDChannel(int numRacers){ //PARIND
-		boolean b = false;
-		for(int i = 1; i <= numRacers; i++){
-			b = trigChannel(i);
-		}
-		return b;
-	}
+//	public boolean trigPARINDChannel(int numRacers){ //PARIND
+//		boolean b = false;
+//		for(int i = 1; i <= numRacers; i++){
+//			b = trigChannel(i);
+//		}
+//		return b;
+//	}
 
 	public void start(){
 		//triggers channel 1
@@ -350,6 +368,7 @@ public class ChronoTimer {
 
 	public void addRacer(int racerNum){ //num
 		//adds racer to queue
+		//STORE
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(runType == 0) throw new IllegalStateException();
 
@@ -368,12 +387,12 @@ public class ChronoTimer {
 			}
 		}		
 	}
-	public void Store(String racer_name, String occurance, String time)
+	public void store(String racer_name, String occurance, String time)
 	{
 		
 	}
 	
-	public void Print(String racer_name, String occurance, String time)
+	public void print(String racer_name, String occurance, String time)
 	{
 		
 	}
