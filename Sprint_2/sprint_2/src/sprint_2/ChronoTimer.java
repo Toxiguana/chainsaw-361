@@ -15,6 +15,7 @@ public class ChronoTimer {
 
 	
 	Queue<String> Event_list = new LinkedList<String>();
+	Queue<String> Export_list = new LinkedList<String>();
 	
 
 	private boolean power = false;
@@ -434,18 +435,58 @@ public class ChronoTimer {
 			}
 		}		
 	}
+	
+	/// NEEDS TO BE CHANGES TO EXPORT RIGHT NOW WILL JUST PRINT QUEUE WILL ALWAYS WORK JUST ADJUST FOR JSON
+	
 	public void store(String racer_name, String occurance, String time)
 	{
-		
+		if(Export_list.isEmpty())
+		{
+			while(!Event_list.isEmpty())
+			{
+				String e = Event_list.poll();
+				System.out.print(e);
+				System.out.println();
+				Export_list.add(e);
+			}
+			
+		}
+		else
+		{
+			while(!Export_list.isEmpty())
+			{
+				String e = Export_list.poll();
+				System.out.print(e);
+				System.out.println();
+				Event_list.add(e);
+			}
+		}
+			
 	}
 	///Please Check this method and the stuff that comes in, pretty sure it works but you need to check it 
 	/// this was the simplest way to do it I think
 	public void print(String racer_name, String occurance, String time)
 	{
-		while(Event_list.poll() != null)
+		
+		if(Event_list.isEmpty())
 		{
-			System.out.print(Event_list.poll());
-			System.out.println();
+			while(!Export_list.isEmpty())
+			{
+				String e = Export_list.poll();
+				System.out.print(e);
+				System.out.println();
+				Event_list.add(e);
+			}
+		}
+		else
+		{
+			while(!Event_list.isEmpty())
+			{
+				String e = Event_list.poll();
+				System.out.print(e);
+				System.out.println();
+				Export_list.add(e);
+			}
 		}
 	}
 
