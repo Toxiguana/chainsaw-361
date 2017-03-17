@@ -1,5 +1,6 @@
 package sprint_2;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -505,11 +506,30 @@ public class ChronoTimer {
 	///Please Check this method and the stuff that comes in, pretty sure it works but you need to check it 
 	/// this was the simplest way to do it I think
 
-	public void print(int runNum)
+	public void export(int rNum)
 	{
-		Run r = runList.get(runNum-1);
-		r.print();
-		
+		if(rNum > runList.size()){
+			System.out.println("Error: not a valid run number");
+		}
+		else{
+			Run r = runList.get(rNum-1);
+			try {
+				r.export();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	public void print(int rNum)
+	{
+		if(rNum > runList.size()){
+			System.out.println("Error: not a valid run number");
+		}
+		else{
+			Run r = runList.get(rNum-1);
+			r.print();
+		}
 //		if(systemLog.isEmpty())
 //		{
 //			while(!Export_list.isEmpty())
