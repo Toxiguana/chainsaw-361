@@ -38,6 +38,7 @@ public class ChronoTimer {
 		Simulator sim = new Simulator();
 		ChronoTimer t = new ChronoTimer();
 		String command;
+		
 		do{
 			command = sim.getInput();
 			if(command == ""){
@@ -449,7 +450,6 @@ public class ChronoTimer {
 				System.out.println();
 				Export_list.add(e);
 			}
-			
 		}
 		else
 		{
@@ -465,29 +465,32 @@ public class ChronoTimer {
 	}
 	///Please Check this method and the stuff that comes in, pretty sure it works but you need to check it 
 	/// this was the simplest way to do it I think
+	//not even close
 	public void print(String racer_name, String occurance, String time)
 	{
-		
-		if(Event_list.isEmpty())
-		{
-			while(!Export_list.isEmpty())
-			{
-				String e = Export_list.poll();
-				System.out.print(e);
-				System.out.println();
-				Event_list.add(e);
-			}
+		for(String temp : Export_list){
+			System.out.println(temp);
 		}
-		else
-		{
-			while(!Event_list.isEmpty())
-			{
-				String e = Event_list.poll();
-				System.out.print(e);
-				System.out.println();
-				Export_list.add(e);
-			}
-		}
+//		if(Event_list.isEmpty())
+//		{
+//			while(!Export_list.isEmpty())
+//			{
+//				String e = Export_list.poll();
+//				System.out.print(e);
+//				System.out.println();
+//				Event_list.add(e);
+//			}
+//		}
+//		else
+//		{
+//			while(!Event_list.isEmpty())
+//			{
+//				String e = Event_list.poll();
+//				System.out.print(e);
+//				System.out.println();
+//				Export_list.add(e);
+//			}
+//		}
 	}
 
 	public void newRun(){
