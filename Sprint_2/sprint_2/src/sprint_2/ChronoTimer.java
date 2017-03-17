@@ -40,6 +40,7 @@ public class ChronoTimer {
 		ChronoTimer t = new ChronoTimer();
 
 		String command;
+		
 		do{
 			command = sim.getInput();
 			if(command == ""){
@@ -489,10 +490,12 @@ public class ChronoTimer {
 	}
 	///Please Check this method and the stuff that comes in, pretty sure it works but you need to check it 
 	/// this was the simplest way to do it I think
+
 	public void print(int runNum)
 	{
 		Run r = runList.get(runNum-1);
 		r.print();
+		
 //		if(systemLog.isEmpty())
 //		{
 //			while(!Export_list.isEmpty())
@@ -514,4 +517,4 @@ public class ChronoTimer {
 //			}
 //		}
 	}
-}
+}//end ChoronoTimer
