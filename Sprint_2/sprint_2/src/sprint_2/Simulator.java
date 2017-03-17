@@ -95,17 +95,36 @@ public class Simulator {
 				case 10:
 					return "Finish";
 				case 11:
-					return "Num";
+					System.out.println("What is the number of the runner?");
+					int runnerNum=input.nextInt();
+					return "NUM "+runnerNum;
 				case 12:
-					Steven "Event Type" - takes String parameter
+					while(true){
+						System.out.println("Please Choose the event type");
+						System.out.println("1. Individual Run");
+						System.out.println("2. Parellel Run");
+						int runChoice=input.nextInt();
+						switch (runChoice){
+						case 1:
+							return "Event IND";
+						case 2:
+							return "Event PARIND";
+						default:
+							System.out.println("Invalid Input");
+						}
+					}
 				case 13:
-					Steven "New Run" - takes int parameter
+					return "Newrun";
 				case 14:
-					Steven "End Run" - no parameter
+					return "Endrun";
 				case 15:
-					Steven "Print" - takes int parameter
+					System.out.println("Which run do you want to print out?");
+					int runNum=input.nextInt();
+					return "Print "+runNum;
 				case 16:
-					Steven "Export" - no parameter
+					System.out.println("Which run do you want to print out?");
+					int runNumExport=input.nextInt();
+					return "Export "+runNumExport;
 				default:
 					System.out.println("Invalid Input");
 					break;

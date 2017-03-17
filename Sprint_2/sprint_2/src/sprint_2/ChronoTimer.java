@@ -1,5 +1,6 @@
 package sprint_2;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -18,7 +19,7 @@ public class ChronoTimer {
 //	Queue<String> Export_list = new LinkedList<String>();
 	
 	ArrayList<Run> runList = new ArrayList<Run>();
-	private static int runNum = 0;
+	private static int runNum = 1;
 
 	private boolean power = false;
 	Time t = new Time(); //time instance to do functions
@@ -34,7 +35,7 @@ public class ChronoTimer {
 	private int minutes = 0;
 	private double seconds = 0.0;
 
-	public static void main(String args[]){//needs to be verified
+	public static void main(String args[]) throws IOException{//needs to be verified
 		//make sure to print results to console, use Time.computeTime
 		Simulator sim = new Simulator();
 		ChronoTimer t = new ChronoTimer();
@@ -55,7 +56,7 @@ public class ChronoTimer {
 		return enabled[i][j];
 	}
 
-	public void sendCommand(String command){//needs to be finished
+	public void sendCommand(String command) throws IOException{//needs to be finished
 		if(command.contains("Power") || command.contains("POWER")){
 			power();
 			boolean b = isPowerOn();
@@ -77,10 +78,12 @@ public class ChronoTimer {
 			System.out.println("Time " + _hours + ":" + _minutes + ":" + _seconds);
 		}
 		else if(command.contains("Event") || command.contains("EVENT")){
-			Steven
+			String []event =command.split(" ");
+			this.setEventType(event[1]);
+			
 		}
-		else if(command.contains("NewRun") || command.contains("NEWRUN")){
-			Steven
+		else if(command.contains("NewRun") || command.contains("Newrun")){
+			newRun();
 		}
 		else if(command.contains("Num") || command.contains("NUM")){
 			String[] num = command.split(" ");
@@ -111,7 +114,9 @@ public class ChronoTimer {
 
 		}
 		else if(command.contains("Print") || command.contains("PRINT")){
-			Steven
+			String[]runNumArray=command.split(" ");
+			int runnerNum=Integer.parseInt(runNumArray[1]);
+			print(runnerNum);
 		}
 		else if(command.contains("Start") || command.contains("START")){
 			start();
@@ -121,11 +126,13 @@ public class ChronoTimer {
 			finish();
 			System.out.println("Finish");
 		}
-		else if(command.contains("End") || command.contains("ENDRUN")){
-			Steven
+		else if(command.contains("End") || command.contains("Endrun")){
+			endRun();
 		}
 		else if(command.contains("Export") || command.contains("EXPORT")){
-			Steven
+			String[]runNum=command.split(" ");
+			int runnerNumEx=Integer.parseInt(runNum[1]);
+			this.export(runnerNumEx);
 		}
 		else if(command.contains("Exit") || command.contains("EXIT")){
 			System.out.println("Exit");
@@ -151,7 +158,7 @@ public class ChronoTimer {
 
 	public void exit(){
 		//"quits program" //exit simulator
-		if(!isPowerOn()) throw new IllegalStateException();
+		if(isPowerOn()) throw new IllegalStateException();
 		System.exit(0);
 	}
 
@@ -199,7 +206,7 @@ public class ChronoTimer {
 		}
 	}
 	
-	public void newRun(int runNum){
+	public void newRun(){
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(eventType == 0) throw new IllegalStateException();
 		if(runStarted == true) throw new IllegalStateException();
@@ -454,7 +461,7 @@ public class ChronoTimer {
 		//adds racer to queue
 		if(!isPowerOn()) throw new IllegalStateException();
 		if(eventType == 0) throw new IllegalStateException();
-		if(runStarted == false) throw new IllegalStateException();
+
 
 		Racer r = new Racer(racerNum, 0.0, 0.0, "0", 0);
 		if(eventType == 1){ //IND, just add
@@ -530,5 +537,10 @@ public class ChronoTimer {
 //				Export_list.add(e);
 //			}
 //		}
+	}
+	public void export(int runNum)throws IOException
+	{
+		Run r = runList.get(runNum-1);
+		r.export();
 	}
 }//end ChronoTimer
