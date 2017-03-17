@@ -63,11 +63,6 @@ public class ChronoTimer {
 			else System.out.println("Power Off");
 
 		}
-		else if(command.contains("Exit") || command.contains("EXIT")){
-			System.out.println("Exit");
-			exit();
-
-		}
 		else if(command.contains("Reset") || command.contains("RESET")){
 			reset();
 			System.out.println("Reset");
@@ -80,6 +75,18 @@ public class ChronoTimer {
 			double _seconds = Double.parseDouble(splitTime[2]);
 			setTime(_hours, _minutes,_seconds);
 			System.out.println("Time " + _hours + ":" + _minutes + ":" + _seconds);
+		}
+		else if(command.contains("Event") || command.contains("EVENT")){
+			Steven
+		}
+		else if(command.contains("NewRun") || command.contains("NEWRUN")){
+			Steven
+		}
+		else if(command.contains("Num") || command.contains("NUM")){
+			String[] num = command.split(" ");
+			int i = Integer.parseInt(num[1]);//this is not good for user input
+			addRacer(i);
+			System.out.println("Num " + i + " Added");
 		}
 		else if(command.contains("DNF")){
 			dnfRacer();
@@ -103,6 +110,9 @@ public class ChronoTimer {
 			else System.out.println("Triggering Channel " + channel + " was not successful.");
 
 		}
+		else if(command.contains("Print") || command.contains("PRINT")){
+			Steven
+		}
 		else if(command.contains("Start") || command.contains("START")){
 			start();
 			System.out.println("Start");
@@ -111,11 +121,15 @@ public class ChronoTimer {
 			finish();
 			System.out.println("Finish");
 		}
-		else if(command.contains("Num") || command.contains("NUM")){
-			String[] num = command.split(" ");
-			int i = Integer.parseInt(num[1]);//this is not good for user input
-			addRacer(i);
-			System.out.println("Num " + i + " Added");
+		else if(command.contains("End") || command.contains("ENDRUN")){
+			Steven
+		}
+		else if(command.contains("Export") || command.contains("EXPORT")){
+			Steven
+		}
+		else if(command.contains("Exit") || command.contains("EXIT")){
+			System.out.println("Exit");
+			exit();
 		}
 
 	}
@@ -517,4 +531,4 @@ public class ChronoTimer {
 //			}
 //		}
 	}
-}//end ChoronoTimer
+}//end ChronoTimer

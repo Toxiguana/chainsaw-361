@@ -42,6 +42,13 @@ public class Simulator {
 				System.out.println("9. Start");
 				System.out.println("10. Finish");
 				System.out.println("11. Num");
+				System.out.println("12. Event Type");
+				System.out.println("13. New Run");
+				System.out.println("14. End Run");
+				System.out.println("15. Print");
+				System.out.println("16. Export");
+
+
 
 				int menuChoice = input.nextInt();
 
@@ -89,6 +96,16 @@ public class Simulator {
 					return "Finish";
 				case 11:
 					return "Num";
+				case 12:
+					Steven "Event Type" - takes String parameter
+				case 13:
+					Steven "New Run" - takes int parameter
+				case 14:
+					Steven "End Run" - no parameter
+				case 15:
+					Steven "Print" - takes int parameter
+				case 16:
+					Steven "Export" - no parameter
 				default:
 					System.out.println("Invalid Input");
 					break;
