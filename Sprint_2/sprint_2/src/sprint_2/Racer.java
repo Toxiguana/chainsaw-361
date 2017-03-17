@@ -34,4 +34,7 @@ public class Racer {
 	public int getNum(){
 		return numRacer;
 	}
+	public double getStart(){
+		return startTime;
+	}
 }
