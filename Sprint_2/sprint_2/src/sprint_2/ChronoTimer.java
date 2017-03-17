@@ -14,17 +14,21 @@ public class ChronoTimer {
 	Queue<Racer> racerFinish = new LinkedList<Racer>(); //done
 	
 	//Queues for Storing/Printing/Exporting
-	Queue<String> Event_list = new LinkedList<String>();
-	Queue<String> Export_list = new LinkedList<String>();
+	ArrayList<String> systemLog = new ArrayList<String>();
+//	Queue<String> Export_list = new LinkedList<String>();
+	
+	ArrayList<Run> runList = new ArrayList<Run>();
+	private static int runNum = 0;
 
 	private boolean power = false;
 	Time t = new Time(); //time instance to do functions
 
 	private boolean[][] enabled = new boolean[2][4]; //array holding enable for each channel
+	private boolean runStarted = false;
+	
 
-	public int runType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run
+	public int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run
 	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
-//	private int queueRunNum = 1; //keeps track of which running queue to add racer pulled from wait queue to
 
 	private int hours = 0;
 	private int minutes = 0;
@@ -124,18 +128,15 @@ public class ChronoTimer {
 		//else if(off) -> turn on
 		if(power){
 			power = false;
-			Event_list.add(t.getSystemTime() + " Power is now off.");
 		}
 		else{
 			power = true;
-			Event_list.add(t.getSystemTime() + " Power is now on.");
 		}
 	}
 
 	public void exit(){
 		//"quits program" //exit simulator
 		if(!isPowerOn()) throw new IllegalStateException();
-		Event_list.add(t.getSystemTime() + " Exiting ChronoTimer.");
 		System.exit(0);
 	}
 
@@ -149,17 +150,17 @@ public class ChronoTimer {
 		racerRun2 = new LinkedList<Racer>();
 		racerFinish = new LinkedList<Racer>();
 
+		systemLog = new ArrayList<String>();
+		
 		enabled = new boolean[2][4];
+		runStarted = false;
 
 		hours = 0;
 		minutes = 0;
 		seconds = 0.0;
 
-		runType = 0;
+		eventType = 0;
 		queueNum = 1;
-//		queueRunNum = 1;
-		
-		Event_list.add(t.getSystemTime() + " Reset ChronoTimer.");
 	}
 
 	public void setTime(int hrs, int min, double sec){
@@ -169,39 +170,76 @@ public class ChronoTimer {
 		hours = hrs;
 		minutes = min;
 		seconds = sec;
-		Event_list.add(t.getSystemTime() + " Set Time to: " + hrs + ":" + min + ":" + sec);		
+		systemLog.add(t.getSystemTime() + " Set Time to: " + hrs + ":" + min + ":" + sec);		
 	}
 
+	public void setEventType(String s){
+		if(!isPowerOn()) throw new IllegalStateException();
+
+		if(s.equalsIgnoreCase("IND")){
+			eventType = 1;
+		}
+		else if(s.equalsIgnoreCase("PARIND")){
+			eventType = 2;
+		}
+	}
+	
+	public void newRun(int runNum){
+		if(!isPowerOn()) throw new IllegalStateException();
+		if(eventType == 0) throw new IllegalStateException();
+		if(runStarted == true) throw new IllegalStateException();
+
+		if(runStarted != true){
+			runStarted = true;
+			systemLog.add(t.getSystemTime() + " New Run Started.");
+		}
+	}
+
+	public void endRun(){
+		if(!isPowerOn()) throw new IllegalStateException();
+		if(eventType == 0) throw new IllegalStateException();
+		if(runStarted == false) throw new IllegalStateException();
+		
+		systemLog.add(t.getSystemTime() + " Run Ended.");
+		eventType = 3;
+		dnfRacer();
+		Run r = new Run(runNum, systemLog);
+		runList.add(r);
+		runNum++;
+		reset();
+		
+	}
+	
 	public void dnfRacer(){
 		//sets end time of next racer to finish to DNF (-1), not return to queue		
 		if(!isPowerOn()) throw new IllegalStateException();
-		if(runType == 0) throw new IllegalStateException();
-
-		if(runType == 1){ //IND 
+		if(eventType == 0) throw new IllegalStateException();
+		if(runStarted == false) throw new IllegalStateException();
+		
+		if(eventType == 1){ //IND 
 			Racer r = racerRun1.remove();
 			r.setEnd(-1);
 			r.setState(2);
-			Event_list.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
+			systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
 			racerFinish.add(r);
 		}
-		else if(runType == 2){ //PARIND
-			Event_list.add(t.getSystemTime() + " dnfRacer cannot be called on PARIND runs.");
+		else if(eventType == 2){ //PARIND
+			systemLog.add(t.getSystemTime() + " dnfRacer cannot be called on PARIND runs.");
 			throw new IllegalArgumentException();
 		}
-		FIXX
-		else if(runType == 3){ //used when ending run, empties both run queues
+		else if(eventType == 3){ //used when ending run, empties both run queues
 			while(!racerRun1.isEmpty()){
 				Racer r = racerRun1.remove();
 				r.setEnd(-1);
 				r.setState(2);
-				Event_list.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
+				systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
 				racerFinish.add(r);
 			}
 			while(!racerRun2.isEmpty()){
 				Racer r = racerRun2.remove();
 				r.setEnd(-1);
 				r.setState(2);
-				Event_list.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
+				systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
 				racerFinish.add(r);
 			}
 		}		
@@ -210,14 +248,15 @@ public class ChronoTimer {
 	public void cancelRacer(){
 		//discard current race for first racer and put back in queue as next to start
 		if(!isPowerOn()) throw new IllegalStateException();
-		if(runType == 0) throw new IllegalStateException();
+		if(eventType == 0) throw new IllegalStateException();
+		if(runStarted == false) throw new IllegalStateException();
 
-		if(runType == 1){ //IND
+		if(eventType == 1){ //IND
 			Queue<Racer> newQueue = new LinkedList<Racer>();
 			Racer r = racerRun1.remove();
 			r.setStart(0.0);
 			r.setState(0);
-			Event_list.add(t.getSystemTime() + " Racer " + r.getNum() + " has been canceled");
+			systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " has been canceled");
 			newQueue.add(r);
 			while(!racerQueue1.isEmpty()){
 				Racer r1 = racerQueue1.remove();
@@ -225,8 +264,8 @@ public class ChronoTimer {
 			}
 			racerQueue1 = newQueue;
 		}
-		else if(runType == 2){//PARIND
-			Event_list.add(t.getSystemTime() + " cancelRacer cannot be called on PARIND runs.");
+		else if(eventType == 2){//PARIND
+			systemLog.add(t.getSystemTime() + " cancelRacer cannot be called on PARIND runs.");
 			throw new IllegalArgumentException();
 		}
 	}
@@ -234,19 +273,20 @@ public class ChronoTimer {
 	public void togChannel(int channelNum){
 		//enable or disable the channel		
 		if(!isPowerOn()) throw new IllegalStateException();
-		if(runType == 0) throw new IllegalStateException();
+		if(eventType == 0) throw new IllegalStateException();
+		if(runStarted == false) throw new IllegalStateException();
 
-		if(runType == 1 || runType == 2){ //same thing for IND & PARIND
+		if(eventType == 1 || eventType == 2){ //same thing for IND & PARIND
 			if(channelNum % 2 != 0){ //odd
 				boolean enable = enabled[0][channelNum/2];
 				
 				if(enable == false){ //odd & disabled
 					enabled[0][channelNum/2] = true;
-					Event_list.add(t.getSystemTime() + " Start Channel Num " + channelNum + " has been enabled");
+					systemLog.add(t.getSystemTime() + " Start Channel Num " + channelNum + " has been enabled");
 				}
 				else if(enable == true){ //odd & enabled
 					enabled[0][channelNum/2] = false;
-					Event_list.add(t.getSystemTime() + " Start Channel Num " + channelNum + " has been disabled");
+					systemLog.add(t.getSystemTime() + " Start Channel Num " + channelNum + " has been disabled");
 				}
 			}
 			else if(channelNum % 2 == 0){ //even
@@ -254,12 +294,12 @@ public class ChronoTimer {
 				
 				if(enable1 == false){ //even & disabled
 					enabled[1][(channelNum/2)-1] = true;
-					Event_list.add(t.getSystemTime() + " End Channel Num " + channelNum + " has been enabled");
+					systemLog.add(t.getSystemTime() + " End Channel Num " + channelNum + " has been enabled");
 				}
 				
 				else if(enable1 == true){ //even & enabled
 					enabled[1][(channelNum/2)-1] = false;
-					Event_list.add(t.getSystemTime() + " End Channel Num " + channelNum + " has been disabled");
+					systemLog.add(t.getSystemTime() + " End Channel Num " + channelNum + " has been disabled");
 				}
 			}//end else if
 		}//end outside if
@@ -270,18 +310,19 @@ public class ChronoTimer {
 		//if odd number, is a start time
 		//if even number, is an end time
 		if(!isPowerOn()) throw new IllegalStateException();
-		if(runType == 0) throw new IllegalStateException();
+		if(eventType == 0) throw new IllegalStateException();
+		if(runStarted == false) throw new IllegalStateException();
 
 		//IND
-		if(runType == 1){ 
+		if(eventType == 1){ 
 			if(channelNum != 1 && channelNum != 2){
-				Event_list.add(t.getSystemTime() + "IND Races only use channels 1 & 2.");
+				systemLog.add(t.getSystemTime() + " IND Races only use channels 1 & 2.");
 				throw new IllegalArgumentException();
 			}
 			if(channelNum == 1){ //start
 				if(racerQueue1.isEmpty()){
 					System.out.println("No Racers in the Queue"); 
-					Event_list.add(t.getSystemTime() + "No Racers in the Queue to start race.");
+					systemLog.add(t.getSystemTime() + " No Racers in the Queue to start race.");
 					return false;
 				}
 				if(enabled[0][0]){
@@ -290,7 +331,7 @@ public class ChronoTimer {
 					r.setStart(start);
 					r.setState(1);
 					racerRun1.add(r);
-					Event_list.add(t.getSystemTime() + " Racer Num " + r.getNum() + " started racing.");
+					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " started racing.");
 					return true;
 				}
 			}
@@ -302,26 +343,26 @@ public class ChronoTimer {
 					r1.setElapsed(r1.getStart(), end);
 					r1.setState(2);
 					racerFinish.add(r1);
-					Event_list.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
+					systemLog.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
 					return true;
 				}
 			}
-		}
+		}//end IND
 		
 		//PARIND
-		else if(runType == 2){ 
+		else if(eventType == 2){ 
 			if(channelNum != 1 && channelNum != 2 && channelNum != 3 && channelNum != 4){
-				Event_list.add(t.getSystemTime() + "PARIND Races only use channels 1, 2, 3 and 4.");
+				systemLog.add(t.getSystemTime() + " PARIND Races only use channels 1, 2, 3 and 4.");
 				throw new IllegalArgumentException();
 			}
 			if(channelNum % 2 != 0){ //odd, start
 				if(racerQueue1.isEmpty() && racerQueue2.isEmpty()){
 					System.out.println("No Racers in either Queue"); 
-					Event_list.add(t.getSystemTime() + "No Racers in either Queue to start race.");
+					systemLog.add(t.getSystemTime() + " No Racers in either Queue to start race.");
 					return false;
 				}
 				if(enabled[0][channelNum/2]){//enabled
-					if(channelNum == 1){//switches pulling from between 2 diff queues
+					if(channelNum == 1){
 						if(racerQueue1.isEmpty()){
 							return false;
 						}
@@ -330,7 +371,7 @@ public class ChronoTimer {
 						r.setStart(start);
 						r.setState(1);
 						racerRun1.add(r);
-						Event_list.add(t.getSystemTime() + " Racer Num " + r.getNum() + " started racing.");
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " started racing.");
 						return true;
 					}
 					else if(channelNum == 3){
@@ -342,80 +383,79 @@ public class ChronoTimer {
 						r.setStart(start);
 						r.setState(1);
 						racerRun2.add(r);
-						Event_list.add(t.getSystemTime() + " Racer Num " + r.getNum() + " started racing.");
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " started racing.");
 						return true;
 					}					
 				}//end enabled if
 			}//end odd channel
 			else if(channelNum % 2 == 0){ //even, end
 				if(enabled[1][(channelNum/2)-1]){ //enabled
-					
-					Racer r1 = racerRun1.remove();
-					double end = t.end();
-					r1.setEnd(end);
-					r1.setState(2);
-					racerFinish.add(r1);
-					Event_list.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
-					return true;
-				} //end enabled if
-			}
-
-		}
-		Event_list.add(t.getSystemTime() + "Channel called is not Enabled.");
+					if(channelNum == 2){
+						Racer r1 = racerRun1.remove();
+						double end = t.end();
+						r1.setEnd(end);
+						r1.setState(2);
+						r1.setElapsed(r1.getStart(), end);
+						racerFinish.add(r1);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
+						return true;
+					}
+					else if(channelNum == 4){
+						Racer r1 = racerRun2.remove();
+						double end = t.end();
+						r1.setEnd(end);
+						r1.setState(2);
+						r1.setElapsed(r1.getStart(), end);
+						racerFinish.add(r1);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
+						return true;
+					}
+				}//end enabled if
+			}//end even channel
+		}//end PARIND
+		systemLog.add(t.getSystemTime() + " Channel called is not Enabled.");
 		return false;
 	}
 
-	
-//	public boolean trigPARINDChannel(int numRacers){ //PARIND
-//		boolean b = false;
-//		for(int i = 1; i <= numRacers; i++){
-//			b = trigChannel(i);
-//		}
-//		return b;
-//	}
-
-	public void start(){
+	public boolean start(){
 		//triggers channel 1
 		if(!isPowerOn()) throw new IllegalStateException();
-		if(runType == 0) throw new IllegalStateException();
+		if(eventType == 0) throw new IllegalStateException();
+		if(runStarted == false) throw new IllegalStateException();
 
-		trigChannel(1);
+		return trigChannel(1);
 	}
 
-	public void finish(){
+	public boolean finish(){
 		//triggers channel 2
 		if(!isPowerOn()) throw new IllegalStateException();
-		if(runType == 0) throw new IllegalStateException();
+		if(eventType == 0) throw new IllegalStateException();
+		if(runStarted == false) throw new IllegalStateException();
 
-		trigChannel(2);
+		return trigChannel(2);
 	}
 
 	public void addRacer(int racerNum){ //num
 		//adds racer to queue
 		if(!isPowerOn()) throw new IllegalStateException();
-		if(runType == 0) throw new IllegalStateException();
+		if(eventType == 0) throw new IllegalStateException();
+		if(runStarted == false) throw new IllegalStateException();
 
 		Racer r = new Racer(racerNum, 0.0, 0.0, "0", 0);
-		if(runType == 1){ //IND, just add
+		if(eventType == 1){ //IND, just add
 			racerQueue1.add(r);
-			//STORE
-			Event_list.add(t + "Racer has been added to IND event");
+			systemLog.add(t.getSystemTime() + " Racer Num " + racerNum + " has been added to IND event.");
 		}
-		else if(runType == 2){ //PARIND add to one queue, then the other, etc.
+		else if(eventType == 2){ //PARIND add to one queue, then the other, etc.
 			if(queueNum == 1){
 				racerQueue1.add(r);
 				queueNum = 2;
-				//STORE
-				Event_list.add(t + "Racers have been added to PARIND event");
-				
+				systemLog.add(t.getSystemTime() + " Racer Num" + racerNum + " has been added to PARIND event.");
 			}
 			else if(queueNum == 2){
 				racerQueue2.add(r);
 				queueNum = 1;
-				
-				//STORE
-
-				Event_list.add(t + "Racers have been added");
+				systemLog.add(t.getSystemTime() + " Racer Num" + racerNum + " has been added to PARIND event.");
 			}
 		}		
 	}
@@ -424,80 +464,54 @@ public class ChronoTimer {
 	
 	public void store(String racer_name, String occurance, String time)
 	{
-		if(Export_list.isEmpty())
-		{
-			while(!Event_list.isEmpty())
-			{
-				String e = Event_list.poll();
-				System.out.print(e);
-				System.out.println();
-				Export_list.add(e);
-			}
-			
-		}
-		else
-		{
-			while(!Export_list.isEmpty())
-			{
-				String e = Export_list.poll();
-				System.out.print(e);
-				System.out.println();
-				Event_list.add(e);
-			}
-		}
+//		if(Export_list.isEmpty())
+//		{
+//			while(!systemLog.isEmpty())
+//			{
+//				String e = systemLog.poll();
+//				System.out.print(e);
+//				System.out.println();
+//				Export_list.add(e);
+//			}
+//			
+//		}
+//		else
+//		{
+//			while(!Export_list.isEmpty())
+//			{
+//				String e = Export_list.poll();
+//				System.out.print(e);
+//				System.out.println();
+//				systemLog.add(e);
+//			}
+//		}
 			
 	}
 	///Please Check this method and the stuff that comes in, pretty sure it works but you need to check it 
 	/// this was the simplest way to do it I think
-	public void print(String racer_name, String occurance, String time)
+	public void print(int runNum)
 	{
-		
-		if(Event_list.isEmpty())
-		{
-			while(!Export_list.isEmpty())
-			{
-				String e = Export_list.poll();
-				System.out.print(e);
-				System.out.println();
-				Event_list.add(e);
-			}
-		}
-		else
-		{
-			while(!Event_list.isEmpty())
-			{
-				String e = Event_list.poll();
-				System.out.print(e);
-				System.out.println();
-				Export_list.add(e);
-			}
-		}
-	}
-
-	public void newRun(){
-		double start1;
-		double start2;
-		if(!racerQueue1.isEmpty()){
-			racerRun1.add(racerQueue1.remove());
-			start1 = t.start();
-		}
-		if(!racerQueue2.isEmpty()){
-			racerRun2.add(racerQueue2.remove());
-			racerRun2.add(racerQueue2.remove());
-			start1 = t.start();
-			start2 = t.start();
-		}
-	}
-
-	public void endRun(){
-		if(!racerRun1.isEmpty()){
-			racerRun1.remove();	
-
-		}
-		if(!racerRun2.isEmpty()){
-			racerRun2.remove();
-			
-		}
-
+		Run r = runList.get(runNum-1);
+		r.print();
+//		if(systemLog.isEmpty())
+//		{
+//			while(!Export_list.isEmpty())
+//			{
+//				String e = Export_list.poll();
+//				System.out.print(e);
+//				System.out.println();
+//				systemLog.add(e);
+//			}
+//		}
+//		else
+//		{
+//			while(!systemLog.isEmpty())
+//			{
+//				String e = systemLog.poll();
+//				System.out.print(e);
+//				System.out.println();
+//				Export_list.add(e);
+//			}
+//		}
 	}
 }
