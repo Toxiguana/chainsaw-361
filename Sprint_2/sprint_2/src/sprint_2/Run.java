@@ -33,7 +33,7 @@ public class Run {
 		
 		try(FileWriter file = new FileWriter("RUN"+runNum+".txt")){
 			file.write(g.toString());
-			System.out.println("exported Run " + runNum + " to RUN"+runNum+".txt");
+			System.out.println("Exported Run " + runNum + " to RUN"+runNum+".txt");
 		}
 	}
 }
