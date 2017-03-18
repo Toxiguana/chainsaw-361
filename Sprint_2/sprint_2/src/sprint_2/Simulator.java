@@ -32,101 +32,99 @@ public class Simulator {
 			while(true){
 				System.out.println("Enter a Command.");
 				System.out.println("1. Power");
-				System.out.println("2. Exit");
-				System.out.println("3. Reset");
-				System.out.println("4. Time");
-				System.out.println("5. DNF");
-				System.out.println("6. Cancel");
+				System.out.println("2. Reset");
+				System.out.println("3. Time");
+				System.out.println("4. Event Type");
+				System.out.println("5. New Run");
+				System.out.println("6. Add Runner (NUM)");
 				System.out.println("7. Toggle");
 				System.out.println("8. Trigger");
 				System.out.println("9. Start");
 				System.out.println("10. Finish");
-				System.out.println("11. Num");
-				System.out.println("12. Event Type");
-				System.out.println("13. New Run");
-				System.out.println("14. End Run");
-				System.out.println("15. Print");
-				System.out.println("16. Export");
-
-
+				System.out.println("11. DNF");
+				System.out.println("12. Cancel");
+				System.out.println("13. End Run");
+				System.out.println("14. Print");
+				System.out.println("15. Export");
+				System.out.println("16. Exit");
 
 				int menuChoice = input.nextInt();
 
 				switch(menuChoice){
 				case 1:
-					return "Power";
+					return "POWER";
 				case 2:
-					return "Exit";
+					return "RESET";
 				case 3:
-					return "Reset";
-				case 4: 
-					System.out.println("What is the time? (minutes:seconds)");
+					System.out.println("What is the time? (hours:minutes:seconds)");
 					String time = input.nextLine();
 					time = input.nextLine();
-					return "Time " + time;
-				case 5:
-					return "DNF";
-				case 6:
-					return "Cancel";
-				case 8:
+					return "TIME " + time;
+				case 4: 
 					while(true){
-						System.out.print("What channel do you want to trigger/enable?");
-						int triggerInput = input.nextInt();
-						if(triggerInput >= 1 && triggerInput <= 8){
-							return "Trigger " + triggerInput;
-						}
-						else{
-							System.out.println("Invalid Input");
+						System.out.println("Please Choose the Event Type:");
+						System.out.println("1. Individual Run");
+						System.out.println("2. Parallel Individual Run");
+						int runChoice = input.nextInt();
+						switch (runChoice){
+						case 1:
+							return "EVENT IND";
+						case 2:
+							return "EVENT PARIND";
+						default:
+							System.out.println("Invalid Input.");
 						}
 					}
+				case 5:
+					return "NEWRUN";
+				case 6:
+					System.out.println("What is the number of the runner you want to add?");
+					int runnerNum = input.nextInt();
+					return "NUM " + runnerNum;
 				case 7:
 					while(true){
 						System.out.print("What channel do you want to toggle?");
 						int toggleInput = input.nextInt();
 						if(toggleInput >= 1 && toggleInput <= 8){
-							return "Toggle " + toggleInput;
+							return "TOG " + toggleInput;
 						}
 						else{
-							System.out.println("Invalid Input");
+							System.out.println("Invalid Input.");
+						}
+					}
+				case 8:
+					while(true){
+						System.out.print("What channel do you want to trigger?");
+						int triggerInput = input.nextInt();
+						if(triggerInput >= 1 && triggerInput <= 8){
+							return "TRIG " + triggerInput;
+						}
+						else{
+							System.out.println("Invalid Input.");
 						}
 					}
 				case 9:
-					return "Start";
+					return "START";
 				case 10:
-					return "Finish";
+					return "FINISH";
 				case 11:
-					System.out.println("What is the number of the runner?");
-					int runnerNum=input.nextInt();
-					return "NUM "+runnerNum;
+					return "DNF";
 				case 12:
-					while(true){
-						System.out.println("Please Choose the event type");
-						System.out.println("1. Individual Run");
-						System.out.println("2. Parellel Run");
-						int runChoice=input.nextInt();
-						switch (runChoice){
-						case 1:
-							return "Event IND";
-						case 2:
-							return "Event PARIND";
-						default:
-							System.out.println("Invalid Input");
-						}
-					}
+					return "CANCEL";
 				case 13:
-					return "Newrun";
+					return "ENDRUN";
 				case 14:
-					return "Endrun";
+					System.out.println("Which run do you want to print out?");
+					int runNum = input.nextInt();
+					return "PRINT " + runNum;
 				case 15:
-					System.out.println("Which run do you want to print out?");
-					int runNum=input.nextInt();
-					return "Print "+runNum;
+					System.out.println("Which run do you want to export?");
+					int runNumExport = input.nextInt();
+					return "EXPORT " + runNumExport;
 				case 16:
-					System.out.println("Which run do you want to print out?");
-					int runNumExport=input.nextInt();
-					return "Export "+runNumExport;
+					return "EXIT";
 				default:
-					System.out.println("Invalid Input");
+					System.out.println("Invalid Input.");
 					break;
 				}
 			}	

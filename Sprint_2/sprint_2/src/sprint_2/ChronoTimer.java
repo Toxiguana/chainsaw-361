@@ -14,29 +14,25 @@ public class ChronoTimer {
 	Queue<Racer> racerRun2 = new LinkedList<Racer>(); //running2
 	Queue<Racer> racerFinish = new LinkedList<Racer>(); //done
 	
-	//Queues for Storing/Printing/Exporting
-	ArrayList<String> systemLog = new ArrayList<String>();
-//	Queue<String> Export_list = new LinkedList<String>();
+	ArrayList<String> systemLog = new ArrayList<String>(); //stores one run at a time
 	
-	ArrayList<Run> runList = new ArrayList<Run>();
-	private static int runNum = 1;
+	ArrayList<Run> runList = new ArrayList<Run>(); //list of previous runs
+	private static int runNum = 1; //number of the current run
 
 	private boolean power = false;
 	Time t = new Time(); //time instance to do functions
 
 	private boolean[][] enabled = new boolean[2][4]; //array holding enable for each channel
-	private boolean runStarted = false;
+	private boolean runStarted = false; //a run must be created before almost everything else
 	
-
-	public int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run
+	private int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run
 	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
 
 	private int hours = 0;
 	private int minutes = 0;
 	private double seconds = 0.0;
 
-	public static void main(String args[]) throws IOException{//needs to be verified
-		//make sure to print results to console, use Time.computeTime
+	public static void main(String args[]) throws IOException{ //runs the ChronoTimer
 		Simulator sim = new Simulator();
 		ChronoTimer t = new ChronoTimer();
 
@@ -47,7 +43,6 @@ public class ChronoTimer {
 			if(command == ""){
 				break;
 			}
-
 			t.sendCommand(command);
 		}while(true);
 	}
@@ -56,89 +51,107 @@ public class ChronoTimer {
 		return enabled[i][j];
 	}
 
-	public void sendCommand(String command) throws IOException{//needs to be finished
-		if(command.contains("Power") || command.contains("POWER")){
+	public void sendCommand(String command) throws IOException{ //receives commands from Simulator
+	//1
+		if(command.contains("POWER")){
 			power();
 			boolean b = isPowerOn();
-			if(b == true) System.out.println("Power On");
-			else System.out.println("Power Off");
+			if(b == true) System.out.println("Power On.");
+			else System.out.println("Power Off.");
 
 		}
-		else if(command.contains("Reset") || command.contains("RESET")){
+	//2
+		else if(command.contains("RESET")){
 			reset();
-			System.out.println("Reset");
+			System.out.println("Reset.");
 		}
-		else if(command.contains("Time") || command.contains("TIME")){
+	//3
+		else if(command.contains("TIME")){
 			String[] time = command.split(" ");
 			String[] splitTime = time[1].split(":");
 			int _hours = Integer.parseInt(splitTime[0]);
 			int _minutes = Integer.parseInt(splitTime[1]);
 			double _seconds = Double.parseDouble(splitTime[2]);
 			setTime(_hours, _minutes,_seconds);
-			System.out.println("Time " + _hours + ":" + _minutes + ":" + _seconds);
+			System.out.println("Time has been set to " + _hours + ":" + _minutes + ":" + _seconds + ".");
 		}
-		else if(command.contains("Event") || command.contains("EVENT")){
-			String []event =command.split(" ");
+	//4
+		else if(command.contains("EVENT")){
+			String[] event = command.split(" ");
 			this.setEventType(event[1]);
-			
+			System.out.println("Event Type has been set to " + event[1]);
 		}
-		else if(command.contains("NewRun") || command.contains("Newrun")){
+	//5
+		else if(command.contains("NEWRUN")){
 			newRun();
+			System.out.println("New Run has been started.");
 		}
-		else if(command.contains("Num") || command.contains("NUM")){
+	//6
+		else if(command.contains("NUM")){
 			String[] num = command.split(" ");
-			int i = Integer.parseInt(num[1]);//this is not good for user input
+			int i = Integer.parseInt(num[1]);
 			addRacer(i);
-			System.out.println("Num " + i + " Added");
+			System.out.println("Runner Number " + i + " Added.");
 		}
+	//7
+		else if(command.contains("TOG")){
+			command = command.substring(command.length()-1, command.length());
+			int channel = Integer.parseInt(command);
+			togChannel(channel);
+			System.out.println("Channel Number " + channel + " has been toggled.");
+		}
+	//8	
+		else if(command.contains("TRIG")){
+			command = command.substring(command.length()-1, command.length());
+			int channel = Integer.parseInt(command);
+			boolean b = trigChannel(channel);
+			if(b == true) System.out.println("Triggering Channel " + channel + " was successful!");
+			else System.out.println("Triggering Channel " + channel + " was not successful.");
+		}
+	//9
+		else if(command.contains("START")){
+			start();
+			System.out.println("Started on Channel 1.");
+		}
+	//10
+		else if(command.contains("FINISH")){
+			finish();
+			System.out.println("Finished on Channel 2.");
+		}
+	//11
 		else if(command.contains("DNF")){
 			dnfRacer();
-			System.out.println("DNF");
+			System.out.println("Racer did not finish.");
 		}
-		else if(command.contains("Cancel") || command.contains("CANCEL")){
+	//12
+		else if(command.contains("CANCEL")){
 			cancelRacer();
-			System.out.println("Cancel");
+			System.out.println("Racer has been cancelled.");
 		}
-		else if(command.contains("Toggle") || command.contains("TOG")){
-			command=command.substring(command.length()-1,command.length());
-			int channel=Integer.parseInt(command);
-			togChannel(channel);
-			System.out.println("Toggle Channel " + channel);
-		}
-		else if(command.contains("Trigger") || command.contains("TRIG")){
-			command=command.substring(command.length()-1,command.length());
-			int channel=Integer.parseInt(command);
-			boolean b = trigChannel(channel);
-			if(b == true) System.out.println("Trigger Channel " + channel + " was successful!");
-			else System.out.println("Triggering Channel " + channel + " was not successful.");
-
-		}
-		else if(command.contains("Print") || command.contains("PRINT")){
-			String[]runNumArray=command.split(" ");
-			int runnerNum=Integer.parseInt(runNumArray[1]);
-			print(runnerNum);
-		}
-		else if(command.contains("Start") || command.contains("START")){
-			start();
-			System.out.println("Start");
-		}
-		else if(command.contains("Finish") || command.contains("FINISH")){
-			finish();
-			System.out.println("Finish");
-		}
-		else if(command.contains("End") || command.contains("Endrun")){
+	//13
+		else if(command.contains("ENDRUN")){
 			endRun();
+			System.out.println("Run has been ended.");
 		}
-		else if(command.contains("Export") || command.contains("EXPORT")){
-			String[]runNum=command.split(" ");
-			int runnerNumEx=Integer.parseInt(runNum[1]);
-			this.export(runnerNumEx);
+	//14
+		else if(command.contains("PRINT")){
+			String[] runNumArray = command.split(" ");
+			int runNum = Integer.parseInt(runNumArray[1]);
+			System.out.println("Printing " + runNum + ".");
+			print(runNum);
 		}
-		else if(command.contains("Exit") || command.contains("EXIT")){
-			System.out.println("Exit");
+	//15
+		else if(command.contains("EXPORT")){
+			String[] runNum = command.split(" ");
+			int runnerNumEx = Integer.parseInt(runNum[1]);
+			System.out.println("Exporting " + runNum + ".");
+			export(runnerNumEx);
+		}
+	//16
+		else if(command.contains("EXIT")){
+			System.out.println("Exiting Program.");
 			exit();
 		}
-
 	}
 
 	public boolean isPowerOn(){
@@ -158,14 +171,20 @@ public class ChronoTimer {
 
 	public void exit(){
 		//"quits program" //exit simulator
-		if(isPowerOn()) throw new IllegalStateException();
+		if(isPowerOn()) {
+			System.out.println("Power must be 'Off'.");
+			return;
+		}
 		System.exit(0);
 	}
 
 	public void reset(){
 		//sets all variables to initial values
-		if(!isPowerOn()) throw new IllegalStateException();
-
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
+		
 		racerQueue1 = new LinkedList<Racer>();
 		racerQueue2 = new LinkedList<Racer>();
 		racerRun1 = new LinkedList<Racer>();
@@ -187,8 +206,11 @@ public class ChronoTimer {
 
 	public void setTime(int hrs, int min, double sec){
 		//allows user to set time
-		if(!isPowerOn()) throw new IllegalStateException();
-
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
+		
 		hours = hrs;
 		minutes = min;
 		seconds = sec;
@@ -196,7 +218,10 @@ public class ChronoTimer {
 	}
 
 	public void setEventType(String s){
-		if(!isPowerOn()) throw new IllegalStateException();
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
 
 		if(s.equalsIgnoreCase("IND")){
 			eventType = 1;
@@ -207,9 +232,18 @@ public class ChronoTimer {
 	}
 	
 	public void newRun(){
-		if(!isPowerOn()) throw new IllegalStateException();
-		if(eventType == 0) throw new IllegalStateException();
-		if(runStarted == true) throw new IllegalStateException();
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
+		if(eventType == 0){
+			System.out.println("Event Type must be set.");
+			return;
+		}
+		if(runStarted == true){
+			System.out.println("Only One Run can be going at a time.");
+			return;
+		}
 
 		if(runStarted != true){
 			runStarted = true;
@@ -218,9 +252,18 @@ public class ChronoTimer {
 	}
 
 	public void endRun(){
-		if(!isPowerOn()) throw new IllegalStateException();
-		if(eventType == 0) throw new IllegalStateException();
-		if(runStarted == false) throw new IllegalStateException();
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
+		if(eventType == 0){
+			System.out.println("Event Type must be set.");
+			return;
+		}
+		if(runStarted == false){
+			System.out.println("A Run has not been started.");
+			return;
+		}
 		
 		systemLog.add(t.getSystemTime() + " Run Ended.");
 		eventType = 3;
@@ -234,9 +277,18 @@ public class ChronoTimer {
 	
 	public void dnfRacer(){
 		//sets end time of next racer to finish to DNF (-1), not return to queue		
-		if(!isPowerOn()) throw new IllegalStateException();
-		if(eventType == 0) throw new IllegalStateException();
-		if(runStarted == false) throw new IllegalStateException();
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
+		if(eventType == 0){
+			System.out.println("Event Type must be set.");
+			return;
+		}
+		if(runStarted == false){
+			System.out.println("A Run has not been started.");
+			return;
+		}
 		
 		if(eventType == 1){ //IND 
 			Racer r = racerRun1.remove();
@@ -247,7 +299,7 @@ public class ChronoTimer {
 		}
 		else if(eventType == 2){ //PARIND
 			systemLog.add(t.getSystemTime() + " dnfRacer cannot be called on PARIND runs.");
-			throw new IllegalArgumentException();
+			System.out.println("dnfRacer cannot be called on PARIND runs.");
 		}
 		else if(eventType == 3){ //used when ending run, empties both run queues
 			while(!racerRun1.isEmpty()){
@@ -269,9 +321,18 @@ public class ChronoTimer {
 
 	public void cancelRacer(){
 		//discard current race for first racer and put back in queue as next to start
-		if(!isPowerOn()) throw new IllegalStateException();
-		if(eventType == 0) throw new IllegalStateException();
-		if(runStarted == false) throw new IllegalStateException();
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
+		if(eventType == 0){
+			System.out.println("Event Type must be set.");
+			return;
+		}
+		if(runStarted == false){
+			System.out.println("A Run has not been started.");
+			return;
+		}
 
 		if(eventType == 1){ //IND
 			Queue<Racer> newQueue = new LinkedList<Racer>();
@@ -288,15 +349,24 @@ public class ChronoTimer {
 		}
 		else if(eventType == 2){//PARIND
 			systemLog.add(t.getSystemTime() + " cancelRacer cannot be called on PARIND runs.");
-			throw new IllegalArgumentException();
+			System.out.println("cancelRacer cannot be called on PARIND runs.");
 		}
 	}
 
 	public void togChannel(int channelNum){
 		//enable or disable the channel		
-		if(!isPowerOn()) throw new IllegalStateException();
-		if(eventType == 0) throw new IllegalStateException();
-		if(runStarted == false) throw new IllegalStateException();
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
+		if(eventType == 0){
+			System.out.println("Event Type must be set.");
+			return;
+		}
+		if(runStarted == false){
+			System.out.println("A Run has not been started.");
+			return;
+		}
 
 		if(eventType == 1 || eventType == 2){ //same thing for IND & PARIND
 			if(channelNum % 2 != 0){ //odd
@@ -331,15 +401,24 @@ public class ChronoTimer {
 		//trigger the channel number & pulls racer from queue
 		//if odd number, is a start time
 		//if even number, is an end time
-		if(!isPowerOn()) throw new IllegalStateException();
-		if(eventType == 0) throw new IllegalStateException();
-		if(runStarted == false) throw new IllegalStateException();
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return false;
+		}
+		if(eventType == 0){
+			System.out.println("Event Type must be set.");
+			return false;
+		}
+		if(runStarted == false){
+			System.out.println("A Run has not been started.");
+			return false;
+		}
 
 		//IND
 		if(eventType == 1){ 
 			if(channelNum != 1 && channelNum != 2){
 				systemLog.add(t.getSystemTime() + " IND Races only use channels 1 & 2.");
-				throw new IllegalArgumentException();
+				System.out.println("IND Races only use channels 1 & 2.");
 			}
 			if(channelNum == 1){ //start
 				if(racerQueue1.isEmpty()){
@@ -375,7 +454,7 @@ public class ChronoTimer {
 		else if(eventType == 2){ 
 			if(channelNum != 1 && channelNum != 2 && channelNum != 3 && channelNum != 4){
 				systemLog.add(t.getSystemTime() + " PARIND Races only use channels 1, 2, 3 and 4.");
-				throw new IllegalArgumentException();
+				System.out.println("PARIND Races only use channels 1, 2, 3 and 4.");
 			}
 			if(channelNum % 2 != 0){ //odd, start
 				if(racerQueue1.isEmpty() && racerQueue2.isEmpty()){
@@ -441,26 +520,32 @@ public class ChronoTimer {
 
 	public boolean start(){
 		//triggers channel 1
-		if(!isPowerOn()) throw new IllegalStateException();
-		if(eventType == 0) throw new IllegalStateException();
-		if(runStarted == false) throw new IllegalStateException();
+		//dont need to check "invariants" cuz done in trigChannel
 
 		return trigChannel(1);
 	}
 
 	public boolean finish(){
 		//triggers channel 2
-		if(!isPowerOn()) throw new IllegalStateException();
-		if(eventType == 0) throw new IllegalStateException();
-		if(runStarted == false) throw new IllegalStateException();
+		//dont need to check "invariants" cuz done in trigChannel
 
 		return trigChannel(2);
 	}
 
 	public void addRacer(int racerNum){ //num
 		//adds racer to queue
-		if(!isPowerOn()) throw new IllegalStateException();
-		if(eventType == 0) throw new IllegalStateException();
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
+		if(eventType == 0){
+			System.out.println("Event Type must be set.");
+			return;
+		}
+		if(runStarted == false){
+			System.out.println("A Run has not been started.");
+			return;
+		}
 
 
 		Racer r = new Racer(racerNum, 0.0, 0.0, "0", 0);
@@ -482,65 +567,32 @@ public class ChronoTimer {
 		}		
 	}
 	
-	/// NEEDS TO BE CHANGES TO EXPORT RIGHT NOW WILL JUST PRINT QUEUE WILL ALWAYS WORK JUST ADJUST FOR JSON
-	
-	public void store(String racer_name, String occurance, String time)
-	{
-//		if(Export_list.isEmpty())
-//		{
-//			while(!systemLog.isEmpty())
-//			{
-//				String e = systemLog.poll();
-//				System.out.print(e);
-//				System.out.println();
-//				Export_list.add(e);
-//			}
-//			
-//		}
-//		else
-//		{
-//			while(!Export_list.isEmpty())
-//			{
-//				String e = Export_list.poll();
-//				System.out.print(e);
-//				System.out.println();
-//				systemLog.add(e);
-//			}
-//		}
-			
-	}
-	///Please Check this method and the stuff that comes in, pretty sure it works but you need to check it 
-	/// this was the simplest way to do it I think
-
-	public void print(int runNum)
-	{
+	public void print(int runNum){
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
+		if(eventType != 0 || runStarted == true){
+			System.out.println("Run must be ended before print.");
+			return;
+		}
+		
 		Run r = runList.get(runNum-1);
 		r.print();
-		
-//		if(systemLog.isEmpty())
-//		{
-//			while(!Export_list.isEmpty())
-//			{
-//				String e = Export_list.poll();
-//				System.out.print(e);
-//				System.out.println();
-//				systemLog.add(e);
-//			}
-//		}
-//		else
-//		{
-//			while(!systemLog.isEmpty())
-//			{
-//				String e = systemLog.poll();
-//				System.out.print(e);
-//				System.out.println();
-//				Export_list.add(e);
-//			}
-//		}
 	}
-	public void export(int runNum)throws IOException
-	{
+	
+	public void export(int runNum) throws IOException{
+		if(!isPowerOn()) {
+			System.out.println("Power must be 'On'.");
+			return;
+		}
+		if(eventType != 0 || runStarted == true){
+			System.out.println("Run must be ended before export.");
+			return;
+		}
+		
 		Run r = runList.get(runNum-1);
 		r.export();
 	}
+
 }//end ChronoTimer
