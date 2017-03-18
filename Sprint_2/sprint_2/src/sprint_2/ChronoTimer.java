@@ -58,7 +58,6 @@ public class ChronoTimer {
 			boolean b = isPowerOn();
 			if(b == true) System.out.println("Power On.");
 			else System.out.println("Power Off.");
-
 		}
 	//2
 		else if(command.contains("RESET")){
@@ -137,14 +136,14 @@ public class ChronoTimer {
 		else if(command.contains("PRINT")){
 			String[] runNumArray = command.split(" ");
 			int runNum = Integer.parseInt(runNumArray[1]);
-			System.out.println("Printing " + runNum + ".");
+			System.out.println("Printing Run " + runNum + ".");
 			print(runNum);
 		}
 	//15
 		else if(command.contains("EXPORT")){
 			String[] runNum = command.split(" ");
 			int runnerNumEx = Integer.parseInt(runNum[1]);
-			System.out.println("Exporting " + runNum + ".");
+			System.out.println("Exporting Run " + runNum + ".");
 			export(runnerNumEx);
 		}
 	//16
@@ -152,6 +151,7 @@ public class ChronoTimer {
 			System.out.println("Exiting Program.");
 			exit();
 		}
+		System.out.println(""); System.out.println("");
 	}
 
 	public boolean isPowerOn(){
@@ -172,7 +172,7 @@ public class ChronoTimer {
 	public void exit(){
 		//"quits program" //exit simulator
 		if(isPowerOn()) {
-			System.out.println("Power must be 'Off'.");
+			System.out.println("Try Again - Power must be 'Off'.");
 			return;
 		}
 		System.exit(0);
@@ -181,7 +181,7 @@ public class ChronoTimer {
 	public void reset(){
 		//sets all variables to initial values
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 		
@@ -207,19 +207,19 @@ public class ChronoTimer {
 	public void setTime(int hrs, int min, double sec){
 		//allows user to set time
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 		
 		hours = hrs;
 		minutes = min;
 		seconds = sec;
-		systemLog.add(t.getSystemTime() + " Set Time to: " + hrs + ":" + min + ":" + sec);		
+//		systemLog.add(t.getSystemTime() + " Set Time to: " + hrs + ":" + min + ":" + sec);		
 	}
 
 	public void setEventType(String s){
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 
@@ -233,35 +233,40 @@ public class ChronoTimer {
 	
 	public void newRun(){
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 		if(eventType == 0){
-			System.out.println("Event Type must be set.");
+			System.out.println("Try Again - Event Type must be set.");
 			return;
 		}
 		if(runStarted == true){
-			System.out.println("Only One Run can be going at a time.");
+			System.out.println("Try Again - Only One Run can be going at a time.");
 			return;
 		}
 
 		if(runStarted != true){
 			runStarted = true;
-			systemLog.add(t.getSystemTime() + " New Run Started.");
+			if(eventType == 1){
+				systemLog.add(t.getSystemTime() + " New IND Run Started.");
+			}
+			else if(eventType == 2){
+				systemLog.add(t.getSystemTime() + " New PARIND Run Started.");
+			}
 		}
 	}
 
 	public void endRun(){
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 		if(eventType == 0){
-			System.out.println("Event Type must be set.");
+			System.out.println("Try Again - Event Type must be set.");
 			return;
 		}
 		if(runStarted == false){
-			System.out.println("A Run has not been started.");
+			System.out.println("Try Again - A Run has not been started.");
 			return;
 		}
 		
@@ -272,21 +277,20 @@ public class ChronoTimer {
 		runList.add(r);
 		runNum++;
 		reset();
-		
 	}
 	
 	public void dnfRacer(){
 		//sets end time of next racer to finish to DNF (-1), not return to queue		
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 		if(eventType == 0){
-			System.out.println("Event Type must be set.");
+			System.out.println("Try Again - Event Type must be set.");
 			return;
 		}
 		if(runStarted == false){
-			System.out.println("A Run has not been started.");
+			System.out.println("Try Again - A Run has not been started.");
 			return;
 		}
 		
@@ -322,15 +326,15 @@ public class ChronoTimer {
 	public void cancelRacer(){
 		//discard current race for first racer and put back in queue as next to start
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 		if(eventType == 0){
-			System.out.println("Event Type must be set.");
+			System.out.println("Try Again - Event Type must be set.");
 			return;
 		}
 		if(runStarted == false){
-			System.out.println("A Run has not been started.");
+			System.out.println("Try Again - A Run has not been started.");
 			return;
 		}
 
@@ -356,15 +360,15 @@ public class ChronoTimer {
 	public void togChannel(int channelNum){
 		//enable or disable the channel		
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 		if(eventType == 0){
-			System.out.println("Event Type must be set.");
+			System.out.println("Try Again - Event Type must be set.");
 			return;
 		}
 		if(runStarted == false){
-			System.out.println("A Run has not been started.");
+			System.out.println("Try Again - A Run has not been started.");
 			return;
 		}
 
@@ -374,11 +378,11 @@ public class ChronoTimer {
 				
 				if(enable == false){ //odd & disabled
 					enabled[0][channelNum/2] = true;
-					systemLog.add(t.getSystemTime() + " Start Channel Num " + channelNum + " has been enabled");
+					systemLog.add(t.getSystemTime() + " Start Channel Num " + channelNum + " has been enabled.");
 				}
 				else if(enable == true){ //odd & enabled
 					enabled[0][channelNum/2] = false;
-					systemLog.add(t.getSystemTime() + " Start Channel Num " + channelNum + " has been disabled");
+					systemLog.add(t.getSystemTime() + " Start Channel Num " + channelNum + " has been disabled.");
 				}
 			}
 			else if(channelNum % 2 == 0){ //even
@@ -386,12 +390,12 @@ public class ChronoTimer {
 				
 				if(enable1 == false){ //even & disabled
 					enabled[1][(channelNum/2)-1] = true;
-					systemLog.add(t.getSystemTime() + " End Channel Num " + channelNum + " has been enabled");
+					systemLog.add(t.getSystemTime() + " End Channel Num " + channelNum + " has been enabled.");
 				}
 				
 				else if(enable1 == true){ //even & enabled
 					enabled[1][(channelNum/2)-1] = false;
-					systemLog.add(t.getSystemTime() + " End Channel Num " + channelNum + " has been disabled");
+					systemLog.add(t.getSystemTime() + " End Channel Num " + channelNum + " has been disabled.");
 				}
 			}//end else if
 		}//end outside if
@@ -402,15 +406,15 @@ public class ChronoTimer {
 		//if odd number, is a start time
 		//if even number, is an end time
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return false;
 		}
 		if(eventType == 0){
-			System.out.println("Event Type must be set.");
+			System.out.println("Try Again - Event Type must be set.");
 			return false;
 		}
 		if(runStarted == false){
-			System.out.println("A Run has not been started.");
+			System.out.println("Try Again - A Run has not been started.");
 			return false;
 		}
 
@@ -458,7 +462,7 @@ public class ChronoTimer {
 			}
 			if(channelNum % 2 != 0){ //odd, start
 				if(racerQueue1.isEmpty() && racerQueue2.isEmpty()){
-					System.out.println("No Racers in either Queue"); 
+					System.out.println("No Racers in either Queue."); 
 					systemLog.add(t.getSystemTime() + " No Racers in either Queue to start race.");
 					return false;
 				}
@@ -535,15 +539,15 @@ public class ChronoTimer {
 	public void addRacer(int racerNum){ //num
 		//adds racer to queue
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 		if(eventType == 0){
-			System.out.println("Event Type must be set.");
+			System.out.println("Try Again - Event Type must be set.");
 			return;
 		}
 		if(runStarted == false){
-			System.out.println("A Run has not been started.");
+			System.out.println("Try Again - A Run has not been started.");
 			return;
 		}
 
@@ -567,32 +571,45 @@ public class ChronoTimer {
 		}		
 	}
 	
-	public void print(int runNum){
+	public void print(int rNum){
+		if(rNum > runList.size()){
+			System.out.println("Try Again - " + rNum + " is not a valid run number.");
+			return;
+		}
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 		if(eventType != 0 || runStarted == true){
-			System.out.println("Run must be ended before print.");
+			System.out.println("Try Again - Run must be ended before print.");
 			return;
 		}
-		
-		Run r = runList.get(runNum-1);
-		r.print();
+		else{
+			Run r = runList.get(rNum-1);
+			r.print();
+		}
 	}
 	
-	public void export(int runNum) throws IOException{
+	public void export(int rNum){
+		if(rNum > runList.size()){
+			System.out.println("Try Again - " + rNum + " is not a valid run number.");
+			return;
+		}
 		if(!isPowerOn()) {
-			System.out.println("Power must be 'On'.");
+			System.out.println("Try Again - Power must be 'On'.");
 			return;
 		}
 		if(eventType != 0 || runStarted == true){
-			System.out.println("Run must be ended before export.");
+			System.out.println("Try Again - Run must be ended before export.");
 			return;
 		}
-		
-		Run r = runList.get(runNum-1);
-		r.export();
+		else{
+			Run r = runList.get(rNum-1);
+			try {
+				r.export();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
-
 }//end ChronoTimer
