@@ -17,7 +17,7 @@ public class ChronoTimer {
 	ArrayList<String> systemLog = new ArrayList<String>(); //stores one run at a time
 	
 	ArrayList<Run> runList = new ArrayList<Run>(); //list of previous runs
-	private static int runNum = 1; //number of the current run
+	private int runNum = 1; //number of the current run
 
 	private boolean power = false;
 	Time t = new Time(); //time instance to do functions
@@ -50,7 +50,15 @@ public class ChronoTimer {
 	public boolean getEnabled(int i, int j){ //returns enabled at a given index //used for testing
 		return enabled[i][j];
 	}
-
+	
+	public int getRunNum(){ //used for testing
+		return runNum;
+	}
+	
+	public boolean getRunStart(){ //used for testing
+		return runStarted;
+	}
+	
 	public void sendCommand(String command) throws IOException{ //receives commands from Simulator
 	//1
 		if(command.contains("POWER")){

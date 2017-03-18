@@ -222,4 +222,36 @@ public class ChronoTimerTests {
 		t.power();
 		assertFalse(t.isPowerOn());
 	}
+	
+	@Test
+	public void testNewRun(){
+		t.power();
+		t.setEventType("IND");
+		t.newRun();
+		
+		assertEquals(1, t.getRunNum());
+		assertTrue(t.getRunStart());
+	}
+	
+	@Test
+	public void testEndRun(){
+		t.power();
+		t.setEventType("IND");
+		t.newRun();
+		t.addRacer(22);
+		t.addRacer(23);
+		t.togChannel(1);
+		t.togChannel(2);
+		t.trigChannel(1);
+		t.trigChannel(2);
+		
+		assertEquals(1, t.getRunNum());
+
+		t.endRun();
+		
+		assertFalse(t.runList.isEmpty());
+		assertTrue(t.racerRun1.isEmpty());
+		assertEquals(2, t.getRunNum());
+		assertEquals(1, t.runList.get(0).getRunNum());
+	}
 }

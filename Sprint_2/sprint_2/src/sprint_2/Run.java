@@ -17,6 +17,10 @@ public class Run {
 		runLog = rL;		
 	}
 	
+	public int getRunNum(){
+		return runNum;
+	}
+	
 	public void print(){
 		for(int i = 0; i < runLog.size(); i++){
 			System.out.println(runLog.get(i));
