@@ -12,7 +12,7 @@ public class MainDirectory {
 	public boolean add(String lN, String fN, String pN, String d){
 		Employee e = new Employee(lN, fN, pN, d);
 		employees.add(e);
-
+		
 		return true;
 	}
 	
@@ -41,6 +41,6 @@ public class MainDirectory {
 	public void clear(){
 		employees = new ArrayList<Employee>();
 		stuff = g.toJson(employees);
-		System.out.println("YAYYYY!");
+//		System.out.println("YAYYYY!");
 	}
 }
