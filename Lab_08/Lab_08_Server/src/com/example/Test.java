@@ -23,6 +23,7 @@ public class Test {
     // a shared area where we get the POST data and then use it in the other handler
     static String sharedResponse = "";
     static boolean gotMessageFlag = false;
+    Directory d = new Directory();
 
     public static void main(String[] args) throws Exception {
 
@@ -30,10 +31,10 @@ public class Test {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
         // create a context to get the request to display the results
-        server.createContext("/displayresults", new DisplayHandler());
+        server.createContext("/displayresults", new DisplayHandler()); //listeners at the ports
 
         // create a context to get the request for the POST
-        server.createContext("/sendresults",new PostHandler());
+        server.createContext("/sendresults", new PostHandler()); //ONLY use this one for Lab 8
         server.setExecutor(null); // creates a default executor
 
         // get it going
@@ -104,9 +105,12 @@ public class Test {
             // create our response String to use in other handler
             sharedResponse = sharedResponse+sb.toString();
 
+            String[] s1 = sharedResponse.split(" ");
+            
             // respond to the POST with ROGER
-            String postResponse = "ROGER JSON RECEIVED";
+            String postResponse = "ROGER JSON RECEIVED: " + sharedResponse;
 
+            
             System.out.println("response: " + sharedResponse);
 
             //Desktop dt = Desktop.getDesktop();
