@@ -12,7 +12,7 @@ public class Directory {
 	private String stuff =  "";
 	
 	public boolean add(String lN, String fN, String pN, String d){
-		Employee e = new Employee(lN, fN, pN, d);
+		Employee e = new Employee(lN, fN, pN, d, "", "");
 		employees.add(e);
 		
 		return true;
