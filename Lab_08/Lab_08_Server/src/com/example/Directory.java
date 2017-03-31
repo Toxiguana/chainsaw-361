@@ -11,13 +11,8 @@ public class Directory {
 	private ArrayList<Employee> employees = new ArrayList<Employee>();
 	private String stuff =  "";
 	
-<<<<<<< HEAD
 	public boolean add(String lN, String fN, String pN, String d, String g, String t){
 		Employee e = new Employee(lN, fN, pN, d, g, t);
-=======
-	public boolean add(String lN, String fN, String pN, String d){
-		Employee e = new Employee(lN, fN, pN, d, "", "");
->>>>>>> branch 'master' of https://github.com/Toxiguana/chainsaw-361.git
 		employees.add(e);
 		
 		return true;
