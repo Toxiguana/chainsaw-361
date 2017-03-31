@@ -12,6 +12,10 @@ import java.util.Collection;
 import java.util.Collections;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
@@ -107,24 +111,34 @@ public class Test {
             sharedResponse = sharedResponse+sb.toString();
 
             System.out.println(sharedResponse);
-            String[] s1 = sharedResponse.split(" ");
-            String s2 = s1[0];
-            
-            if(s2.equalsIgnoreCase("Add")){
-            	String s = s1[1].toString();
-            	System.out.println(s);
-//            	d.add(lN, fN, pN, d, g, t);
-            }
-            else if(s2.equalsIgnoreCase("Clear")){
-            	d.clear();
-            }
-            else if(s2.equalsIgnoreCase("Print")){
-            	d.print();
-            }
+         
+//            String[] s1 = sharedResponse.split(" ");
+//            String s2 = s1[0];
+//            Gson g=new Gson();
+//            JsonObject jObj=g.fromJson(sharedResponse, g);
+//            JsonArray jarray = new JsonArray();
+//            jarray = toJson(sharedResponse);
+//            JsonObject obj = sharedResponse;
+            JsonParser parser = new JsonParser();
+            JsonObject json = parser.parse(sharedResponse).getAsJsonObject();
+            JsonElement jfirstname=json.get("firstname");
+            String firstname=jfirstname.toString();
+            System.out.println("plzzzz "+firstname);
+//            if(s2.equalsIgnoreCase("Add")){
+//            	String s = s1[1];
+//            	String[] s3 = s.split(":,:,:,");            	
+////            	d.add(lN, fN, pN, d, g, t);
+//            }
+//            else if(s2.equalsIgnoreCase("Clear")){
+//            	d.clear();
+//            }
+//            else if(s2.equalsIgnoreCase("Print")){
+//            	d.print();
+//            }
             
             
             // respond to the POST with ROGER
-            String postResponse = "ROGER JSON RECEIVED: " + s2;
+            String postResponse = "ROGER JSON RECEIVED: " + firstname;
 
             
             System.out.println("response: " + sharedResponse);

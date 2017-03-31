@@ -50,7 +50,7 @@ public class Client {
 	private String getJSON(Employee e, String command) {
 		if(command.equalsIgnoreCase("Add ")){
 			Gson g = new Gson();
-			String json = g.toJson(e);
+			String json = g.toJson(e); 
 			return "Add " + json;
 		}
 		else if(command.equalsIgnoreCase("Clear ")){
