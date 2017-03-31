@@ -6,7 +6,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class Directory {
-	//actually has methods
 	private Gson g = new Gson();
 	private ArrayList<Employee> employees = new ArrayList<Employee>();
 	private String stuff =  "";
@@ -18,24 +17,23 @@ public class Directory {
 		return true;
 	}
 	
-	public void end(){
-		stuff = g.toJson(employees);
-	}
-	
-	public void print(){
+	public String print(){
 		//print things
-		ArrayList<Employee> em = (g.fromJson(stuff, new TypeToken<Collection<Employee>>(){}.getType()));
+		String s = "";
 		EmployeeComparator ec = new EmployeeComparator();
-		em.sort(ec);
-		if(em != null && !em.isEmpty()){
-			for(Employee e: em) {
+		employees.sort(ec);
+		if(employees != null && !employees.isEmpty()){
+			s += "Printing... ";
+			for(Employee e: employees) {
 				System.out.println(e);
+				s += "\n" + e.toString();
 			}
 			System.out.println("");
 		}
 		else{
-			System.out.println("No elements in the MainDirectory");
+			System.out.println("No employees in the Directory!");
 		}
+		return s;
 	}
 	
 	public void clear(){

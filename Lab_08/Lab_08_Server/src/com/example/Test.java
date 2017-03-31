@@ -24,7 +24,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 public class Test {
-
+	static Directory d = new Directory();
     // a shared area where we get the POST data and then use it in the other handler
     static String sharedResponse = "";
     static boolean gotMessageFlag = false;
@@ -87,7 +87,6 @@ public class Test {
 
     static class PostHandler implements HttpHandler {
         public void handle(HttpExchange transmission) throws IOException {
-        	Directory d = new Directory();
         	
             //  shared data that is used with other handlers
             sharedResponse = "";
@@ -104,37 +103,46 @@ public class Test {
             // read the characters from the request byte by byte and build up the sharedResponse
             int nextChar = inputStr.read();
             while (nextChar > -1) {
-                sb=sb.append((char)nextChar);
-                nextChar=inputStr.read();
+                sb = sb.append((char)nextChar);
+                nextChar = inputStr.read();
             }
 
             // create our response String to use in other handler
-            sharedResponse = sharedResponse+sb.toString();
+            sharedResponse = sharedResponse + sb.toString();
 
             System.out.println(sharedResponse);
          
-//            String[] s1 = sharedResponse.split(" ");
-//            String s2 = s1[0];
-            String[] arr=sharedResponse.split(";,;,;,;,;,;,;,");
-            System.out.println(arr);
-//            if(s2.equalsIgnoreCase("Add")){
-//            	String s = s1[1];
-//            	String[] s3 = s.split(":,:,:,");            	
-////            	d.add(lN, fN, pN, d, g, t);
-//            }
-//            else if(s2.equalsIgnoreCase("Clear")){
-//            	d.clear();
-//            }
-//            else if(s2.equalsIgnoreCase("Print")){
-//            	d.print();
-//            }
+            String[] s1 = sharedResponse.split(" ");
+            String s2 = s1[0];
+            String pr2 = "";
             
+            if(s2.equalsIgnoreCase("Add")){
+            	String s = s1[1];
+            	String[] s3 = s.split("\"");
+            	
+            	if(s3[3].equals("")){
+            		s2 = "NOT Added";
+            		pr2 = "ERROR: Please fill out the fields!";
+            	}
+            	else{
+            		d.add(s3[3], s3[7], s3[11], s3[15], s3[19], s3[23]);
+//	            	System.out.println(s3[3] + s3[7] + s3[11] + s3[15] + s3[19] + s3[23]);
+            		pr2 = "Added " + s3[3] + " " + s3[7] + " to Directory.";
+            	}
+            }
+            else if(s2.equalsIgnoreCase("Clear")){
+            	d.clear();
+            	pr2 = "Cleared Directory.";
+            }
+            else if(s2.equalsIgnoreCase("Print")){
+            	pr2 = d.print();
+            }
             
             // respond to the POST with ROGER
-            String postResponse = "ROGER JSON RECEIVED: ";
-
+            String postResponse = "ROGER JSON RECEIVED: " + s2 + "\n" + pr2 + "\n";
             
-            System.out.println("response: " + sharedResponse);
+            
+            System.out.println("response: " + sharedResponse + "\n");
 
             //Desktop dt = Desktop.getDesktop();
             //dt.open(new File("raceresults.html"));

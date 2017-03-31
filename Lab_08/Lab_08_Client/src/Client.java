@@ -4,6 +4,7 @@
 import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
+import java.net.SocketException;
 import java.net.URL;
 import com.google.gson.Gson;
 
@@ -43,7 +44,11 @@ public class Client {
 			System.out.println("Return String: " + sb);
 
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			//ex.printStackTrace();
+			if(ex instanceof SocketException){
+				System.out.println("ERROR: Please fill all of the fields! "
+						+ "and/or Check that there are no spaces after your submissions!");
+			}
 		}
 	}
 
