@@ -23,10 +23,10 @@ public class Test {
     // a shared area where we get the POST data and then use it in the other handler
     static String sharedResponse = "";
     static boolean gotMessageFlag = false;
-    Directory d = new Directory();
-
+    
     public static void main(String[] args) throws Exception {
-
+    	
+    	
         // set up a simple HTTP server on our local host
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
@@ -82,7 +82,8 @@ public class Test {
 
     static class PostHandler implements HttpHandler {
         public void handle(HttpExchange transmission) throws IOException {
-
+        	Directory d = new Directory();
+        	
             //  shared data that is used with other handlers
             sharedResponse = "";
 
@@ -105,10 +106,25 @@ public class Test {
             // create our response String to use in other handler
             sharedResponse = sharedResponse+sb.toString();
 
+            System.out.println(sharedResponse);
             String[] s1 = sharedResponse.split(" ");
+            String s2 = s1[0];
+            
+            if(s2.equalsIgnoreCase("Add")){
+            	String s = s1[1].toString();
+            	System.out.println(s);
+//            	d.add(lN, fN, pN, d, g, t);
+            }
+            else if(s2.equalsIgnoreCase("Clear")){
+            	d.clear();
+            }
+            else if(s2.equalsIgnoreCase("Print")){
+            	d.print();
+            }
+            
             
             // respond to the POST with ROGER
-            String postResponse = "ROGER JSON RECEIVED: " + sharedResponse;
+            String postResponse = "ROGER JSON RECEIVED: " + s2;
 
             
             System.out.println("response: " + sharedResponse);

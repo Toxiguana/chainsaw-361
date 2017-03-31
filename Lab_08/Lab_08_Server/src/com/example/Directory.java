@@ -11,8 +11,8 @@ public class Directory {
 	private ArrayList<Employee> employees = new ArrayList<Employee>();
 	private String stuff =  "";
 	
-	public boolean add(String lN, String fN, String pN, String d){
-		Employee e = new Employee(lN, fN, pN, d);
+	public boolean add(String lN, String fN, String pN, String d, String g, String t){
+		Employee e = new Employee(lN, fN, pN, d, g, t);
 		employees.add(e);
 		
 		return true;

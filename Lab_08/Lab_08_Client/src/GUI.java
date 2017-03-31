@@ -1,5 +1,3 @@
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -11,7 +9,6 @@ import javax.swing.JList;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class GUI extends JFrame {
@@ -27,33 +24,10 @@ public class GUI extends JFrame {
    private JTextArea txtrPhoneNumber;
    private JTextField textField_3;
    private final ButtonGroup buttonGroup = new ButtonGroup();
-//   private Employee returnEm = null;
-//   private boolean newEm = false;
-   private ArrayList<Employee> returnEm = new ArrayList<>();
-   private Client c = new Client();
-
-   /**
-   * Launch the application.
-   */
-   public static void main(String[] args) {
-       EventQueue.invokeLater(new Runnable() {
-           public void run() {
-               try {
-                  
-//                   frame.setVisible(true);
-               } catch (Exception e) {
-                   e.printStackTrace();
-               }
-           }
-       });
-   }
-
-   /**
-   * Create the frame.
-   */
+   
    public GUI() {
        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-       setBounds(100, 100, 450, 300);
+       setBounds(150, 150, 500, 350);
        contentPane = new JPanel();
        contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
        setContentPane(contentPane);
@@ -158,11 +132,8 @@ public class GUI extends JFrame {
                else gender = "Other";
                title = (String) list.getSelectedValue();
                
-//               newEm = true;
-               System.out.println("sub - changed to newEm");
                Employee e = new Employee(firstName, lastName, department, phone, gender, title);
-               returnEm.add(e);
-               
+               sendData(e,"Add ");
                
                textField.setText("");
                textField_1.setText("");
@@ -176,32 +147,34 @@ public class GUI extends JFrame {
        btnSubmit.setBounds(10, 143, 89, 23);
        panel.add(btnSubmit);
       
-       JButton btnExit = new JButton("Exit");
-       btnExit.addActionListener(new ActionListener() {
+       JButton btnPrint = new JButton("Print");
+       btnPrint.addActionListener(new ActionListener() {
            public void actionPerformed(ActionEvent e) {
-               System.out.println("exit - changed to newEm");
-
-//        	   newEm = true;
-//              returnEm = null;
-               c.em = returnEm;
-//               frame.setVisible(false);
-               
-//               panel.setVisible(false);
+              sendData(null,"Print ");
            }
        });
-       btnExit.setBounds(10, 177, 89, 23);
-       panel.add(btnExit);
+       
+       btnPrint.setBounds(10, 177, 89, 23);
+       panel.add(btnPrint);
+       
+       JButton btnClear = new JButton("Clear");
+       btnClear.addActionListener(new ActionListener() {
+           public void actionPerformed(ActionEvent e) {
+               sendData(null,"Clear "); 
+           }
+       });
+       btnClear.setBounds(10, 210, 89, 23);
+       panel.add(btnClear);
    }
 
- 
-   public ArrayList<Employee> getReturnEm(){
-//	   newEm = false;
-       System.out.println("gre called");
-
-	   return returnEm;
+   public void sendData(Employee e, String command){
+	   Client c = new Client();
+	   c.sendData(e, command);
    }
-//   
-//   public boolean getNewEm(){
-//	   return newEm;
-//   }
+   
+   public static void main(String []args){
+	   GUI g = new GUI();
+	   g.setVisible(true);
+   }
+
 }
