@@ -6,6 +6,7 @@ package com.example;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.lang.reflect.Array;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -114,16 +115,8 @@ public class Test {
          
 //            String[] s1 = sharedResponse.split(" ");
 //            String s2 = s1[0];
-//            Gson g=new Gson();
-//            JsonObject jObj=g.fromJson(sharedResponse, g);
-//            JsonArray jarray = new JsonArray();
-//            jarray = toJson(sharedResponse);
-//            JsonObject obj = sharedResponse;
-            JsonParser parser = new JsonParser();
-            JsonObject json = parser.parse(sharedResponse).getAsJsonObject();
-            JsonElement jfirstname=json.get("firstname");
-            String firstname=jfirstname.toString();
-            System.out.println("plzzzz "+firstname);
+            String[] arr=sharedResponse.split(";,;,;,;,;,;,;,");
+            System.out.println(arr);
 //            if(s2.equalsIgnoreCase("Add")){
 //            	String s = s1[1];
 //            	String[] s3 = s.split(":,:,:,");            	
@@ -138,7 +131,7 @@ public class Test {
             
             
             // respond to the POST with ROGER
-            String postResponse = "ROGER JSON RECEIVED: " + firstname;
+            String postResponse = "ROGER JSON RECEIVED: ";
 
             
             System.out.println("response: " + sharedResponse);
