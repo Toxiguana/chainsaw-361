@@ -6,7 +6,7 @@ import com.google.gson.reflect.TypeToken;
 public class Directory {
 	private Gson g = new Gson();
 	private ArrayList<Employee> employees = new ArrayList<Employee>();
-	private String stuff =  ""; 
+	private String stuff =  "";
 	
 	public boolean add(String lN, String fN, String pN, String d, String g, String t){
 		Employee e = new Employee(lN, fN, pN, d, g, t);
