@@ -37,6 +37,7 @@ public class Test {
 
         // create a context to get the request to display the results
         server.createContext("/displayresults", new DisplayHandler()); //listeners at the ports
+        server.createContext("/displayresults", new cssHandler()); //listeners at the ports
 
         // create a context to get the request for the POST
         server.createContext("/sendresults", new PostHandler()); //ONLY use this one for Lab 8
@@ -46,11 +47,12 @@ public class Test {
         System.out.println("Starting Server...");
         server.start();
     }
-
-    static class DisplayHandler implements HttpHandler {
-        public void handle(HttpExchange t) throws IOException {
-
-            String response = "Begin of response\n";
+    
+    static class cssHandler implements HttpHandler
+    {
+    	public void handle(HttpExchange t) throws IOException 
+    	{
+    		String response = "Begin of response\n";
 			Gson g = new Gson();
 			// set up the header
             System.out.println(response);
@@ -62,6 +64,50 @@ public class Test {
 							}.getType());
 
 					System.out.println(response);
+					response += "Before sort\n";
+					for (Employee e : fromJson) {
+						response += e + "\n";
+					}
+					Collections.sort(fromJson);
+					response += "\nAfter sort\n";
+					for (Employee e : fromJson) {
+						response += e + "\n";
+					}
+				}
+			} catch (JsonSyntaxException e) {
+				e.printStackTrace();
+			}
+            response += "End of response\n";
+            System.out.println(response);
+            // write out the response
+            t.sendResponseHeaders(200, response.length());
+            OutputStream os = t.getResponseBody();
+            os.write(response.getBytes());
+            os.close();
+    	}
+    }
+
+    static class DisplayHandler implements HttpHandler {
+        public void handle(HttpExchange t) throws IOException {
+
+            String response = "";
+            
+            Directory d = new Directory();
+			
+            // set up the header
+            
+            ArrayList<Employee> employeeList = new ArrayList<Employee>();
+            employeeList = d.getArraylist();
+            for(int i = 0; i<employeeList.size() ; i++)
+            {
+            	
+            }
+            
+            
+            System.out.println(response);
+			try {
+				if (!sharedResponse.isEmpty()) {
+
 					response += "Before sort\n";
 					for (Employee e : fromJson) {
 						response += e + "\n";

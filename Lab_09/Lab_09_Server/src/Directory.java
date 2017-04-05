@@ -1,6 +1,3 @@
-
-
-
 import java.util.ArrayList;
 import java.util.Collection;
 import com.google.gson.Gson;
@@ -16,6 +13,13 @@ public class Directory {
 		employees.add(e);
 		
 		return true;
+	}
+
+	public ArrayList<Employee> getArraylist()
+	{
+		
+		return employees;
+		
 	}
 	
 	public String print(){
