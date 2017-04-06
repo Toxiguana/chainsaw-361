@@ -1,0 +1,17 @@
+h1{
+	text-align: center;
+}
+table {
+    margin-left: auto; 
+    margin-right: auto;
+    border: 2px solid black;
+}
+th, td {
+	border: 2px solid black;
+}
+tr:nth-child(even){
+    background-color: lightgray;
+}
+tr {
+	text-align: center;
+}

@@ -17,9 +17,7 @@ public class Directory {
 
 	public ArrayList<Employee> getArraylist()
 	{
-		
-		return employees;
-		
+		return employees;	
 	}
 	
 	public String print(){

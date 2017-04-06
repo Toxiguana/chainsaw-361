@@ -44,4 +44,19 @@ public class Employee implements Comparable<Object>{
 		return firstName;
 	}
 
+	public String getDept(){
+		return department;
+	}
+	
+	public String getPhone(){
+		return phoneNumber;
+	}
+	
+	public String getGender(){
+		return gender;
+	}
+	
+	public String getTitle(){
+		return title;
+	}
 }
