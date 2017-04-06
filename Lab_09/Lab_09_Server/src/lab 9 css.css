@@ -1,0 +1,36 @@
+h1{
+	text-align 				: center;
+	color 					: black;
+	text-decoration 		: bold;
+	font-size 				: 22;
+	font					: times new roman;
+}
+
+body{
+		font	 			: times new roman;
+}
+	tableh {
+   border 					: 1px solid black;
+   background-color 		: dark gray;
+   
+}
+
+	table, th, td {
+		
+		
+		border				: 2px solid black;
+		background-color 	: light gray;
+		
+	}
+	
+	body {
+		font				: times new roman;
+	}
+
+	tabler {
+		text-align			: left;
+	}
+	
+	tr 						: nth-child(even) 
+		
+		{background-color : #f2f2f2}
