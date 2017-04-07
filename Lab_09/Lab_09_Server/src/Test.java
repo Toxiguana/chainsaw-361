@@ -3,25 +3,14 @@
  */
 
 
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Array;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Scanner;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
@@ -55,20 +44,24 @@ public class Test {
     {
     	public void handle(HttpExchange t) throws IOException 
     	{
-    		String response = "<!DOCTYPE html>\n<html>\n<body>\n<p>";
-			
-//			File f = new File("style.css");
-//            Scanner s = new Scanner(f);
-//            
-//            while(s.hasNextLine()){
-//            	String st = s.nextLine();
-//            	response += "\n" + st;
+    		String response = "";
+//            try(Scanner s = new Scanner(new FileReader("style.txt"))){
+//            	while(s.hasNextLine()){
+//            		String st = s.nextLine();
+//              	response += "\n" + st;
+//            	}
 //            }
-            response += "ajlsdfjlkasjdfkl\n</p></body>\n</html>";
-            System.out.println(response);
-//            s.close();
+//            catch(IOException e){
+//            	throw new RuntimeException("Could not open file.");
+//            }
+            response += "h1{text-align: center;}\n";
+            response += "table {margin-left: auto; margin-right: auto; border: 2px solid black;}\n";
+            response += "th, td {border: 2px solid black;}\n";
+            response += "tr:nth-child(even){background-color: lightgray;}\n";
+            response += "tr {text-align: center;}\n";
             
-//            System.out.println(response);
+            System.out.println(response);
+            
             // write out the response
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
@@ -84,7 +77,7 @@ public class Test {
             			
             // set up the header
             response += "<!DOCTYPE html>\n<html>\n<head><title>Employee Directory</title>";
-            response += "<link rel=\"stylesheet\" href=\"/css/style.css\">\n</head>\n<body>";
+            response += "<link rel=\"stylesheet\" href=\"/displayresults/css\">\n</head>\n<body>";
             response += "<h1>Company Directory</h1>\n<table>";
             response += "<tr><th>First Name</th>\n<th>Last Name</th>\n<th>Department</th>";
             response += "<th>Phone Number</th>\n<th>Gender</th>\n<th>Title</th></tr>";
@@ -108,23 +101,6 @@ public class Test {
             response += "\n</table>\n</body>\n</html>";
             
             System.out.println(response);
-//			try {
-//				if (!sharedResponse.isEmpty()) {
-//
-//					response += "Before sort\n";
-//					for (Employee e : fromJson) {
-//						response += e + "\n";
-//					}
-//					Collections.sort(fromJson);
-//					response += "\nAfter sort\n";
-//					for (Employee e : fromJson) {
-//						response += e + "\n";
-//					}
-//				}
-//			} catch (JsonSyntaxException e) {
-//				e.printStackTrace();
-//			}
-//            System.out.println(response);
             
             // write out the response
             t.sendResponseHeaders(200, response.length());
