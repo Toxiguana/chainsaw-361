@@ -14,12 +14,23 @@ public class Racer {
 		elapsedTime = elT;
 		stateRacer = sR;
 	}
-	public void setStart(double sT){
-		this.startTime = sT;
+	
+	//Getters
+	public int getNum(){
+		return numRacer;
 	}
 	
-	public void setState(int sR){
-		this.stateRacer = sR;
+	public double getStart(){
+		return startTime;
+	}
+	
+	//Setters
+	public void setNum(int nR){
+		this.numRacer = nR;
+	}
+	
+	public void setStart(double sT){
+		this.startTime = sT;
 	}
 	
 	public void setEnd(double enT){
@@ -29,10 +40,8 @@ public class Racer {
 	public void setElapsed(double sT, double enT){
 		this.elapsedTime = t.computeTime(sT, enT);
 	}
-	public int getNum(){
-		return numRacer;
-	}
-	public double getStart(){
-		return startTime;
+	
+	public void setState(int sR){
+		this.stateRacer = sR;
 	}
 }

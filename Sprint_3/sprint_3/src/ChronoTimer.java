@@ -10,7 +10,8 @@ public class ChronoTimer {
 	Queue<Racer> racerQueue2 = new LinkedList<Racer>(); //beginning2
 	Queue<Racer> racerRun1 = new LinkedList<Racer>(); //running1
 	Queue<Racer> racerRun2 = new LinkedList<Racer>(); //running2
-	Queue<Racer> racerFinish = new LinkedList<Racer>(); //done
+	Queue<Racer> racerFinish1 = new LinkedList<Racer>(); //done w/o numbers
+	Queue<Racer> racerFinish2 = new LinkedList<Racer>(); //done w/ numbers
 	
 	ArrayList<String> systemLog = new ArrayList<String>(); //stores one run at a time
 	
@@ -213,7 +214,8 @@ public class ChronoTimer {
 		racerQueue2 = new LinkedList<Racer>();
 		racerRun1 = new LinkedList<Racer>();
 		racerRun2 = new LinkedList<Racer>();
-		racerFinish = new LinkedList<Racer>();
+		racerFinish1 = new LinkedList<Racer>();
+		racerFinish2 = new LinkedList<Racer>();
 
 		systemLog = new ArrayList<String>();
 		
@@ -337,7 +339,7 @@ public class ChronoTimer {
 			r.setEnd(-1);
 			r.setState(2);
 			systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
-			racerFinish.add(r);
+			racerFinish2.add(r);
 		}
 		else if(eventType == 2){ //PARIND
 			systemLog.add(t.getSystemTime() + " dnfRacer cannot be called on PARIND runs.");
@@ -350,21 +352,21 @@ public class ChronoTimer {
 				r.setEnd(-1);
 				r.setState(2);
 				systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
-				racerFinish.add(r);
+				racerFinish2.add(r);
 			}
 			while(!racerRun2.isEmpty()){
 				Racer r = racerRun2.remove();
 				r.setEnd(-1);
 				r.setState(2);
 				systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
-				racerFinish.add(r);
+				racerFinish2.add(r);
 			}
 		}
 		else if(eventType == 4){ //GRP
 			Racer r = new Racer(placeHoldNum, groupStart, -1, "DNF", 2);
 			placeHoldNum++;
 			systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
-			racerFinish.add(r);
+			racerFinish1.add(r);
 		}
 		return true;
 	}
@@ -512,7 +514,7 @@ public class ChronoTimer {
 					r1.setEnd(end);
 					r1.setElapsed(r1.getStart(), end);
 					r1.setState(2);
-					racerFinish.add(r1);
+					racerFinish2.add(r1);
 					systemLog.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
 					return true;
 				}
@@ -574,7 +576,7 @@ public class ChronoTimer {
 						r1.setEnd(end);
 						r1.setState(2);
 						r1.setElapsed(r1.getStart(), end);
-						racerFinish.add(r1);
+						racerFinish2.add(r1);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
 						return true;
 					}
@@ -587,7 +589,7 @@ public class ChronoTimer {
 						r1.setEnd(end);
 						r1.setState(2);
 						r1.setElapsed(r1.getStart(), end);
-						racerFinish.add(r1);
+						racerFinish2.add(r1);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
 						return true;
 					}
@@ -620,7 +622,7 @@ public class ChronoTimer {
 					placeHoldNum++;
 					r.setElapsed(groupStart, end);
 					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
-					racerFinish.add(r);
+					racerFinish1.add(r);
 					return true;
 				}
 				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
@@ -727,6 +729,26 @@ public class ChronoTimer {
 				e.printStackTrace();
 			}
 		}
+		return true;
+	}
+
+	public boolean setGroupRacerNum(int racerNum){
+		if(!isPowerOn()) {
+			System.out.println("Try Again - Power must be 'On'.");
+			return false;
+		}
+		if(eventType == 4){
+			System.out.println("Try Again - Event Type must be Group.");
+			return false;
+		}
+		if(racerFinish1.isEmpty()){
+			System.out.println("Try Again - No Racers have finish w/o Numbers.");
+			return false;
+		}
+		
+		Racer r = racerFinish1.remove();
+		r.setNum(racerNum);
+		racerFinish2.add(r);
 		return true;
 	}
 
