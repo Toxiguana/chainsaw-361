@@ -40,7 +40,7 @@ public class ChronoTimerTests {
 		
 		assertTrue(!t.racerQueue1.isEmpty());
 		assertTrue(t.racerRun1.isEmpty());
-		assertTrue(t.racerFinish.isEmpty());
+		assertTrue(t.racerFinish2.isEmpty());
 		
 		t.togChannel(1);
 		assertTrue(t.getEnabled(0, 0));
@@ -62,7 +62,7 @@ public class ChronoTimerTests {
 		
 		assertTrue(!t.racerQueue1.isEmpty());
 		assertTrue(t.racerRun1.isEmpty());
-		assertTrue(t.racerFinish.isEmpty());
+		assertTrue(t.racerFinish2.isEmpty());
 		
 		t.togChannel(1);
 		t.togChannel(2);
@@ -74,7 +74,7 @@ public class ChronoTimerTests {
 		
 		assertTrue(!t.racerQueue1.isEmpty());
 		assertTrue(!t.racerRun1.isEmpty());
-		assertTrue(t.racerFinish.isEmpty());
+		assertTrue(t.racerFinish2.isEmpty());
 		
 		assertFalse(t.trigChannel(3));
 
@@ -82,14 +82,14 @@ public class ChronoTimerTests {
 		
 		assertTrue(t.racerQueue1.isEmpty());
 		assertTrue(!t.racerRun1.isEmpty());
-		assertTrue(t.racerFinish.isEmpty());
+		assertTrue(t.racerFinish2.isEmpty());
 		
 		t.trigChannel(2);
 		
 		assertTrue(t.racerQueue1.isEmpty());
 		assertTrue(!t.racerRun1.isEmpty());
-		assertTrue(!t.racerFinish.isEmpty());
-		assertEquals(22, t.racerFinish.peek().getNum());
+		assertTrue(!t.racerFinish2.isEmpty());
+		assertEquals(22, t.racerFinish2.peek().getNum());
 		
 	}
 	
@@ -103,7 +103,7 @@ public class ChronoTimerTests {
 		
 		assertTrue(!t.racerQueue1.isEmpty());
 		assertTrue(t.racerRun1.isEmpty());
-		assertTrue(t.racerFinish.isEmpty());
+		assertTrue(t.racerFinish2.isEmpty());
 		
 		t.togChannel(1);
 		assertTrue(t.getEnabled(0, 0));
@@ -134,7 +134,7 @@ public class ChronoTimerTests {
 		t.dnfRacer();
 		
 		assertTrue(t.racerRun1.isEmpty());
-		assertTrue(!t.racerFinish.isEmpty());
+		assertTrue(!t.racerFinish2.isEmpty());
 		
 		t.power();
 		assertFalse(t.isPowerOn());
@@ -159,7 +159,7 @@ public class ChronoTimerTests {
 		t.finish();
 		
 		assertTrue(t.racerRun1.isEmpty());
-		assertTrue(!t.racerFinish.isEmpty());
+		assertTrue(!t.racerFinish2.isEmpty());
 		
 		t.power();
 		assertFalse(t.isPowerOn());
@@ -186,12 +186,12 @@ public class ChronoTimerTests {
 		
 		assertTrue(!t.racerQueue1.isEmpty());
 		assertTrue(t.racerRun1.isEmpty());
-		assertTrue(!t.racerFinish.isEmpty());
+		assertTrue(!t.racerFinish2.isEmpty());
 		
 		t.reset();
 		assertTrue(t.racerQueue1.isEmpty());
 		assertTrue(t.racerRun1.isEmpty());
-		assertTrue(t.racerFinish.isEmpty());
+		assertTrue(t.racerFinish2.isEmpty());
 	}
 	
 	@Test
@@ -266,7 +266,7 @@ public class ChronoTimerTests {
 		assertEquals(2, t.racerQueue1.size());
 		assertEquals(1, t.racerQueue2.size());
 		assertTrue(t.racerRun1.isEmpty());
-		assertTrue(t.racerFinish.isEmpty());
+		assertTrue(t.racerFinish2.isEmpty());
 		
 		t.togChannel(1);
 		assertTrue(t.getEnabled(0, 0));
