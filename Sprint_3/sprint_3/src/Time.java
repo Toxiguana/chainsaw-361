@@ -27,6 +27,9 @@ public class Time {
 	}
 	
 	public String computeTime(double start, double end){
+		if(end == -1){
+			return "DNF";
+		}
 		double totalSeconds = Math.round((end-start)*100.0)/100.0;
 		int seconds = (int) totalSeconds;
 		int endMinutes = seconds/60;

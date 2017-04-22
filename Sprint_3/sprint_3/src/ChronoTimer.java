@@ -23,9 +23,12 @@ public class ChronoTimer {
 	private boolean[][] enabled = new boolean[2][4]; //array holding enable for each channel
 	private boolean runStarted = false; //a run must be created before almost everything else
 	
-	private int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run
+	private int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run, 4 is GRP
 	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
-
+	
+	private int placeHoldNum = 1; //keeps track of placeholderNum for GRP race finishes
+	private double groupStart = 0.0; //stores start time for GRP races
+	
 	private int hours = 0;
 	private int minutes = 0;
 	private double seconds = 0.0;
@@ -251,6 +254,9 @@ public class ChronoTimer {
 		else if(s.equalsIgnoreCase("PARIND")){
 			eventType = 2;
 		}
+		else if(s.equalsIgnoreCase("GRP")){
+			eventType = 4;
+		}
 		return true;
 	}
 	
@@ -275,6 +281,9 @@ public class ChronoTimer {
 			}
 			else if(eventType == 2){
 				systemLog.add(t.getSystemTime() + " New PARIND Run Started.");
+			}
+			else if(eventType == 4){
+				systemLog.add(t.getSystemTime() + " New GRP Run Started.");
 			}
 		}
 		return true;
@@ -350,7 +359,13 @@ public class ChronoTimer {
 				systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
 				racerFinish.add(r);
 			}
-		}	
+		}
+		else if(eventType == 4){ //GRP
+			Racer r = new Racer(placeHoldNum, groupStart, -1, "DNF", 2);
+			placeHoldNum++;
+			systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
+			racerFinish.add(r);
+		}
 		return true;
 	}
 
@@ -391,6 +406,11 @@ public class ChronoTimer {
 			System.out.println("cancelRacer cannot be called on PARIND runs.");
 			return false;
 		}
+		else if(eventType == 4){//GRP
+			systemLog.add(t.getSystemTime() + " cancelRacer cannot be called on GRP runs.");
+			System.out.println("cancelRacer cannot be called on GRP runs.");
+			return false;
+		}
 		return true;
 	}
 
@@ -409,7 +429,7 @@ public class ChronoTimer {
 			return false;
 		}
 
-		if(eventType == 1 || eventType == 2){ //same thing for IND & PARIND
+		if(eventType == 1 || eventType == 2 || eventType == 4){ //same thing for IND & PARIND & GRP
 			if(channelNum % 2 != 0){ //odd
 				boolean enable = enabled[0][channelNum/2];
 				
@@ -478,6 +498,8 @@ public class ChronoTimer {
 					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " started racing.");
 					return true;
 				}
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
 			}
 			else if(channelNum == 2){ //end
 				if(enabled[1][0]){
@@ -494,6 +516,8 @@ public class ChronoTimer {
 					systemLog.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
 					return true;
 				}
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
 			}
 		}//end IND
 		
@@ -536,6 +560,8 @@ public class ChronoTimer {
 						return true;
 					}					
 				}//end enabled if
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
 			}//end odd channel
 			else if(channelNum % 2 == 0){ //even, end
 				if(enabled[1][(channelNum/2)-1]){ //enabled
@@ -566,9 +592,42 @@ public class ChronoTimer {
 						return true;
 					}
 				}//end enabled if
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
 			}//end even channel
 		}//end PARIND
-		systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+		
+		//GRP
+		else if(eventType == 4){
+			if(channelNum != 1 && channelNum != 2){
+				systemLog.add(t.getSystemTime() + " GRP Races only use channels 1 & 2.");
+				System.out.println("GRP Races only use channels 1 & 2.");
+				return false;
+			}
+			if(channelNum == 1){ //start
+				if(enabled[0][0]){
+					groupStart = t.start();
+					systemLog.add(t.getSystemTime() + " Group of Racers " + " started racing.");
+					return true;
+				}
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
+			}
+			else if(channelNum == 2){ //end
+				if(enabled[1][0]){
+					double end = t.end();
+					Racer r = new Racer(placeHoldNum, groupStart, end,"", 2);
+					placeHoldNum++;
+					r.setElapsed(groupStart, end);
+					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+					racerFinish.add(r);
+					return true;
+				}
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
+			}
+		}//end GRP
+		systemLog.add(t.getSystemTime() + " Event Type " + eventType + " is not valid.");
 		return false;
 	}
 
@@ -618,6 +677,11 @@ public class ChronoTimer {
 				queueNum = 1;
 				systemLog.add(t.getSystemTime() + " Racer Num " + racerNum + " has been added to PARIND event.");
 			}
+		}
+		else if(eventType == 4){ //GRP, shouldn't add like this
+			systemLog.add(t.getSystemTime() + " Racer Num " + racerNum + " cannot be added to GRP event in this way.");
+			System.out.println("Racers cannot be added to GRP event in this way");
+			return false;
 		}
 		return true;
 	}
