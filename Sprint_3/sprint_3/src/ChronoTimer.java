@@ -1,5 +1,3 @@
-
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -322,6 +320,10 @@ public class ChronoTimer {
 		}
 		
 		if(eventType == 1){ //IND 
+			if(racerRun1.isEmpty()){
+				System.out.println("Try Again - There are no Racers in the Queue.");
+				return false;
+			}
 			Racer r = racerRun1.remove();
 			r.setEnd(-1);
 			r.setState(2);
@@ -368,6 +370,10 @@ public class ChronoTimer {
 		}
 
 		if(eventType == 1){ //IND
+			if(racerRun1.isEmpty()){
+				System.out.println("Try Again - There are no Racers in the Queue.");
+				return false;
+			}
 			Queue<Racer> newQueue = new LinkedList<Racer>();
 			Racer r = racerRun1.remove();
 			r.setStart(0.0);
@@ -475,6 +481,10 @@ public class ChronoTimer {
 			}
 			else if(channelNum == 2){ //end
 				if(enabled[1][0]){
+					if(racerRun1.isEmpty()){
+						System.out.println("Try Again - There are no Racers in the Queue.");
+						return false;
+					}
 					Racer r1 = racerRun1.remove();
 					double end = t.end();
 					r1.setEnd(end);
