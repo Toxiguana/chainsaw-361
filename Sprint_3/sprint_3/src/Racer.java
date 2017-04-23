@@ -23,7 +23,12 @@ public class Racer {
 	public double getStart(){
 		return startTime;
 	}
-	
+	public double getFinish(){
+		return endTime;
+	}
+	public String getElapsedTime(){
+		return elapsedTime;
+	}
 	//Setters
 	public void setNum(int nR){
 		this.numRacer = nR;

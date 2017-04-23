@@ -52,7 +52,9 @@ public class ChronoTimer {
 			frame.setVisible(true);
 		}
 	}
-
+	public int getEventType(){
+		return eventType;
+	}
 	public boolean getEnabled(int i, int j){ //returns enabled at a given index //used for testing
 		return enabled[i][j];
 	}

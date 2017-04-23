@@ -22,7 +22,7 @@ public class Simulator {
 
 	public String getInput(){
 		while(inputloop){
-			System.out.println("Do you want user input or input from a file or do you want to use a GUI? U:User Input,T:Text File, and G;GUI Input");
+			System.out.println("Do you want user input or input from a file or do you want to use a GUI? U:User Input,T:Text File, and G:GUI Input");
 			inputType = input.nextLine();
 			if(inputType.equalsIgnoreCase("U") || inputType.equalsIgnoreCase("T")||inputType.equalsIgnoreCase("G")){
 				inputloop = false;

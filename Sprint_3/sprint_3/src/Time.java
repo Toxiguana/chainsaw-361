@@ -9,7 +9,13 @@ public class Time {
 		
 		return time;
 	}
-	
+	public double currentTime(){
+		long s = System.currentTimeMillis(); //one millisecond == 1 1000th of a second
+		double sec = s/1000.0;
+		double round = Math.round(sec*100.0)/100.0;
+		
+		return round;
+	}
 	public double start(){		
 		long s = System.currentTimeMillis(); //one millisecond == 1 1000th of a second
 		double sec = s/1000.0;
@@ -25,7 +31,6 @@ public class Time {
 		
 		return round;
 	}
-	
 	public String computeTime(double start, double end){
 		if(end == -1){
 			return "DNF";
