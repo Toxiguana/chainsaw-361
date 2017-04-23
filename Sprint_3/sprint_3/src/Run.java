@@ -24,7 +24,14 @@ public class Run {
 			System.out.println(runLog.get(i));
 		}
 	}
-	
+	public String guiPrint(){
+		String printout="";
+		for(int i = 0; i < runLog.size(); i++){
+			printout+=runLog.get(i);
+			printout+="/n";
+		}
+		return printout;
+	}
 	public void export() throws IOException{
 		Gson g = new Gson();
 		g.toJson(runLog);

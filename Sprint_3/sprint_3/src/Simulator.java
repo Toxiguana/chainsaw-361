@@ -1,3 +1,4 @@
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,9 +22,9 @@ public class Simulator {
 
 	public String getInput(){
 		while(inputloop){
-			System.out.println("Do you want user input or input from a file? U:User Input and T:Text File");
+			System.out.println("Do you want user input or input from a file or do you want to use a GUI? U:User Input,T:Text File, and G;GUI Input");
 			inputType = input.nextLine();
-			if(inputType.equalsIgnoreCase("U") || inputType.equalsIgnoreCase("T")){
+			if(inputType.equalsIgnoreCase("U") || inputType.equalsIgnoreCase("T")||inputType.equalsIgnoreCase("G")){
 				inputloop = false;
 			}
 		}
@@ -128,7 +129,7 @@ public class Simulator {
 				}
 			}	
 		}
-		else { //input type = text file
+		else if(inputType.equalsIgnoreCase("T")){ //input type = text file
 			while(fileNameLoop){
 				System.out.println("Please input the file name.");
 				filename = input.nextLine();
@@ -148,6 +149,9 @@ public class Simulator {
 			}//end while
 
 			return "";
+		}
+		else{
+			return "GUI";
 		}
 	}
 }

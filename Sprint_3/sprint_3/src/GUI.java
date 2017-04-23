@@ -3,8 +3,11 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JScrollBar;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+
+import javax.swing.BoundedRangeModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -18,6 +21,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import java.awt.Color;
+import javax.swing.JScrollPane;
 
 public class GUI extends JFrame {
 	private JTextField numTxtFld;
@@ -214,7 +218,11 @@ public class GUI extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				if(!c.getEnabled(0, 0)){
+					tglChan1.setSelected(false);
+				}
 			}
+			
 		});
 		tglChan1.setBounds(243, 74, 18, 26);
 		getContentPane().add(tglChan1);
@@ -227,6 +235,9 @@ public class GUI extends JFrame {
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				}
+				if(!c.getEnabled(1, 0)){
+					tglChan2.setSelected(false);
 				}
 			}
 		});
@@ -242,6 +253,9 @@ public class GUI extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				if(!c.getEnabled(0, 1)){
+					tglChan3.setSelected(false);
+				}
 			}
 		});
 		tglChan3.setBounds(284, 73, 18, 26);
@@ -255,6 +269,9 @@ public class GUI extends JFrame {
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				}
+				if(!c.getEnabled(1, 1)){
+					tglChan4.setSelected(false);
 				}
 			}
 		});
@@ -270,6 +287,9 @@ public class GUI extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				if(!c.getEnabled(0, 2)){
+					tglChan5.setSelected(false);
+				}
 			}
 		});
 		tglChan5.setBounds(325, 73, 18, 26);
@@ -283,6 +303,9 @@ public class GUI extends JFrame {
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				}
+				if(!c.getEnabled(1, 2)){
+					tglChan6.setSelected(false);
 				}
 			}
 		});
@@ -298,6 +321,9 @@ public class GUI extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				if(!c.getEnabled(0, 3)){
+					tglChan7.setSelected(false);
+				}
 			}
 		});
 		tglChan7.setBounds(366, 73, 18, 26);
@@ -311,6 +337,9 @@ public class GUI extends JFrame {
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				}
+				if(!c.getEnabled(1, 3)){
+					tglChan8.setSelected(false);
 				}
 			}
 		});
@@ -449,9 +478,7 @@ public class GUI extends JFrame {
 		lblAddRacer.setBounds(452, 172, 80, 16);
 		getContentPane().add(lblAddRacer);
 		
-		JTextArea txtrStuff = new JTextArea();
-		txtrStuff.setBounds(445, 47, 137, 123);
-		getContentPane().add(txtrStuff);
+		
 		
 		JLabel lblPrinter = new JLabel("Printer");
 		lblPrinter.setBounds(442, 26, 61, 16);
@@ -555,6 +582,27 @@ public class GUI extends JFrame {
 				if(tglChan1.isSelected()){
 					tglChan1.setSelected(false);
 				}
+				if(tglChan2.isSelected()){
+					tglChan2.setSelected(false);
+				}
+				if(tglChan3.isSelected()){
+					tglChan3.setSelected(false);
+				}
+				if(tglChan4.isSelected()){
+					tglChan4.setSelected(false);
+				}
+				if(tglChan5.isSelected()){
+					tglChan5.setSelected(false);
+				}
+				if(tglChan6.isSelected()){
+					tglChan6.setSelected(false);
+				}
+				if(tglChan7.isSelected()){
+					tglChan7.setSelected(false);
+				}
+				if(tglChan8.isSelected()){
+					tglChan8.setSelected(false);
+				}
 					try {
 						c.sendCommand("POWER");
 					} catch (IOException e1) {
@@ -565,6 +613,19 @@ public class GUI extends JFrame {
 		});
 		btnPower.setBounds(6, 6, 117, 29);
 		getContentPane().add(btnPower);
+		JTextArea printTxt=new JTextArea();
+		printTxt.setEditable(false);
+		JScrollPane scrollPane = new JScrollPane(printTxt);
+		scrollPane.setBounds(452, 48, 115, 113);
+		getContentPane().add(scrollPane);
+		JButton btnPrint = new JButton("Print");
+		btnPrint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				printTxt.setText(printTxt.getText()+"/n"+c.printGUI());
+			}
+		});
+		btnPrint.setBounds(477, 6, 117, 29);
+		getContentPane().add(btnPrint);
 		
 	
 	}

@@ -42,11 +42,15 @@ public class ChronoTimer {
 		
 		do{
 			command = sim.getInput();
-			if(command == ""){
+			if(command == ""||command=="GUI"){
 				break;
 			}
 			t.sendCommand(command);
 		}while(true);
+		if(command.equals("GUI")){
+			GUI frame = new GUI(t);
+			frame.setVisible(true);
+		}
 	}
 
 	public boolean getEnabled(int i, int j){ //returns enabled at a given index //used for testing
@@ -707,7 +711,21 @@ public class ChronoTimer {
 		}
 		return true;
 	}
-	
+	public String printGUI(){
+		if(!isPowerOn()) {
+			System.out.println("Try Again - Power must be 'On'.");
+			return null;
+		}
+		if(eventType != 0 || runStarted == true){
+			System.out.println("Try Again - Run must be ended before print.");
+			return null;
+		}
+		else{	
+		Run r = runList.get(runNum-1);
+		return r.guiPrint();
+		}
+	}
+		
 	public boolean export(int rNum){
 		if(rNum > runList.size()){
 			System.out.println("Try Again - " + rNum + " is not a valid run number.");
