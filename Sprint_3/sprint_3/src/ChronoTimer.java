@@ -711,7 +711,7 @@ public class ChronoTimer {
 		}
 		return true;
 	}
-	public String printGUI(){
+	public ArrayList<String> printGUI(){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			return null;
@@ -721,7 +721,7 @@ public class ChronoTimer {
 			return null;
 		}
 		else{	
-		Run r = runList.get(runNum-1);
+		Run r = runList.get(runNum-2);
 		return r.guiPrint();
 		}
 	}

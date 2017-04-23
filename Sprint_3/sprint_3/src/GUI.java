@@ -11,6 +11,7 @@ import javax.swing.BoundedRangeModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -481,7 +482,7 @@ public class GUI extends JFrame {
 		
 		
 		JLabel lblPrinter = new JLabel("Printer");
-		lblPrinter.setBounds(442, 26, 61, 16);
+		lblPrinter.setBounds(422, 26, 61, 16);
 		getContentPane().add(lblPrinter);
 		
 		JTextArea txtQueue = new JTextArea();
@@ -614,18 +615,22 @@ public class GUI extends JFrame {
 		btnPower.setBounds(6, 6, 117, 29);
 		getContentPane().add(btnPower);
 		JTextArea printTxt=new JTextArea();
-		printTxt.setEditable(false);
 		JScrollPane scrollPane = new JScrollPane(printTxt);
-		scrollPane.setBounds(452, 48, 115, 113);
+		printTxt.setEditable(false);
+		scrollPane.setBounds(422, 47, 145, 109);
 		getContentPane().add(scrollPane);
 		JButton btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				printTxt.setText(printTxt.getText()+"/n"+c.printGUI());
+				ArrayList<String>arr=c.printGUI();
+				for(int i=0;i<arr.size();i++){
+					printTxt.append(arr.get(i)+"\n");
+				}
 			}
 		});
 		btnPrint.setBounds(477, 6, 117, 29);
 		getContentPane().add(btnPrint);
+
 		
 	
 	}
