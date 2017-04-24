@@ -123,4 +123,28 @@ public class ChronoTimerTests2 {
 		t.power();
 		assertFalse(t.isPowerOn());
 	}
+	
+	@Test
+	public void groupTestConn() {
+		t.power();
+		t.setEventType("GRP");
+		t.newRun();
+		
+		assertTrue(t.racerQueue1.isEmpty());
+		
+		t.connectSensor(1);
+		t.connectSensor(2);
+		
+		t.togChannel(1);
+		t.togChannel(2);
+		
+		assertEquals(1, t.getConnected(0, 0).getChannelNum());
+		assertEquals(2, t.getConnected(1, 0).getChannelNum());
+		
+		t.disconnectSensor(1);
+		t.disconnectSensor(2);
+		
+		assertEquals(null, t.getConnected(0, 0));
+		assertEquals(null, t.getConnected(1, 0));
+	}
 }
