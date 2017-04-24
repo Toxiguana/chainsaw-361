@@ -802,7 +802,7 @@ public class GUI extends JFrame {
 					else{
 						break;
 					} 
-				}
+				} 
 				}
 				if(c.getEventType()==2){
 					txtQueue.setText("");
