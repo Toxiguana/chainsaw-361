@@ -144,7 +144,7 @@ public class ChronoTimerTests2 {
 		t.disconnectSensor(1);
 		t.disconnectSensor(2);
 		
-		assertEquals(null, t.getConnected(0, 0));
-		assertEquals(null, t.getConnected(1, 0));
+		assertNull(t.getConnected(0, 0));
+		assertNull(t.getConnected(1, 0));
 	}
 }
