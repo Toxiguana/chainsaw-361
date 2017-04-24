@@ -54,10 +54,14 @@ public class Run {
 	}
 	public void export() throws IOException{
 		Gson g = new Gson();
+		String s = "";
+		for(int i = 0; i < runLog.size(); i++){
+			s += runLog.get(i).toString() + "\n";
+		}
 		g.toJson(runLog);
 		
 		try(FileWriter file = new FileWriter("RUN"+runNum+".txt")){
-			file.write(g.toString());
+			file.write(s);
 			System.out.println("Exported Run " + runNum + " to RUN"+runNum+".txt");
 		}
 	}
