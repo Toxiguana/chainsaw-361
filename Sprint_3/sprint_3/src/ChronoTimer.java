@@ -187,7 +187,15 @@ public class ChronoTimer {
 			System.out.println("Exiting Program.");
 			exit();
 		}
-		System.out.println(""); 
+	//17 
+		else if(command.contains("GRPADD")){
+			String[] runNum = command.split(" ");
+			int runnerNumber = Integer.parseInt(runNum[1]);
+			System.out.println("Adding Racer" + runnerNumber + ".");
+			boolean b = setGroupRacerNum(runnerNumber);
+			if(b) System.out.println("Adding Runner was sucessful.");
+			else System.out.println("Adding Runner was not successful.");
+		}
 	}
 
 	public boolean isPowerOn(){
