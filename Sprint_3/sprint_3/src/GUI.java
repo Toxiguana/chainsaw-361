@@ -411,6 +411,7 @@ public class GUI extends JFrame {
 				if (!tmp2.isEmpty()) {
 					txtQueue.append("NUM " + tmp2.peek().getNum());
 				}
+				//updating display
 				Queue<Racer> finish = new LinkedList<Racer>(c.racerFinish2);
 				if (!finish.isEmpty()) {
 					Object[] r = finish.toArray();
