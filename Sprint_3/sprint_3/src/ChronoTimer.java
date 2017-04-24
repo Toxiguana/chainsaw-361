@@ -3,6 +3,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import com.sun.corba.se.impl.orbutil.graph.Node;
+
 public class ChronoTimer {
 
 	//Queues of Racers
@@ -12,9 +14,9 @@ public class ChronoTimer {
 	Queue<Racer> racerRun2 = new LinkedList<Racer>(); //running2
 	Queue<Racer> racerFinish1 = new LinkedList<Racer>(); //done w/o numbers
 	Queue<Racer> racerFinish2 = new LinkedList<Racer>(); //done w/ numbers
-	
+
 	ArrayList<String> systemLog = new ArrayList<String>(); //stores one run at a time
-	
+
 	ArrayList<Run> runList = new ArrayList<Run>(); //list of previous runs
 	private int runNum = 1; //number of the current run
 
@@ -23,13 +25,13 @@ public class ChronoTimer {
 
 	private boolean[][] enabled = new boolean[2][4]; //array holding enable for each channel
 	private boolean runStarted = false; //a run must be created before almost everything else
-	
+
 	private int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run, 4 is GRP
 	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
-	
+
 	private int placeHoldNum = 1; //keeps track of placeholderNum for GRP race finishes
 	private double groupStart = 0.0; //stores start time for GRP races
-	
+
 	private int hours = 0;
 	private int minutes = 0;
 	private double seconds = 0.0;
@@ -39,7 +41,7 @@ public class ChronoTimer {
 		ChronoTimer t = new ChronoTimer();
 
 		String command;
-		
+
 		do{
 			command = sim.getInput();
 			if(command == ""||command=="GUI"){
@@ -58,30 +60,30 @@ public class ChronoTimer {
 	public boolean getEnabled(int i, int j){ //returns enabled at a given index //used for testing
 		return enabled[i][j];
 	}
-	
+
 	public int getRunNum(){ //used for testing
 		return runNum;
 	}
-	
+
 	public boolean getRunStart(){ //used for testing
 		return runStarted;
 	}
-	
+
 	public void sendCommand(String command) throws IOException{ //receives commands from Simulator
-	//1
+		//1
 		if(command.contains("POWER")){
 			power();
 			boolean b = isPowerOn();
 			if(b) System.out.println("Power On.");
 			else System.out.println("Power Off.");
 		}
-	//2
+		//2
 		else if(command.contains("RESET")){
 			boolean b = reset();
 			if(b) System.out.println("Reset.");
 			else System.out.println("Try Again - NOT Reset.");
 		}
-	//3
+		//3
 		else if(command.contains("TIME")){
 			String[] time = command.split(" ");
 			String[] splitTime = time[1].split(":");
@@ -92,20 +94,20 @@ public class ChronoTimer {
 			if(b) System.out.println("Time has been set to " + _hours + ":" + _minutes + ":" + _seconds + ".");
 			else System.out.println("Try Again - Time has not been set.");
 		}
-	//4
+		//4
 		else if(command.contains("EVENT")){
 			String[] event = command.split(" ");
 			boolean b = setEventType(event[1]);
 			if(b) System.out.println("Event Type has been set to " + event[1]);
 			else System.out.println("Try Again - Event Type not set.");
 		}
-	//5
+		//5
 		else if(command.contains("NEWRUN")){
 			boolean b = newRun();
 			if(b) System.out.println("New Run has been started.");
 			else System.out.println("Try Again - New Run NOT started.");
 		}
-	//6
+		//6
 		else if(command.contains("NUM")){
 			String[] num = command.split(" ");
 			int i = Integer.parseInt(num[1]);
@@ -113,7 +115,7 @@ public class ChronoTimer {
 			if(b)System.out.println("Runner Number " + i + " Added.");
 			else System.out.println("Try Again - Runner Number " + i + " Not Added.");
 		}
-	//7
+		//7
 		else if(command.contains("TOG")){
 			command = command.substring(command.length()-1, command.length());
 			int channel = Integer.parseInt(command);
@@ -121,7 +123,7 @@ public class ChronoTimer {
 			if(b) System.out.println("Channel Number " + channel + " has been toggled.");
 			else System.out.println("Try Again - Channel Number " + channel + " has NOT been toggled.");
 		}
-	//8	
+		//8	
 		else if(command.contains("TRIG")){
 			command = command.substring(command.length()-1, command.length());
 			int channel = Integer.parseInt(command);
@@ -129,37 +131,37 @@ public class ChronoTimer {
 			if(b == true) System.out.println("Triggering Channel " + channel + " was successful!");
 			else System.out.println("Try Again - Triggering Channel " + channel + " was not successful.");
 		}
-	//9
+		//9
 		else if(command.contains("START")){
 			boolean b = start();
 			if(b) System.out.println("Started on Channel 1.");
 			else System.out.println("Try Again - Channel 1 Not Started.");
 		}
-	//10
+		//10
 		else if(command.contains("FINISH")){
 			boolean b = finish();
 			if(b) System.out.println("Finished on Channel 2.");
 			else System.out.println("Try Again - Channel 2 Not Finished.");
 		}
-	//11
+		//11
 		else if(command.contains("DNF")){
 			boolean b = dnfRacer();
 			if(b) System.out.println("Racer did not finish.");
 			else System.out.println("Racer not ended.");
 		}
-	//12
+		//12
 		else if(command.contains("CANCEL")){
 			boolean b = cancelRacer();
 			if(b) System.out.println("Racer has been cancelled.");
 			else System.out.println("Racer has NOT been cancelled.");
 		}
-	//13
+		//13
 		else if(command.contains("ENDRUN")){
 			boolean b = endRun();
 			if(b) System.out.println("Run has been ended.");
 			else System.out.println("Run has NOT been ended.");
 		}
-	//14
+		//14
 		else if(command.contains("PRINT")){
 			String[] runNumArray = command.split(" ");
 			int runNum = Integer.parseInt(runNumArray[1]);
@@ -168,7 +170,7 @@ public class ChronoTimer {
 			if(b) System.out.println("Printing Run was successful.");
 			else System.out.println("Printing Run was not successful.");
 		}
-	//15
+		//15
 		else if(command.contains("EXPORT")){
 			String[] runNum = command.split(" ");
 			int runnerNumEx = Integer.parseInt(runNum[1]);
@@ -177,11 +179,40 @@ public class ChronoTimer {
 			if(b) System.out.println("Exporting Run was successful.");
 			else System.out.println("Exporting Run was not successful.");
 		}
-	//16
+		//16
 		else if(command.contains("EXIT")){
 			System.out.println("Exiting Program.");
 			exit();
 		}
+		//17
+		else if(command.contains("SWAP")){
+			if(eventType==1){ //check to see if it's an IND event
+				if(racerRun1.size() < 2){ //refuses to execute if current runs >=2
+					System.out.println("Cannot swap, <2 racers running"); //prints error message and returns 
+					return;
+				}
+
+				Queue<Racer> copy = new LinkedList<Racer>();
+				copy.addAll(racerFinish1);
+
+				int startSize = racerFinish1.size(); //initial size of list of finished competitors
+				while(racerFinish1.size() == startSize+1){ //when the list of finished competitors is incremented
+					while(racerFinish1.size() == startSize+2){ //when the list of finished racers increments by 2
+
+						for(int i = -2; i < racerFinish1.size(); i++){//FOR loop removes all but the most recent 2 entries to the "finished" queue
+
+							racerFinish1.remove(); 
+
+						}Racer hold = racerFinish1.remove();
+						copy.add(racerFinish1.remove());
+						copy.add(hold);
+						racerFinish1 = copy;
+					}
+				}
+			}
+			System.out.println("Swapped");
+		}else System.out.println("Swap can only be called during IND events; wrong event type.");
+
 		System.out.println(""); 
 	}
 
@@ -215,7 +246,7 @@ public class ChronoTimer {
 			System.out.println("Try Again - Power must be 'On'.");
 			return false;
 		}
-		
+
 		racerQueue1 = new LinkedList<Racer>();
 		racerQueue2 = new LinkedList<Racer>();
 		racerRun1 = new LinkedList<Racer>();
@@ -224,7 +255,7 @@ public class ChronoTimer {
 		racerFinish2 = new LinkedList<Racer>();
 
 		systemLog = new ArrayList<String>();
-		
+
 		enabled = new boolean[2][4];
 		runStarted = false;
 
@@ -243,7 +274,7 @@ public class ChronoTimer {
 			System.out.println("Try Again - Power must be 'On'.");
 			return false;
 		}
-		
+
 		hours = hrs;
 		minutes = min;
 		seconds = sec;
@@ -267,7 +298,7 @@ public class ChronoTimer {
 		}
 		return true;
 	}
-	
+
 	public boolean newRun(){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
@@ -310,7 +341,7 @@ public class ChronoTimer {
 			System.out.println("Try Again - A Run has not been started.");
 			return false;
 		}
-		
+
 		systemLog.add(t.getSystemTime() + " Run Ended.");
 		eventType = 3;
 		dnfRacer();
@@ -320,7 +351,7 @@ public class ChronoTimer {
 		reset();
 		return true;
 	}
-	
+
 	public boolean dnfRacer(){
 		//sets end time of next racer to finish to DNF (-1), not return to queue		
 		if(!isPowerOn()) {
@@ -335,7 +366,7 @@ public class ChronoTimer {
 			System.out.println("Try Again - A Run has not been started.");
 			return false;
 		}
-		
+
 		if(eventType == 1){ //IND 
 			if(racerRun1.isEmpty()){
 				System.out.println("Try Again - There are no Racers in the Queue.");
@@ -440,7 +471,7 @@ public class ChronoTimer {
 		if(eventType == 1 || eventType == 2 || eventType == 4){ //same thing for IND & PARIND & GRP
 			if(channelNum % 2 != 0){ //odd
 				boolean enable = enabled[0][channelNum/2];
-				
+
 				if(enable == false){ //odd & disabled
 					enabled[0][channelNum/2] = true;
 					systemLog.add(t.getSystemTime() + " Start Channel Num " + channelNum + " has been enabled.");
@@ -452,12 +483,12 @@ public class ChronoTimer {
 			}
 			else if(channelNum % 2 == 0){ //even
 				boolean enable1 = enabled[1][(channelNum/2)-1];
-				
+
 				if(enable1 == false){ //even & disabled
 					enabled[1][(channelNum/2)-1] = true;
 					systemLog.add(t.getSystemTime() + " End Channel Num " + channelNum + " has been enabled.");
 				}
-				
+
 				else if(enable1 == true){ //even & enabled
 					enabled[1][(channelNum/2)-1] = false;
 					systemLog.add(t.getSystemTime() + " End Channel Num " + channelNum + " has been disabled.");
@@ -528,7 +559,7 @@ public class ChronoTimer {
 				return false;
 			}
 		}//end IND
-		
+
 		//PARIND
 		else if(eventType == 2){ 
 			if(channelNum != 1 && channelNum != 2 && channelNum != 3 && channelNum != 4){
@@ -604,7 +635,7 @@ public class ChronoTimer {
 				return false;
 			}//end even channel
 		}//end PARIND
-		
+
 		//GRP
 		else if(eventType == 4){
 			if(channelNum != 1 && channelNum != 2){
@@ -693,7 +724,7 @@ public class ChronoTimer {
 		}
 		return true;
 	}
-	
+
 	public boolean print(int rNum){
 		if(rNum > runList.size()){
 			System.out.println("Try Again - " + rNum + " is not a valid run number.");
@@ -723,11 +754,11 @@ public class ChronoTimer {
 			return null;
 		}
 		else{	
-		Run r = runList.get(runNum-2);
-		return r.guiPrint();
+			Run r = runList.get(runNum-2);
+			return r.guiPrint();
 		}
 	}
-		
+
 	public boolean export(int rNum){
 		if(rNum > runList.size()){
 			System.out.println("Try Again - " + rNum + " is not a valid run number.");
@@ -765,7 +796,7 @@ public class ChronoTimer {
 			System.out.println("Try Again - No Racers have finish w/o Numbers.");
 			return false;
 		}
-		
+
 		Racer r = racerFinish1.remove();
 		r.setNum(racerNum);
 		racerFinish2.add(r);
