@@ -38,7 +38,7 @@ public class Simulator {
 				System.out.println("14. Print | 15. Export | 16. Exit");
 				System.out.println("17. Group Racer Number Set");
 				System.out.println("18. Connect Sensor | 19. Disconnect Sensor");
-
+				System.out.println("20. Swap");
 				int menuChoice = input.nextInt();
 
 				switch(menuChoice){
@@ -132,6 +132,9 @@ public class Simulator {
 				default:
 					System.out.println("Invalid Input.");
 					break;
+				case 20:
+					System.out.println("attempting swap...");
+					return "SWAP";
 				}
 			}	
 		}

@@ -217,7 +217,7 @@ public class ChronoTimer {
 			if(b) System.out.println("Disconnecting Sensor was successful.");
 			else System.out.println("Disconnecting Sensor was not successful.");	
 		}
-		//17
+		//20
 		else if(command.contains("SWAP")){
 			if(eventType==1){ //check to see if it's an IND event
 				if(racerRun1.size() < 2){ //refuses to execute if current runs >=2
