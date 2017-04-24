@@ -108,6 +108,10 @@ public class ChronoTimer {
 	//6
 		else if(command.contains("NUM")){
 			String[] num = command.split(" ");
+			if(num.length < 2){
+				System.out.println("No Number Entered.");
+				return;
+			}
 			int i = Integer.parseInt(num[1]);
 			boolean b = addRacer(i);
 			if(b)System.out.println("Runner Number " + i + " Added.");
