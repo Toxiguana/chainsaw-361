@@ -22,6 +22,7 @@ public class ChronoTimer {
 	Time t = new Time(); //time instance to do functions
 
 	private boolean[][] enabled = new boolean[2][4]; //array holding enable for each channel
+	private boolean[][] connected = new boolean[2][4]; //array holding connected for each sensor
 	private boolean runStarted = false; //a run must be created before almost everything else
 	
 	private int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run, 4 is GRP
@@ -318,7 +319,7 @@ public class ChronoTimer {
 		systemLog.add(t.getSystemTime() + " Run Ended.");
 		eventType = 3;
 		dnfRacer();
-		Run r = new Run(runNum, systemLog);
+		Run r = new Run(runNum, systemLog, racerFinish1, racerFinish2);
 		runList.add(r);
 		runNum++;
 		reset();
@@ -717,6 +718,7 @@ public class ChronoTimer {
 		}
 		return true;
 	}
+	
 	public ArrayList<String> printGUI(){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
@@ -761,7 +763,7 @@ public class ChronoTimer {
 			System.out.println("Try Again - Power must be 'On'.");
 			return false;
 		}
-		if(eventType == 4){
+		if(eventType != 4){
 			System.out.println("Try Again - Event Type must be Group.");
 			return false;
 		}
@@ -776,4 +778,68 @@ public class ChronoTimer {
 		return true;
 	}
 
+	public boolean connectSensor(int channelNum){
+		if(channelNum % 2 != 0){ //odd
+			boolean connect = connected[0][channelNum/2];
+			
+			if(connect == false){ //odd & not connected
+				connected[0][channelNum/2] = true;
+				systemLog.add(t.getSystemTime() + " Sensor on " + channelNum + " has been connected.");
+				return true;
+			}
+			else if(connect == true){ //odd & connected
+				systemLog.add(t.getSystemTime() + " Sensor is already connected.");
+				System.out.println("Try Again - Sensor is already connected.");
+				return false;
+			}
+		}
+		else if(channelNum % 2 == 0){ //even
+			boolean connect1 = connected[1][(channelNum/2)-1];
+			
+			if(connect1 == false){ //even & not connected
+				connected[1][(channelNum/2)-1] = true;
+				systemLog.add(t.getSystemTime() + " Sensor on " + channelNum + " has been connected.");
+				return true;
+			}
+			else if(connect1 == true){ //even & connected
+				systemLog.add(t.getSystemTime() + " Sensor is already connected.");
+				System.out.println("Try Again - Sensor is already connected.");
+				return false;
+			}
+		}//end else if
+		return false;
+	}
+	
+	public boolean disconnectSensor(int channelNum){
+		if(channelNum % 2 != 0){ //odd
+			boolean connect = connected[0][channelNum/2];
+			
+			if(connect == true){ //odd & connected
+				connected[0][channelNum/2] = false;
+				systemLog.add(t.getSystemTime() + " Sensor on " + channelNum + " has been disconnected.");
+				return true;
+			}
+			else if(connect == false){ //odd & not connected
+				systemLog.add(t.getSystemTime() + " Sensor is not connected.");
+				System.out.println("Try Again - Sensor is not connected.");
+				return false;
+			}
+		}
+		else if(channelNum % 2 == 0){ //even
+			boolean connect1 = connected[1][(channelNum/2)-1];
+			
+			if(connect1 == true){ //even & connected
+				connected[1][(channelNum/2)-1] = false;
+				systemLog.add(t.getSystemTime() + " Sensor on " + channelNum + " has been disconnected.");
+			}
+			
+			else if(connect1 == false){ //even & not connected
+				systemLog.add(t.getSystemTime() + " Sensor is not connected.");
+				System.out.println("Try Again - Sensor is not connected.");
+				return false;
+			}
+		}//end else if
+		return false;
+	}
+	
 }//end ChronoTimer

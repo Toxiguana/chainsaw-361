@@ -2,9 +2,11 @@
 public class Sensor {
 
 	private int channelNum;
+	private int sensorType; //1 = start, 2 = end
 	
-	public Sensor(int cN){
+	public Sensor(){
 		channelNum = -1;
+//		sensorType = sT;
 	}
 	
 	public boolean connect(int cN){
@@ -23,5 +25,9 @@ public class Sensor {
 		}
 		System.out.println("Sensor is not connected.");
 		return true;
+	}
+	
+	public int getType(){
+		return sensorType;
 	}
 }
