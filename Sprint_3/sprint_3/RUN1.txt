@@ -1,0 +1,10 @@
+12:46:10.631 New IND Run Started.
+12:46:10.632 Racer Num 22 has been added to IND event.
+12:46:10.632 Racer Num 23 has been added to IND event.
+12:46:10.632 Start Channel Num 1 has been enabled.
+12:46:10.633 End Channel Num 2 has been enabled.
+12:46:10.633 Racer Num 22 started racing.
+12:46:10.633 Racer Num 23 started racing.
+12:46:10.634 Racer Num 22 finished racing.
+12:46:10.634 Racer Num 23 finished racing.
+12:46:10.634 Run Ended.

@@ -2,6 +2,7 @@
 public class RunTime implements Runnable {
 	Racer r;
 	GUI g;
+	Boolean update=true;
 	Time t=new Time();
 	public RunTime(GUI _g,Racer _r){
 		g=_g;
@@ -11,11 +12,14 @@ public class RunTime implements Runnable {
 		try {
 			while (true) {
 				Thread.sleep(1000);
-				t.computeTime(r.getStart(), t.currentTime());
-				g.updateTime(r.getNum()+" "+r.getElapsedTime()+" R");
+				if(update){
+				String tl=t.computeTime(r.getStart(), t.start());
+				tl=tl.substring(0,tl.indexOf('.'));
+				g.updateTime(r.getNum()+" "+tl+" R");
+				}
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			return;
 		}
 	}
 }

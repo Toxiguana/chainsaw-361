@@ -31,22 +31,13 @@ public class Simulator {
 		if(inputType.equalsIgnoreCase("U")){
 			while(true){
 				System.out.println("Enter a Command.");
-				System.out.println("1. Power");
-				System.out.println("2. Reset");
-				System.out.println("3. Time");
-				System.out.println("4. Event Type");
-				System.out.println("5. New Run");
-				System.out.println("6. Add Runner (NUM)");
-				System.out.println("7. Toggle");
-				System.out.println("8. Trigger");
-				System.out.println("9. Start");
-				System.out.println("10. Finish");
-				System.out.println("11. DNF");
-				System.out.println("12. Cancel");
-				System.out.println("13. End Run");
-				System.out.println("14. Print");
-				System.out.println("15. Export");
-				System.out.println("16. Exit");
+				System.out.println("1. Power | 2. Reset | 3. Time | 4. Event Type");
+				System.out.println("5. New Run | 6. Add Runner | 7. Toggle");
+				System.out.println("8. Trigger | 9. Start | 10. Finish");
+				System.out.println("11. DNF| 12. Cancel | 13. End Run");
+				System.out.println("14. Print | 15. Export | 16. Exit");
+				System.out.println("17. Group Racer Number Set");
+				System.out.println("18. Connect Sensor | 19. Disconnect Sensor");
 
 				int menuChoice = input.nextInt();
 
@@ -65,12 +56,15 @@ public class Simulator {
 						System.out.println("Please Choose the Event Type:");
 						System.out.println("1. Individual Run");
 						System.out.println("2. Parallel Individual Run");
+						System.out.println("3. Group Run");
 						int runChoice = input.nextInt();
 						switch (runChoice){
 						case 1:
 							return "EVENT IND";
 						case 2:
 							return "EVENT PARIND";
+						case 3:
+							return "EVENT GRP";
 						default:
 							System.out.println("Invalid Input.");
 						}
@@ -123,6 +117,18 @@ public class Simulator {
 					return "EXPORT " + runNumExport;
 				case 16:
 					return "EXIT";
+				case 17:
+					System.out.println("What is the number you want to set the racer to?");
+					int gN = input.nextInt();
+					return "GROUP " + gN;
+				case 18:
+					System.out.println("Which channel do you want to connect a sensor to?");
+					int con = input.nextInt();
+					return "CONN " + con;
+				case 19:
+					System.out.println("Which channel do you want to disconnect a sensor from?");
+					int discon = input.nextInt();
+					return "DISC " + discon;
 				default:
 					System.out.println("Invalid Input.");
 					break;
