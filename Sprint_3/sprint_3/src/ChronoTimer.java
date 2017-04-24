@@ -186,7 +186,7 @@ public class ChronoTimer {
 		else if(command.contains("EXIT")){
 			System.out.println("Exiting Program.");
 			exit();
-		}
+		} 
 	//17 
 		else if(command.contains("GRPADD")){
 			String[] runNum = command.split(" ");

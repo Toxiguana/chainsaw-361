@@ -280,7 +280,7 @@ public class GUI extends JFrame {
 							}
 						}
 					}
-					// updating display
+					// updating displays
 					if (!finish.isEmpty()) {
 						Object[] r = finish.toArray();
 						fString = (((Racer) r[r.length - 1]).getNum() + " " + t.computeTime(
@@ -801,7 +801,7 @@ public class GUI extends JFrame {
 					}
 					else{
 						break;
-					}
+					} 
 				}
 				}
 				if(c.getEventType()==2){
