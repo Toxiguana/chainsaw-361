@@ -19,12 +19,15 @@ public class Racer implements Comparable<Object>{
 	public void setTime(String s) {
 		if (time.contains(":")) {
 			String numHours = time.substring(0, s.indexOf(":"));
-			s = s.substring(s.indexOf(":") + 1, s.length() - 1);
+			s = s.substring(s.indexOf(":") + 1, s.length());
+			System.out.println(s);
 			hours = Integer.parseInt(numHours);
 			if (s.contains(":")) {
 				String numMinutes = time.substring(0, s.indexOf(":"));
-				s = s.substring(s.indexOf(":") + 1, s.length() - 1);
+				s = s.substring(s.indexOf(":") + 1, s.length());
+				System.out.println(s);
 				minutes = Integer.parseInt(numMinutes);
+				System.out.println(s);
 				seconds = Integer.parseInt(s);
 			} else {
 				time = "DNF";

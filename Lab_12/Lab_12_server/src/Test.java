@@ -76,24 +76,31 @@ public class Test {
             String response = "";
             			
             // set up the header
-            response += "<!DOCTYPE html>\n<html>\n<head><title>Employee Directory</title>";
+            response += "<!DOCTYPE html>\n<html>\n<head><title>Run</title>";
             response += "<link rel=\"stylesheet\" href=\"/displayresults/css\">\n</head>\n<body>";
-            response += "<h1>Company Directory</h1>\n<table>";
-            response += "<tr><th>First Name</th>\n<th>Last Name</th>\n<th>Department</th>";
-            response += "<th>Phone Number</th>\n<th>Gender</th>\n<th>Title</th></tr>";
+            response += "<h1>Run Results</h1>\n<table>";
+            response += "<tr><th>RunnerNumber</th>\n<th>First Name</th>\n<th>Last Name</th>";
+            response += "<th>Time</th>";
             
             ArrayList<Racer> run = new ArrayList<Racer>();
             Runner_Comparator rc= new Runner_Comparator();
             run= r.getArraylist();
             run.sort(rc);
+            int count=0;
             for(int i = 0; i < run.size() ; i++)
             {
+            	if(count <=5){
             	Racer r = run.get(i);
             	response += "\n<td>" + r.getRunNumber() + "</td>"; 
             	response += "<tr>\n<td>" + r.getFirst() + "</td>";
             	response += "\n<td>" + r.getLast() + "</td>"; 
             	response += "\n<td>" + r.getTime() + "</td>";
             	response += "\n</tr>";
+            	count++;
+            	}
+            	else{
+            		break;
+            	}
             }
             
             response += "\n</table>\n</body>\n</html>";
@@ -141,14 +148,14 @@ public class Test {
             
             if(s2.equalsIgnoreCase("Add")){
             	String s = s1[1];
-            	String[] s3 = s.split("\"");
+            	String[] s3 = s.split(" ");
             	
             	if(s3[3].equals("")){
             		s2 = "NOT Added";
             		pr2 = "ERROR: Please fill out the fields!";
             	}
             	else{
-            		r.add(s3[3], s3[7], s3[11], s3[15], s3[19], s3[23]);
+            		r.add(s3[1], s3[2], s3[3], s3[4]);
 //	            	System.out.println(s3[3] + s3[7] + s3[11] + s3[15] + s3[19] + s3[23]);
             		pr2 = "Added " + s3[3] + " " + s3[7] + " to Directory.";
             	}

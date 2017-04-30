@@ -76,6 +76,7 @@ public class Racer implements Comparable<Object>{
 			int hourscompare=Math.max(other.hours, hours);
 			int minutescompare=Math.max(other.minutes, minutes);
 			int secondscompare=Math.max(other.seconds, seconds);
+			
 		}
 		return 0;
 	}
