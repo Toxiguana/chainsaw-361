@@ -14,7 +14,7 @@ public class Client {
 		String content = getJSON(e, command);
 		try {
 			// Client will connect to this location
-			URL site = new URL("http://localhost:8000/sendresults");
+			URL site = new URL("http://129.89.143.92:8000/sendresults");
 			HttpURLConnection conn = (HttpURLConnection) site.openConnection();
 
 			// now create a POST request
@@ -22,7 +22,7 @@ public class Client {
 			conn.setDoOutput(true);
 			conn.setDoInput(true);
 			DataOutputStream out = new DataOutputStream(conn.getOutputStream());
-
+			System.out.println(content);
 			// write out string to output buffer for message
 			out.writeBytes(content);
 			out.flush();
