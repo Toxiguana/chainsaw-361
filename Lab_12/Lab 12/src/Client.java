@@ -14,7 +14,7 @@ public class Client {
 		String content = getJSON(r, command);
 		try {
 			// Client will connect to this location
-			URL site = new URL("localhost:8000/sendresults");
+			URL site = new URL("http://localhost:8000/sendresults");
 			HttpURLConnection conn = (HttpURLConnection) site.openConnection();
 
 			// now create a POST request
