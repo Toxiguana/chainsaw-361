@@ -16,7 +16,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 public class Test {
-	static Directory d = new Directory();
+	static Run r = new Run();
     // a shared area where we get the POST data and then use it in the other handler
     static String sharedResponse = "";
     static boolean gotMessageFlag = false;
@@ -82,19 +82,17 @@ public class Test {
             response += "<tr><th>First Name</th>\n<th>Last Name</th>\n<th>Department</th>";
             response += "<th>Phone Number</th>\n<th>Gender</th>\n<th>Title</th></tr>";
             
-            ArrayList<Employee> employeeList = new ArrayList<Employee>();
-            EmployeeComparator ec = new EmployeeComparator();
-            employeeList = d.getArraylist();
-            employeeList.sort(ec);
-            for(int i = 0; i < employeeList.size() ; i++)
+            ArrayList<Racer> run = new ArrayList<Racer>();
+            Runner_Comparator rc= new Runner_Comparator();
+            run= r.getArraylist();
+            run.sort(rc);
+            for(int i = 0; i < run.size() ; i++)
             {
-            	Employee e = employeeList.get(i);
-            	response += "<tr>\n<td>" + e.getFirst() + "</td>";
-            	response += "\n<td>" + e.getLast() + "</td>"; 
-            	response += "\n<td>" + e.getDept() + "</td>";
-            	response += "\n<td>" + e.getPhone() + "</td>";
-            	response += "\n<td>" + e.getGender() + "</td>";
-            	response += "\n<td>" + e.getTitle() + "</td>";
+            	Racer r = run.get(i);
+            	response += "\n<td>" + r.getRunNumber() + "</td>"; 
+            	response += "<tr>\n<td>" + r.getFirst() + "</td>";
+            	response += "\n<td>" + r.getLast() + "</td>"; 
+            	response += "\n<td>" + r.getTime() + "</td>";
             	response += "\n</tr>";
             }
             
@@ -150,17 +148,17 @@ public class Test {
             		pr2 = "ERROR: Please fill out the fields!";
             	}
             	else{
-            		d.add(s3[3], s3[7], s3[11], s3[15], s3[19], s3[23]);
+            		r.add(s3[3], s3[7], s3[11], s3[15], s3[19], s3[23]);
 //	            	System.out.println(s3[3] + s3[7] + s3[11] + s3[15] + s3[19] + s3[23]);
             		pr2 = "Added " + s3[3] + " " + s3[7] + " to Directory.";
             	}
             }
             else if(s2.equalsIgnoreCase("Clear")){
-            	d.clear();
+            	r.clear();
             	pr2 = "Cleared Directory.";
             }
             else if(s2.equalsIgnoreCase("Print")){
-            	pr2 = d.print();
+            	pr2 = r.print();
             }
             
             // respond to the POST with ROGER

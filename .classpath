@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry excluding="Sprint_1/sprint_1/src/|Sprint_2/sprint_2/src/|361Lab01/src/|Lab_09/Lab_09_Server/src/|Sprint_3/sprint_3/src/|Lab_08/Client/src/|Lab_09/Lab_09_Client/src/|Lab_07/GSON/src/|Lab_08/Lab_08_Server/src/|361Lab01/|Lab_08/Lab_08_Client/src/|Lab_04/Lab_04(1)/src/|Lab_07/Lab_07/src/|Lab_05/Lab_05/src/" kind="src" path=""/>
+	<classpathentry excluding="src/" kind="src" path="361Lab01"/>
+	<classpathentry kind="src" path="361Lab01/src"/>
+	<classpathentry kind="src" path="Lab_04/Lab_04(1)/src"/>
+	<classpathentry kind="src" path="Lab_05/Lab_05/src"/>
+	<classpathentry kind="src" path="Lab_07/GSON/src"/>
+	<classpathentry kind="src" path="Lab_07/Lab_07/src"/>
+	<classpathentry kind="src" path="Lab_08/Client/src"/>
+	<classpathentry kind="src" path="Lab_08/Lab_08_Client/src"/>
+	<classpathentry kind="src" path="Lab_08/Lab_08_Server/src"/>
+	<classpathentry kind="src" path="Lab_09/Lab_09_Client/src"/>
+	<classpathentry kind="src" path="Lab_09/Lab_09_Server/src"/>
+	<classpathentry kind="src" path="Sprint_1/sprint_1/src"/>
+	<classpathentry kind="src" path="Sprint_2/sprint_2/src"/>
+	<classpathentry kind="src" path="Sprint_3/sprint_3/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="output" path="Lab_04/361Lab04/bin"/>
+</classpath>
