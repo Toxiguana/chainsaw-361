@@ -148,14 +148,14 @@ public class Test {
             
             if(s2.equalsIgnoreCase("Add")){
             	String s = s1[1];
-            	String[] s3 = s.split(" ");
+            	String[] s3 = s.split("\"");
             	
             	if(s3[3].equals("")){
             		s2 = "NOT Added";
             		pr2 = "ERROR: Please fill out the fields!";
             	}
             	else{
-            		r.add(s3[1], s3[2], s3[3], s3[4]);
+            		r.add(s3[3], s3[7], s3[11], s3[15]);
 //	            	System.out.println(s3[3] + s3[7] + s3[11] + s3[15] + s3[19] + s3[23]);
             		pr2 = "Added " + s3[3] + " " + s3[7] + " to Directory.";
             	}

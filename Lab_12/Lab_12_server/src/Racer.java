@@ -33,10 +33,10 @@ public class Racer implements Comparable<Object>{
 			time = "DNF";
 		}
 	}
-	@Override
-	public String toString() {
-		return runNumber+ " "+firstName + " "+lastName+" "+time;
-	}
+//	@Override
+//	public String toString() {
+//		return runNumber+ " "+firstName + " "+lastName+" "+time;
+//	}
 
 	public String getLast() {
 		return lastName;

@@ -32,7 +32,7 @@ public class GUI extends JFrame {
 	 */
 	public GUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 330, 223);
+		setBounds(100, 100, 350, 245);
 		getContentPane().setLayout(null);
 		
 		lblBIbNumber = new JLabel("Bib Number:");
@@ -80,7 +80,10 @@ public class GUI extends JFrame {
 				String time=textTime.getText();
 				Racer r=new Racer(firstName,lastName,runnerNum,time);
 				sendData(r,"Add ");
-				
+				textFirstName.setText("");
+				textLastName.setText("");
+				textNum.setText("");
+				textTime.setText("");
 			}
 		});
 		btnSubmit.setBounds(204, 141, 117, 29);
@@ -89,6 +92,7 @@ public class GUI extends JFrame {
 		btnExit = new JButton("Exit");
 		btnExit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				System.exit(0);
 			}
 		});
 		btnExit.setBounds(204, 166, 117, 29);
