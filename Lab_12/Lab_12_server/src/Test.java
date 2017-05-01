@@ -60,7 +60,7 @@ public class Test {
             response += "tr:nth-child(even){background-color: lightgray;}\n";
             response += "tr {text-align: center;}\n";
             
-            System.out.println(response);
+//            System.out.println(response);
             
             // write out the response
             t.sendResponseHeaders(200, response.length());

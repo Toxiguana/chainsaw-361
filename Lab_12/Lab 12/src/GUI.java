@@ -53,7 +53,7 @@ public class GUI extends JFrame {
 		getContentPane().add(textLastName);
 		textLastName.setColumns(10);
 		
-		lblFirstInitial = new JLabel("First Intial:");
+		lblFirstInitial = new JLabel("First Initial:");
 		lblFirstInitial.setBounds(22, 76, 72, 16);
 		getContentPane().add(lblFirstInitial);
 		
