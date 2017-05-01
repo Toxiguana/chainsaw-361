@@ -79,33 +79,27 @@ public class Test {
             response += "<!DOCTYPE html>\n<html>\n<head><title>Run</title>";
             response += "<link rel=\"stylesheet\" href=\"/displayresults/css\">\n</head>\n<body>";
             response += "<h1>Run Results</h1>\n<table>";
-            response += "<tr><th>RunnerNumber</th>\n<th>First Name</th>\n<th>Last Name</th>";
+            response += "<tr><th>RunnerNumber</th>\n<th>First Intial</th>\n<th>Last Name</th>";
             response += "<th>Time</th>";
             
             ArrayList<Racer> run = new ArrayList<Racer>();
             Runner_Comparator rc= new Runner_Comparator();
             run= r.getArraylist();
             run.sort(rc);
-            int count=0;
             for(int i = 0; i < run.size() ; i++)
             {
-            	if(count <=5){
             	Racer r = run.get(i);
-            	response += "\n<td>" + r.getRunNumber() + "</td>"; 
-            	response += "<tr>\n<td>" + r.getFirst() + "</td>";
+            	response += "<tr>\n<td>" + r.getRunNumber() + "</td>"; 
+            	response += "\n<td>" + r.getFirstIntial() + "</td>";
             	response += "\n<td>" + r.getLast() + "</td>"; 
             	response += "\n<td>" + r.getTime() + "</td>";
             	response += "\n</tr>";
-            	count++;
-            	}
-            	else{
-            		break;
-            	}
+            
             }
             
             response += "\n</table>\n</body>\n</html>";
             
-            System.out.println(response);
+//            System.out.println(response);
             
             // write out the response
             t.sendResponseHeaders(200, response.length());
@@ -156,7 +150,7 @@ public class Test {
             	}
             	else{
             		r.add(s3[3], s3[7], s3[11], s3[15]);
-//	            	System.out.println(s3[3] + s3[7] + s3[11] + s3[15] + s3[19] + s3[23]);
+//	            	System.out.println(s3[3] + s3[7] + s3[11] + s3[15]);
             		pr2 = "Added " + s3[3] + " " + s3[7] + " to Directory.";
             	}
             }

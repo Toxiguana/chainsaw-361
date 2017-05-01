@@ -10,7 +10,7 @@ public class Run {
 	public boolean add(String firstName, String lastName, String time, String runnerNum){
 		Racer r=new Racer(firstName,lastName,runnerNum,time);
 		racers.add(r);
-		
+		System.out.println("Added Runner");
 		return true;
 	}
 
@@ -27,10 +27,8 @@ public class Run {
 		if(racers != null && !racers.isEmpty()){
 			s += "Printing... ";
 			for(Racer r: racers) {
-				System.out.println(r);
 				s += "\n" + r.toString();
 			}
-			System.out.println("");
 		}
 		else{
 			System.out.println("No racers in the Run!");

@@ -1,30 +1,31 @@
 
-public class Racer implements Comparable<Object>{
+public class Racer {
  
-	private String firstName;
+	private String firstIntial;
 	private String lastName;
 	private String time;
 	private String runNumber;
 	private int hours;
 	private int minutes;
 	private int seconds;
-	public Racer(String firstName, String lastName, String runNumber,String time) {
-		this.firstName = firstName;
+	
+	public Racer(String firstIntial, String lastName, String runNumber,String time) {
+		this.firstIntial = firstIntial;
 		this.lastName = lastName;
 		this.runNumber=runNumber;
 		this.time=time;
-		setTime(time);
+		setTime(this.time);
 	}
 
 	public void setTime(String s) {
-		if (time.contains(":")) {
-			String numHours = time.substring(0, s.indexOf(":"));
-			s = s.substring(s.indexOf(":") + 1, s.length() - 1);
+		if (s.contains(":")) {
+			String numHours = s.substring(0, s.indexOf(":"));
+			s = s.substring(s.indexOf(":") + 1, s.length());
 			hours = Integer.parseInt(numHours);
 			if (s.contains(":")) {
-				String numMinutes = time.substring(0, s.indexOf(":"));
-				s = s.substring(s.indexOf(":") + 1, s.length() - 1);
+				String numMinutes = s.substring(0, s.indexOf(":"));
 				minutes = Integer.parseInt(numMinutes);
+				s = s.substring(s.indexOf(":") + 1, s.length());
 				seconds = Integer.parseInt(s);
 			} else {
 				time = "DNF";
@@ -33,16 +34,16 @@ public class Racer implements Comparable<Object>{
 			time = "DNF";
 		}
 	}
-//	@Override
-//	public String toString() {
-//		return runNumber+ " "+firstName + " "+lastName+" "+time;
-//	}
+	@Override
+	public String toString() {
+		return runNumber+ " "+firstIntial + " "+lastName+" "+time;
+	}
 
 	public String getLast() {
 		return lastName;
 	}
-	public String getFirst() {
-		return firstName;
+	public String getFirstIntial() {
+		return firstIntial;
 	}
 	public String getTime() {
 		return time;
@@ -59,26 +60,6 @@ public class Racer implements Comparable<Object>{
 	}
 	public int getSeconds(){
 		return seconds;
-	}
-	@Override
-	public int compareTo(Object o) {
-		if (o instanceof Racer) {
-			Racer other = (Racer) o;
-			if (time == "DNF" || other.time == "DNF") {
-				if (time == "DNF" && other.time == "DNF") {
-					return 2;
-				} else if (time == "DNF") {
-					return -1;
-				} else if (other.time == "DNF") {
-					return 1;
-				}
-			}
-			int hourscompare=Math.max(other.hours, hours);
-			int minutescompare=Math.max(other.minutes, minutes);
-			int secondscompare=Math.max(other.seconds, seconds);
-			
-		}
-		return 0;
 	}
 
 }
