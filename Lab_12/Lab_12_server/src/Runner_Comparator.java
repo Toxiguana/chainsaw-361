@@ -23,24 +23,24 @@ public class Runner_Comparator implements Comparator{
 			int minutescompare=r2.getMinutes()-r1.getMinutes();
 			int secondscompare=r2.getSeconds()-r1.getSeconds();
 			if(hourscompare>0){
-				return 1;
+				return -1;
 			}
 			else if(hourscompare<0){
-				return -1;
+				return 1;
 			}
 			else{
 				if(minutescompare>0){
-					return 1;
+					return -1;
 				}
 				else if(minutescompare<0){
-					return -1;
+					return 1;
 				}
 				else{
 					if(secondscompare>0){
-						return 1;
+						return -1;
 					}
 					else if(secondscompare<0){
-						return -1;
+						return 1;
 					}
 					else{
 						return 0;
