@@ -1,7 +1,7 @@
 
 public class Racer {
  
-	private String firstIntial;
+	private String firstInitial;
 	private String lastName;
 	private String time;
 	private String runNumber;
@@ -9,8 +9,8 @@ public class Racer {
 	private int minutes;
 	private int seconds;
 	
-	public Racer(String firstIntial, String lastName, String runNumber,String time) {
-		this.firstIntial = firstIntial;
+	public Racer(String firstInitial, String lastName, String runNumber,String time) {
+		this.firstInitial = firstInitial;
 		this.lastName = lastName;
 		this.runNumber=runNumber;
 		this.time=time;
@@ -36,14 +36,14 @@ public class Racer {
 	}
 	@Override
 	public String toString() {
-		return runNumber+ " "+firstIntial + " "+lastName+" "+time;
+		return firstInitial + ""+runNumber+ " "+firstInitial + " "+lastName+" "+time;
 	}
 
 	public String getLast() {
 		return lastName;
 	}
-	public String getFirstIntial() {
-		return firstIntial;
+	public String getFirstInitial() {
+		return firstInitial;
 	}
 	public String getTime() {
 		return time;

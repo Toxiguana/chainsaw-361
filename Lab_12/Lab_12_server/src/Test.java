@@ -79,7 +79,7 @@ public class Test {
             response += "<!DOCTYPE html>\n<html>\n<head><title>Run</title>";
             response += "<link rel=\"stylesheet\" href=\"/displayresults/css\">\n</head>\n<body>";
             response += "<h1>Run Results</h1>\n<table>";
-            response += "<tr><th>RunnerNumber</th>\n<th>First Intial</th>\n<th>Last Name</th>";
+            response += "<tr><th>RunnerNumber</th>\n<th>First Initial</th>\n<th>Last Name</th>";
             response += "<th>Time</th>";
             
             ArrayList<Racer> run = new ArrayList<Racer>();
@@ -90,7 +90,7 @@ public class Test {
             {
             	Racer r = run.get(i);
             	response += "<tr>\n<td>" + r.getRunNumber() + "</td>"; 
-            	response += "\n<td>" + r.getFirstIntial() + "</td>";
+            	response += "\n<td>" + r.getFirstInitial() + "</td>";
             	response += "\n<td>" + r.getLast() + "</td>"; 
             	response += "\n<td>" + r.getTime() + "</td>";
             	response += "\n</tr>";

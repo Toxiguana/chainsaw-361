@@ -19,7 +19,7 @@ public class GUI extends JFrame {
 	private JTextField textTime;
 	private JLabel lblBIbNumber;
 	private JLabel lblLastName;
-	private JLabel lblFirstIntial;
+	private JLabel lblFirstInitial;
 	private JLabel lblTime;
 	private JLabel lblTimeFormat;
 	private JButton btnSubmit;
@@ -53,9 +53,9 @@ public class GUI extends JFrame {
 		getContentPane().add(textLastName);
 		textLastName.setColumns(10);
 		
-		lblFirstIntial = new JLabel("First Intial:");
-		lblFirstIntial.setBounds(22, 76, 72, 16);
-		getContentPane().add(lblFirstIntial);
+		lblFirstInitial = new JLabel("First Intial:");
+		lblFirstInitial.setBounds(22, 76, 72, 16);
+		getContentPane().add(lblFirstInitial);
 		
 		textFirstName = new JTextField();
 		textFirstName.setBounds(102, 73, 130, 26);
