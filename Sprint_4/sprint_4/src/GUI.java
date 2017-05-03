@@ -1,12 +1,10 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollBar;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
-
 import javax.swing.BoundedRangeModel;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -26,7 +24,9 @@ import javax.swing.JTextPane;
 import java.awt.Color;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
-
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
+import com.alee.laf.WebLookAndFeel;
 public class GUI extends JFrame {
 	private JTextField numTxtFld;
 	String fString;
@@ -73,9 +73,18 @@ public class GUI extends JFrame {
 	private JToggleButton tglChan6;
 	private JToggleButton tglChan7;
 	private JToggleButton tglChan8;
+	private JButton btnNum0;
 	private JButton btnNum1;
 	private JButton btnNum2;
 	private JButton btnNum3;
+	private JButton btnNum4;
+	private JButton btnNum5;
+	private JButton btnNum6;
+	private JButton btnNum7;
+	private JButton btnNum8;
+	private JButton btnNum9;
+	private JButton btnBack;
+	private JButton btnEnter;
 	/**
 	 * Create the frame.
 	 */
@@ -83,13 +92,22 @@ public class GUI extends JFrame {
 	public GUI(ChronoTimer _c) {
 		c=_c;
 		g=this;
+		UIManager s=new UIManager();
+
+	    try 
+	    {
+	    	UIManager.setLookAndFeel ( new WebLookAndFeel ());
+	    } 
+	    catch (Exception e) 
+	    {
+	    	
+	    }
 		Time t=new Time();
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(750, 500, 600, 500);
 		setTitle("CHRONOTIMER 1909");
 		getContentPane().setLayout(null);
-		
 		btnSwap = new JButton("Swap");
 		btnSwap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -703,7 +721,7 @@ public class GUI extends JFrame {
 		tglChan8.setBounds(366, 161, 18, 26);
 		getContentPane().add(tglChan8);
 		
-		JButton btnNum1 = new JButton("1");
+		btnNum1 = new JButton("1");
 		btnNum1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numTxtFld.setText(numTxtFld.getText()+"1");
@@ -721,7 +739,7 @@ public class GUI extends JFrame {
 		btnNum2.setBounds(501, 212, 41, 36);
 		getContentPane().add(btnNum2);
 		
-		JButton btnNum3 = new JButton("3");
+		btnNum3 = new JButton("3");
 		btnNum3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numTxtFld.setText(numTxtFld.getText()+"3");
@@ -730,7 +748,7 @@ public class GUI extends JFrame {
 		btnNum3.setBounds(541, 212, 41, 36);
 		getContentPane().add(btnNum3);
 		
-		JButton btnNum4 = new JButton("4");
+		btnNum4 = new JButton("4");
 		btnNum4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numTxtFld.setText(numTxtFld.getText()+"4");
@@ -739,7 +757,7 @@ public class GUI extends JFrame {
 		btnNum4.setBounds(461, 247, 41, 36);
 		getContentPane().add(btnNum4);
 		
-		JButton btnNum5 = new JButton("5");
+		btnNum5 = new JButton("5");
 		btnNum5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numTxtFld.setText(numTxtFld.getText()+"5");
@@ -748,7 +766,7 @@ public class GUI extends JFrame {
 		btnNum5.setBounds(501, 247, 41, 36);
 		getContentPane().add(btnNum5);
 		
-		JButton btnNum6 = new JButton("6");
+		btnNum6 = new JButton("6");
 		btnNum6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numTxtFld.setText(numTxtFld.getText()+"6");
@@ -757,7 +775,7 @@ public class GUI extends JFrame {
 		btnNum6.setBounds(541, 247, 41, 36);
 		getContentPane().add(btnNum6);
 		
-		JButton btnNum7 = new JButton("7");
+		btnNum7 = new JButton("7");
 		btnNum7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numTxtFld.setText(numTxtFld.getText()+"7");
@@ -766,7 +784,7 @@ public class GUI extends JFrame {
 		btnNum7.setBounds(461, 282, 41, 36);
 		getContentPane().add(btnNum7);
 		
-		JButton btnNum8 = new JButton("8");
+		btnNum8 = new JButton("8");
 		btnNum8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numTxtFld.setText(numTxtFld.getText()+"8");
@@ -784,7 +802,7 @@ public class GUI extends JFrame {
 		btnNum9.setBounds(541, 282, 41, 36);
 		getContentPane().add(btnNum9);
 		
-		JButton btnBack = new JButton("-");
+		btnBack = new JButton("-");
 		btnBack.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!numTxtFld.getText().equals("")){
@@ -795,7 +813,7 @@ public class GUI extends JFrame {
 		btnBack.setBounds(461, 317, 41, 36);
 		getContentPane().add(btnBack);
 		
-		JButton btnNum0 = new JButton("0");
+		btnNum0 = new JButton("0");
 		btnNum0.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numTxtFld.setText(numTxtFld.getText()+"0");
@@ -804,7 +822,7 @@ public class GUI extends JFrame {
 		btnNum0.setBounds(501, 317, 41, 36);
 		getContentPane().add(btnNum0);
 		
-		JButton btnEnter = new JButton("+");
+		btnEnter = new JButton("+");
 		btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(c.getEventType()==1||c.getEventType()==2){
