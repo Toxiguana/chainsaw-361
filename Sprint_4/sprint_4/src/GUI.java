@@ -25,10 +25,10 @@ import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import java.awt.Color;
 import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 public class GUI extends JFrame {
 	private JTextField numTxtFld;
-	private JTextArea txtRun = new JTextArea();
 	String fString;
 	String runner1;
 	String runner2;
@@ -39,6 +39,43 @@ public class GUI extends JFrame {
 	Boolean runTime2bol=false;
 	GUI g;
 	ChronoTimer c;
+	private JButton btnSwap;
+	private JTextArea txtLane1;
+	private JTextArea txtLane2;
+	private JTextArea txtLane3;
+	private JTextArea txtLane4;
+	private JLabel lblStart;
+	private JLabel lblEnabledisable;
+	private JLabel lblFinish;
+	private JLabel lblChan1;
+	private JLabel labelChan3;
+	private JLabel labelChan5;
+	private JLabel labelChan7;
+	private JLabel labelchan1;
+	private JLabel lblchan2;
+	private JLabel lblChan3;
+	private JLabel lblChan6;
+	private JLabel lblChan8;
+	private JTextArea txtQueue;
+	private JButton btnTrigChan1;
+	private JButton btnTrigChan2;
+	private JButton btnTrigChan3;
+	private JButton btnTrigChan4;
+	private JButton btnTrigChan5;
+	private JButton btnTrigChan6;
+	private JButton btnTrigChan7;
+	private JButton btnTrigChan8;
+	private JToggleButton tglChan1;
+	private JToggleButton tglChan2;
+	private JToggleButton tglChan3;
+	private JToggleButton tglChan4;
+	private JToggleButton tglChan5;
+	private JToggleButton tglChan6;
+	private JToggleButton tglChan7;
+	private JToggleButton tglChan8;
+	private JButton btnNum1;
+	private JButton btnNum2;
+	private JButton btnNum3;
 	/**
 	 * Create the frame.
 	 */
@@ -53,7 +90,7 @@ public class GUI extends JFrame {
 		setTitle("CHRONOTIMER 1909");
 		getContentPane().setLayout(null);
 		
-		JButton btnSwap = new JButton("Swap");
+		btnSwap = new JButton("Swap");
 		btnSwap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -64,68 +101,64 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnSwap.setBounds(6, 421, 117, 29);
+		btnSwap.setBounds(6, 414, 117, 29);
 		getContentPane().add(btnSwap);
 		
-		JLabel lblStart = new JLabel("Start");
+		lblStart = new JLabel("Start");
 		lblStart.setBounds(187, 47, 34, 16);
 		getContentPane().add(lblStart);
 		
-		JLabel lblEnabledisable = new JLabel("Enable/Disable");
-		lblEnabledisable.setBounds(136, 73, 95, 16);
+		lblEnabledisable = new JLabel("Enable/Disable");
+		lblEnabledisable.setBounds(140, 73, 95, 16);
 		getContentPane().add(lblEnabledisable);
 		
-		JLabel labelChan1 = new JLabel("1");
-		labelChan1.setBounds(239, 26, 18, 16);
-		getContentPane().add(labelChan1);
+		lblChan1 = new JLabel("1");
+		lblChan1.setBounds(239, 26, 18, 16);
+		getContentPane().add(lblChan1);
 		
-		JLabel labelChan3 = new JLabel("3");
+		labelChan3 = new JLabel("3");
 		labelChan3.setBounds(280, 26, 18, 16);
 		getContentPane().add(labelChan3);
 		
 		
-		JLabel labelChan5 = new JLabel("5");
+		labelChan5 = new JLabel("5");
 		labelChan5.setBounds(321, 26, 18, 16);
 		getContentPane().add(labelChan5);
 		
-		JLabel labelChan7 = new JLabel("7");
+		labelChan7 = new JLabel("7");
 		labelChan7.setBounds(362, 26, 18, 16);
 		getContentPane().add(labelChan7);
 		
-		JLabel lblFinish = new JLabel("Finish");
+		lblFinish = new JLabel("Finish");
 		lblFinish.setBounds(182, 135, 42, 14);
 		getContentPane().add(lblFinish);
 		
-		JLabel labelchan1 = new JLabel("Enable/Disable");
-		labelchan1.setBounds(136, 161, 95, 16);
+		labelchan1 = new JLabel("Enable/Disable");
+		labelchan1.setBounds(140, 161, 95, 16);
 		getContentPane().add(labelchan1);
 		
-		JLabel lblchan2 = new JLabel("2");
+		lblchan2 = new JLabel("2");
 		lblchan2.setBounds(239, 114, 18, 16);
 		getContentPane().add(lblchan2);
 		
-		JLabel lblChan3 = new JLabel("4");
+		lblChan3 = new JLabel("4");
 		lblChan3.setBounds(280, 114, 18, 16);
 		getContentPane().add(lblChan3);
 		
-		JLabel lblChan6 = new JLabel("6");
+		lblChan6 = new JLabel("6");
 		lblChan6.setBounds(321, 114, 18, 16);
 		getContentPane().add(lblChan6);
 		
-		JLabel lblChan8 = new JLabel("8");
+		lblChan8 = new JLabel("8");
 		lblChan8.setBounds(362, 114, 18, 16);
 		getContentPane().add(lblChan8);
 		
-		JTextArea txtQueue = new JTextArea();
+		txtQueue = new JTextArea();
 		txtQueue.setEditable(false);
 		txtQueue.setBounds(187, 224, 200, 58);
 		getContentPane().add(txtQueue);
 		
-		txtRun.setEditable(false);
-		txtRun.setBounds(187, 316, 200, 123);
-		getContentPane().add(txtRun);
-		
-		JButton btnTrigChan1 = new JButton("");
+		btnTrigChan1 = new JButton("");
 		btnTrigChan1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -227,7 +260,7 @@ public class GUI extends JFrame {
 		btnTrigChan1.setBounds(233, 47, 42, 26);
 		getContentPane().add(btnTrigChan1);
 		
-		JButton btnTrigChan2 = new JButton("");
+		btnTrigChan2 = new JButton("");
 		btnTrigChan2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -338,7 +371,7 @@ public class GUI extends JFrame {
 		btnTrigChan2.setBounds(233, 135, 42, 26);
 		getContentPane().add(btnTrigChan2);
 		
-		JButton btnTrigChan3 = new JButton("");
+		btnTrigChan3 = new JButton("");
 		btnTrigChan3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -403,7 +436,7 @@ public class GUI extends JFrame {
 		btnTrigChan3.setBounds(274, 47, 42, 26);
 		getContentPane().add(btnTrigChan3);
 		
-		JButton btnTrigChan4 = new JButton("");
+		btnTrigChan4 = new JButton("");
 		btnTrigChan4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -476,7 +509,7 @@ public class GUI extends JFrame {
 		btnTrigChan4.setBounds(274, 135, 42, 26);
 		getContentPane().add(btnTrigChan4);
 		
-		JButton btnTrigChan5 = new JButton("");
+		btnTrigChan5 = new JButton("");
 		btnTrigChan5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -490,7 +523,7 @@ public class GUI extends JFrame {
 		btnTrigChan5.setBounds(315, 47, 42, 26);
 		getContentPane().add(btnTrigChan5);
 		
-		JButton btnTrigChan6 = new JButton("");
+		btnTrigChan6 = new JButton("");
 		btnTrigChan6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -504,7 +537,7 @@ public class GUI extends JFrame {
 		btnTrigChan6.setBounds(315, 135, 42, 26);
 		getContentPane().add(btnTrigChan6);
 		
-		JButton btnTrigChan7 = new JButton("");
+		btnTrigChan7 = new JButton("");
 		btnTrigChan7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -518,7 +551,7 @@ public class GUI extends JFrame {
 		btnTrigChan7.setBounds(356, 47, 42, 26);
 		getContentPane().add(btnTrigChan7);
 		
-		JButton btnTrigChan8 = new JButton("");
+		btnTrigChan8 = new JButton("");
 		btnTrigChan8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -533,7 +566,7 @@ public class GUI extends JFrame {
 		getContentPane().add(btnTrigChan8);
 		
 
-		JToggleButton tglChan1 = new JToggleButton("");
+		tglChan1 = new JToggleButton("");
 		tglChan1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -551,7 +584,7 @@ public class GUI extends JFrame {
 		tglChan1.setBounds(243, 74, 18, 26);
 		getContentPane().add(tglChan1);
 		
-		JToggleButton tglChan2 = new JToggleButton("");
+		tglChan2 = new JToggleButton("");
 		tglChan2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -568,7 +601,7 @@ public class GUI extends JFrame {
 		tglChan2.setBounds(243, 162, 18, 26);
 		getContentPane().add(tglChan2);
 		
-		JToggleButton tglChan3 = new JToggleButton("");
+		tglChan3 = new JToggleButton("");
 		tglChan3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -585,7 +618,7 @@ public class GUI extends JFrame {
 		tglChan3.setBounds(284, 73, 18, 26);
 		getContentPane().add(tglChan3);
 		
-		JToggleButton tglChan4 = new JToggleButton("");
+		tglChan4 = new JToggleButton("");
 		tglChan4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -602,7 +635,7 @@ public class GUI extends JFrame {
 		tglChan4.setBounds(284, 162, 18, 26);
 		getContentPane().add(tglChan4);
 		
-		JToggleButton tglChan5 = new JToggleButton("");
+		tglChan5 = new JToggleButton("");
 		tglChan5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -619,7 +652,7 @@ public class GUI extends JFrame {
 		tglChan5.setBounds(325, 73, 18, 26);
 		getContentPane().add(tglChan5);
 		
-		JToggleButton tglChan6 = new JToggleButton("");
+		tglChan6 = new JToggleButton("");
 		tglChan6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -636,7 +669,7 @@ public class GUI extends JFrame {
 		tglChan6.setBounds(325, 162, 18, 26);
 		getContentPane().add(tglChan6);
 		
-		JToggleButton tglChan7 = new JToggleButton("");
+		tglChan7 = new JToggleButton("");
 		tglChan7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -653,7 +686,7 @@ public class GUI extends JFrame {
 		tglChan7.setBounds(366, 73, 18, 26);
 		getContentPane().add(tglChan7);
 		
-		JToggleButton tglChan8 = new JToggleButton("");
+		tglChan8 = new JToggleButton("");
 		tglChan8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -676,16 +709,16 @@ public class GUI extends JFrame {
 				numTxtFld.setText(numTxtFld.getText()+"1");
 			}
 		});
-		btnNum1.setBounds(469, 215, 34, 36);
+		btnNum1.setBounds(461, 212, 41, 36);
 		getContentPane().add(btnNum1);
 		
-		JButton btnNum2 = new JButton("2");
+		btnNum2 = new JButton("2");
 		btnNum2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numTxtFld.setText(numTxtFld.getText()+"2");
 			}
 		});
-		btnNum2.setBounds(501, 215, 34, 36);
+		btnNum2.setBounds(501, 212, 41, 36);
 		getContentPane().add(btnNum2);
 		
 		JButton btnNum3 = new JButton("3");
@@ -694,7 +727,7 @@ public class GUI extends JFrame {
 				numTxtFld.setText(numTxtFld.getText()+"3");
 			}
 		});
-		btnNum3.setBounds(533, 215, 34, 36);
+		btnNum3.setBounds(541, 212, 41, 36);
 		getContentPane().add(btnNum3);
 		
 		JButton btnNum4 = new JButton("4");
@@ -703,7 +736,7 @@ public class GUI extends JFrame {
 				numTxtFld.setText(numTxtFld.getText()+"4");
 			}
 		});
-		btnNum4.setBounds(469, 246, 34, 36);
+		btnNum4.setBounds(461, 247, 41, 36);
 		getContentPane().add(btnNum4);
 		
 		JButton btnNum5 = new JButton("5");
@@ -712,7 +745,7 @@ public class GUI extends JFrame {
 				numTxtFld.setText(numTxtFld.getText()+"5");
 			}
 		});
-		btnNum5.setBounds(501, 246, 34, 36);
+		btnNum5.setBounds(501, 247, 41, 36);
 		getContentPane().add(btnNum5);
 		
 		JButton btnNum6 = new JButton("6");
@@ -721,7 +754,7 @@ public class GUI extends JFrame {
 				numTxtFld.setText(numTxtFld.getText()+"6");
 			}
 		});
-		btnNum6.setBounds(533, 246, 34, 36);
+		btnNum6.setBounds(541, 247, 41, 36);
 		getContentPane().add(btnNum6);
 		
 		JButton btnNum7 = new JButton("7");
@@ -730,7 +763,7 @@ public class GUI extends JFrame {
 				numTxtFld.setText(numTxtFld.getText()+"7");
 			}
 		});
-		btnNum7.setBounds(469, 276, 34, 36);
+		btnNum7.setBounds(461, 282, 41, 36);
 		getContentPane().add(btnNum7);
 		
 		JButton btnNum8 = new JButton("8");
@@ -739,7 +772,7 @@ public class GUI extends JFrame {
 				numTxtFld.setText(numTxtFld.getText()+"8");
 			}
 		});
-		btnNum8.setBounds(501, 276, 34, 36);
+		btnNum8.setBounds(501, 282, 41, 36);
 		getContentPane().add(btnNum8);
 		
 		JButton btnNum9 = new JButton("9");
@@ -748,7 +781,7 @@ public class GUI extends JFrame {
 				numTxtFld.setText(numTxtFld.getText()+"9");
 			}
 		});
-		btnNum9.setBounds(533, 276, 34, 36);
+		btnNum9.setBounds(541, 282, 41, 36);
 		getContentPane().add(btnNum9);
 		
 		JButton btnBack = new JButton("-");
@@ -759,7 +792,7 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnBack.setBounds(469, 307, 34, 36);
+		btnBack.setBounds(461, 317, 41, 36);
 		getContentPane().add(btnBack);
 		
 		JButton btnNum0 = new JButton("0");
@@ -768,7 +801,7 @@ public class GUI extends JFrame {
 				numTxtFld.setText(numTxtFld.getText()+"0");
 			}
 		});
-		btnNum0.setBounds(501, 307, 34, 36);
+		btnNum0.setBounds(501, 317, 41, 36);
 		getContentPane().add(btnNum0);
 		
 		JButton btnEnter = new JButton("+");
@@ -818,7 +851,7 @@ public class GUI extends JFrame {
 				numTxtFld.setText("");
 			}
 		});
-		btnEnter.setBounds(533, 307, 34, 36);
+		btnEnter.setBounds(541, 317, 41, 36);
 		getContentPane().add(btnEnter);
 		
 		JTextPane txtpnStuff = new JTextPane();
@@ -829,26 +862,20 @@ public class GUI extends JFrame {
 		
 		numTxtFld = new JTextField();
 		numTxtFld.setEditable(false);
-		numTxtFld.setBounds(452, 187, 130, 26);
+		numTxtFld.setBounds(452, 182, 130, 26);
 		getContentPane().add(numTxtFld);
 		numTxtFld.setColumns(10);
 		
 		JLabel lblAddRacer = new JLabel("Add Racer:");
-		lblAddRacer.setBounds(452, 172, 80, 16);
+		lblAddRacer.setBounds(452, 165, 80, 16);
 		getContentPane().add(lblAddRacer);
-		
-		
-		
-		JLabel lblPrinter = new JLabel("Printer");
-		lblPrinter.setBounds(422, 26, 61, 16);
-		getContentPane().add(lblPrinter);
 		
 		JLabel lblQueue = new JLabel("Queue");
 		lblQueue.setBounds(187, 207, 61, 16);
 		getContentPane().add(lblQueue);
 		
-		JLabel lblRunningfinalTime = new JLabel("Running/Final TIme");
-		lblRunningfinalTime.setBounds(187, 296, 129, 16);
+		JLabel lblRunningfinalTime = new JLabel("Running/Final Time");
+		lblRunningfinalTime.setBounds(187, 280, 129, 16);
 		getContentPane().add(lblRunningfinalTime);
 		
 		JMenuBar menuBar = new JMenuBar();
@@ -975,25 +1002,64 @@ public class GUI extends JFrame {
 		JButton btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ArrayList<String>arr=c.printGUI();
-				for(int i=0;i<arr.size();i++){
-					printTxt.append(arr.get(i)+"\n");
-				}
-				try {
-					c.sendCommand("PRINT "+(c.getRunNum()-1));
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
+				ArrayList<String> arr = c.printGUI();
+				if (arr!=null) {
+					for (int i = 0; i < arr.size(); i++) {
+						printTxt.append(arr.get(i) + "\n");
+					}
+					try {
+						c.sendCommand("PRINT " + (c.getRunNum() - 1));
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
 				}
 			}
+
 		});
-		btnPrint.setBounds(477, 6, 117, 29);
+		btnPrint.setBounds(422, 6, 117, 29);
 		getContentPane().add(btnPrint);
+		
+		txtLane1 = new JTextArea();
+		txtLane1.setEditable(false);
+		txtLane1.setBounds(187, 295, 200, 25);
+		getContentPane().add(txtLane1);
+		
+		txtLane2 = new JTextArea();
+		txtLane2.setEditable(false);
+		txtLane2.setBounds(187, 325, 200, 25);
+		getContentPane().add(txtLane2);
+		
+		txtLane3 = new JTextArea();
+		txtLane3.setEditable(false);
+		txtLane3.setBounds(187, 355, 200, 25);
+		getContentPane().add(txtLane3);
+		
+		txtLane4 = new JTextArea();
+		txtLane4.setEditable(false);
+		txtLane4.setBounds(187, 385, 200, 25);
+		getContentPane().add(txtLane4);
+		
+		JLabel label1Lane1 = new JLabel("Lane 1:");
+		label1Lane1.setBounds(129, 293, 61, 14);
+		getContentPane().add(label1Lane1);
+		
+		JLabel labelChan2 = new JLabel("Lane 2:");
+		labelChan2.setBounds(129, 323, 61, 14);
+		getContentPane().add(labelChan2);
+		
+		JLabel lblLane3 = new JLabel("Lane 3:");
+		lblLane3.setBounds(129, 352, 61, 14);
+		getContentPane().add(lblLane3);
+		
+		JLabel lblLane4 = new JLabel("Lane 4:");
+		lblLane4.setBounds(129, 382, 61, 14);
+		getContentPane().add(lblLane4);
 	}
 
-	public void updateTime(String elaspedTime) {
+	public void updateTimeChan1(String elaspedTime) {
 		if (c.getEventType() == 1||c.getEventType()==4) {
-			txtRun.setText("");
+			txtLane1.setText("");
 			txtRun.append(fString);
 			txtRun.append(elaspedTime);
 		}
@@ -1025,6 +1091,102 @@ public class GUI extends JFrame {
 					txtRun.append(runner2);
 				}
 			}
+			}
+		}
+	}
+	public void updateTimeChan2(String elaspedTime) {
+		if (c.getEventType() == 2) {
+			elaspedTime+="\n";
+			txtRun.setText("");
+			txtRun.append(fString);
+			String[] received = elaspedTime.split(" ");
+			int racerNum = Integer.parseInt(received[0]);
+			if (runner1 != null) {
+				String[] runnerarr1 = runner1.split(" ");
+				int racerNum1 = Integer.parseInt(runnerarr1[0]);
+				if (racerNum == racerNum1) {
+					runner1=elaspedTime;
+					txtRun.append(runner1);
+					if(runner2!=null){
+						txtRun.append(runner2);
+					}
+				}
+				
+			if (runner2 != null) {
+				String[] runnerarr2 = runner2.split(" ");
+				int racerNum2 = Integer.parseInt(runnerarr2[0]);
+				if (racerNum == racerNum2) {
+					if(runner1!=null){
+						txtRun.append(runner1);
+					}
+					runner2=elaspedTime;
+					txtRun.append(runner2);
+				}
+			}
+			}
+		}
+		public void updateTimeChan3(String elaspedTime) {
+			if (c.getEventType() == 2) {
+				elaspedTime+="\n";
+				txtRun.setText("");
+				txtRun.append(fString);
+				String[] received = elaspedTime.split(" ");
+				int racerNum = Integer.parseInt(received[0]);
+				if (runner1 != null) {
+					String[] runnerarr1 = runner1.split(" ");
+					int racerNum1 = Integer.parseInt(runnerarr1[0]);
+					if (racerNum == racerNum1) {
+						runner1=elaspedTime;
+						txtRun.append(runner1);
+						if(runner2!=null){
+							txtRun.append(runner2);
+						}
+					}
+					
+				if (runner2 != null) {
+					String[] runnerarr2 = runner2.split(" ");
+					int racerNum2 = Integer.parseInt(runnerarr2[0]);
+					if (racerNum == racerNum2) {
+						if(runner1!=null){
+							txtRun.append(runner1);
+						}
+						runner2=elaspedTime;
+						txtRun.append(runner2);
+					}
+				}
+				}
+			}
+			public void updateTimeChan4(String elaspedTime) {
+				if (c.getEventType() == 2) {
+					elaspedTime+="\n";
+					txtRun.setText("");
+					txtRun.append(fString);
+					String[] received = elaspedTime.split(" ");
+					int racerNum = Integer.parseInt(received[0]);
+					if (runner1 != null) {
+						String[] runnerarr1 = runner1.split(" ");
+						int racerNum1 = Integer.parseInt(runnerarr1[0]);
+						if (racerNum == racerNum1) {
+							runner1=elaspedTime;
+							txtRun.append(runner1);
+							if(runner2!=null){
+								txtRun.append(runner2);
+							}
+						}
+						
+					if (runner2 != null) {
+						String[] runnerarr2 = runner2.split(" ");
+						int racerNum2 = Integer.parseInt(runnerarr2[0]);
+						if (racerNum == racerNum2) {
+							if(runner1!=null){
+								txtRun.append(runner1);
+							}
+							runner2=elaspedTime;
+							txtRun.append(runner2);
+						}
+					}
+					}
+				}
 			}
 		}
 	}
