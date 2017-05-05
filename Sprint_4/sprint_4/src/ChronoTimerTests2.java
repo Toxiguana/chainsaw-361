@@ -147,4 +147,28 @@ public class ChronoTimerTests2 {
 		assertNull(t.getConnected(0, 0));
 		assertNull(t.getConnected(1, 0));
 	}
+	
+	@Test
+	public void swapTest(){
+		t.power();
+		t.setEventType("IND");
+		t.newRun();
+				
+		t.addRacer(12);
+		t.addRacer(13);
+		
+		t.togChannel(1);
+		t.togChannel(2);
+		assertTrue(t.getEnabled(0, 0));
+		assertTrue(t.getEnabled(1, 0));
+		
+		t.trigChannel(1);
+		t.trigChannel(1);
+		
+		t.swap();
+		
+		assertEquals(13, t.racerRun1.peek().getNum());
+
+	}
+
 }
