@@ -163,7 +163,7 @@ public class ChronoTimerTests2 {
 		assertTrue(t.getEnabled(1, 0));
 		
 		t.trigChannel(1);
-		t.trigChannel(1);
+		t.trigChannel(1); 
 		
 		t.swap();
 		
