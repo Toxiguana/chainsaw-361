@@ -263,23 +263,28 @@ public class ChronoTimer { //main program, links everything together
 	public void power(){ //if(on) -> turn off, stay in simulator //else if(off) -> turn on
 		if(power){
 			power = false;
+			systemLog.add(t.getSystemTime() + " Power Turned Off.");
 		}
 		else{
 			power = true;
+			systemLog.add(t.getSystemTime() + " Power Turned On.");
 		}
 	}
 
 	public void exit(){	//"quits program" //exit simulator
 		if(isPowerOn()) {
 			System.out.println("Try Again - Power must be 'Off'.");
+			systemLog.add(t.getSystemTime() + " Exit Unsuccessful.");
 			return;
 		}
+		systemLog.add(t.getSystemTime() + " System Exited.");
 		System.exit(0);
 	}
 
 	public boolean reset(){ //sets variables to initial values
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Reset Unsuccessful.");
 			return false;
 		}
 		// TODO: Reset variables that you need to.
@@ -302,24 +307,29 @@ public class ChronoTimer { //main program, links everything together
 
 		eventType = 0;
 		queueNum = 1;
+		
+		systemLog.add(t.getSystemTime() + " Reset Successful.");
 		return true;
 	}
 	
 	public boolean setTime(int hrs, int min, double sec){ //allows user to set time
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Setting Time Unsuccessful.");
 			return false;
 		}
 
 		hours = hrs;
 		minutes = min;
 		seconds = sec;
+		systemLog.add(t.getSystemTime() + " Setting Time Successful.");
 		return true;
 	}
 
 	public boolean setEventType(String s){ //sets IND, PARIND, GRP, PARGRP
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Setting EventType Unsuccessful.");
 			return false;
 		}
 		// TODO: Implement PARGRP
@@ -332,20 +342,24 @@ public class ChronoTimer { //main program, links everything together
 		else if(s.equalsIgnoreCase("GRP")){
 			eventType = 4;
 		}
+		systemLog.add(t.getSystemTime() + " Setting EventType Successful.");
 		return true;
 	}
 
 	public boolean newRun(){ //creates a new run
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " NewRun Unsuccessful.");
 			return false;
 		}
 		if(eventType == 0){
 			System.out.println("Try Again - Event Type must be set.");
+			systemLog.add(t.getSystemTime() + " NewRun Unsuccessful.");
 			return false;
 		}
 		if(runStarted == true){
 			System.out.println("Try Again - Only One Run can be going at a time.");
+			systemLog.add(t.getSystemTime() + " NewRun Unsuccessful.");
 			return false;
 		}
 		// TODO: Implement PARGRP
@@ -360,21 +374,26 @@ public class ChronoTimer { //main program, links everything together
 			else if(eventType == 4){
 				systemLog.add(t.getSystemTime() + " New GRP Run Started.");
 			}
+			systemLog.add(t.getSystemTime() + " NewRun Successful.");
 		}
+
 		return true;
 	}
 
 	public boolean endRun(){ //ends a run
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " EndRun Unsuccessful.");
 			return false;
 		}
 		if(eventType == 0){
 			System.out.println("Try Again - Event Type must be set.");
+			systemLog.add(t.getSystemTime() + " EndRun Unsuccessful.");
 			return false;
 		}
 		if(runStarted == false){
 			System.out.println("Try Again - A Run has not been started.");
+			systemLog.add(t.getSystemTime() + " EndRun Unsuccessful.");
 			return false;
 		}
 
@@ -385,26 +404,31 @@ public class ChronoTimer { //main program, links everything together
 		runList.add(r);
 		runNum++;
 		reset();
+		systemLog.add(t.getSystemTime() + " EndRun Successful.");
 		return true;
 	}
 
 	public boolean dnfRacer(){ //sets end time of next racer to finish to DNF, not return to queue
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " DNF Unsuccessful.");
 			return false;
 		}
 		if(eventType == 0){
 			System.out.println("Try Again - Event Type must be set.");
+			systemLog.add(t.getSystemTime() + " DNF Unsuccessful.");
 			return false;
 		}
 		if(runStarted == false){
 			System.out.println("Try Again - A Run has not been started.");
+			systemLog.add(t.getSystemTime() + " DNF Unsuccessful.");
 			return false;
 		}
 
 		if(eventType == 1){ //IND 
 			if(racerRun1.isEmpty()){
 				System.out.println("Try Again - There are no Racers in the Queue.");
+				systemLog.add(t.getSystemTime() + " DNF Unsuccessful - No Racers.");
 				return false;
 			}
 			Racer r = racerRun1.remove();
@@ -447,20 +471,24 @@ public class ChronoTimer { //main program, links everything together
 	public boolean cancelRacer(){ //discard race for 1st racer & put back in queue as next to start
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Cancel Unsuccessful.");
 			return false;
 		}
 		if(eventType == 0){
 			System.out.println("Try Again - Event Type must be set.");
+			systemLog.add(t.getSystemTime() + " Cancel Unsuccessful.");
 			return false;
 		}
 		if(runStarted == false){
 			System.out.println("Try Again - A Run has not been started.");
+			systemLog.add(t.getSystemTime() + " Cancel Unsuccessful.");
 			return false;
 		}
 
 		if(eventType == 1){ //IND
 			if(racerRun1.isEmpty()){
 				System.out.println("Try Again - There are no Racers in the Queue.");
+				systemLog.add(t.getSystemTime() + " Cancel Unsuccessful - No Racers.");
 				return false;
 			}
 			Queue<Racer> newQueue = new LinkedList<Racer>();
@@ -492,14 +520,17 @@ public class ChronoTimer { //main program, links everything together
 	public boolean togChannel(int channelNum){ //enable or disable the channel
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Toggle Unsuccessful.");
 			return false;
 		}
 		if(eventType == 0){
 			System.out.println("Try Again - Event Type must be set.");
+			systemLog.add(t.getSystemTime() + " Toggle Unsuccessful.");
 			return false;
 		}
 		if(runStarted == false){
 			System.out.println("Try Again - A Run has not been started.");
+			systemLog.add(t.getSystemTime() + " Toggle Unsuccessful.");
 			return false;
 		}
 
@@ -536,14 +567,17 @@ public class ChronoTimer { //main program, links everything together
 	public boolean trigChannel(int channelNum){ //trigger the channel num & pulls racer from queue
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Trigger Unsuccessful.");
 			return false;
 		}
 		if(eventType == 0){
 			System.out.println("Try Again - Event Type must be set.");
+			systemLog.add(t.getSystemTime() + " Trigger Unsuccessful.");
 			return false;
 		}
 		if(runStarted == false){
 			System.out.println("Try Again - A Run has not been started.");
+			systemLog.add(t.getSystemTime() + " Trigger Unsuccessful.");
 			return false;
 		}
 
@@ -576,6 +610,7 @@ public class ChronoTimer { //main program, links everything together
 				if(enabled[1][0]){
 					if(racerRun1.isEmpty()){
 						System.out.println("Try Again - There are no Racers in the Queue.");
+						systemLog.add(t.getSystemTime() + " Trigger Unsuccessful - No Racers.");
 						return false;
 					}
 					Racer r1 = racerRun1.remove();
@@ -714,14 +749,17 @@ public class ChronoTimer { //main program, links everything together
 	public boolean addRacer(int racerNum){ //same as num //adds racer to queue
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Adding Racer Unsuccessful.");
 			return false;
 		}
 		if(eventType == 0){
 			System.out.println("Try Again - Event Type must be set.");
+			systemLog.add(t.getSystemTime() + " Adding Racer Unsuccessful.");
 			return false;
 		}
 		if(runStarted == false){
 			System.out.println("Try Again - A Run has not been started.");
+			systemLog.add(t.getSystemTime() + " Adding Racer Unsuccessful.");
 			return false;
 		}
 
@@ -754,34 +792,41 @@ public class ChronoTimer { //main program, links everything together
 	public boolean print(int rNum){ //prints a run to the console
 		if(rNum > runList.size()){
 			System.out.println("Try Again - " + rNum + " is not a valid run number.");
+			systemLog.add(t.getSystemTime() + " " + rNum + " is not a valid run number.");
 			return false;
 		}
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Print Unsuccessful.");
 			return false;
 		}
 		if(eventType != 0 || runStarted == true){
 			System.out.println("Try Again - Run must be ended before print.");
+			systemLog.add(t.getSystemTime() + " Print Unsuccessful.");
 			return false;
 		}
 		else{
 			Run r = runList.get(rNum-1);
 			r.print();
 		}
+		systemLog.add(t.getSystemTime() + " Printing Successful.");
 		return true;
 	}
 	
 	public ArrayList<String> printGUI(){ //prints the last run to the GUI print box
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " GUIPrint Unsuccessful.");
 			return null;
 		}
 		if(eventType != 0 || runStarted == true){
 			System.out.println("Try Again - Run must be ended before print.");
+			systemLog.add(t.getSystemTime() + " GUIPrint Unsuccessful.");
 			return null;
 		}
 		else{	
 			Run r = runList.get(runNum-2);
+			systemLog.add(t.getSystemTime() + " GUIPrint Successful.");
 			return r.guiPrint();
 		}
 	}
@@ -789,14 +834,17 @@ public class ChronoTimer { //main program, links everything together
 	public boolean export(int rNum){ //exports run to a file
 		if(rNum > runList.size()){
 			System.out.println("Try Again - " + rNum + " is not a valid run number.");
+			systemLog.add(t.getSystemTime() + " " + rNum + " is not a valid run number.");
 			return false;
 		}
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Export Unsuccessful.");
 			return false;
 		}
 		if(eventType != 0 || runStarted == true){
 			System.out.println("Try Again - Run must be ended before export.");
+			systemLog.add(t.getSystemTime() + " Export Unsuccessful.");
 			return false;
 		}
 		else{
@@ -807,26 +855,31 @@ public class ChronoTimer { //main program, links everything together
 				e.printStackTrace();
 			}
 		}
+		systemLog.add(t.getSystemTime() + " Export Successful.");
 		return true;
 	}
 
 	public boolean setGroupRacerNum(int racerNum){ //ability to set group racer num after in queue1
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " SetGroupRacerNum Unsuccessful.");
 			return false;
 		}
 		if(eventType != 4){
 			System.out.println("Try Again - Event Type must be Group.");
+			systemLog.add(t.getSystemTime() + " SetGroupRacerNum Unsuccessful.");
 			return false;
 		}
 		if(racerFinish1.isEmpty()){
 			System.out.println("Try Again - No Racers have finish w/o Numbers.");
+			systemLog.add(t.getSystemTime() + " SetGroupRacerNum Unsuccessful.");
 			return false;
 		}
 		// TODO: Implement PARIND
 		Racer r = racerFinish1.remove();
 		r.setNum(racerNum);
 		racerFinish2.add(r);
+		systemLog.add(t.getSystemTime() + " SetGroupRacerNum Successful.");
 		return true;
 	}
 
@@ -897,17 +950,20 @@ public class ChronoTimer { //main program, links everything together
 	public boolean swap(){ //switches first two racers
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
 			return false;
 		}
 		
 		if(runStarted == false){
 			System.out.println("Try Again - A Run has not been started.");
+			systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
 			return false;
 		}
 
 		if(eventType == 1){ //check to see if it's an IND event
 			if(racerRun1.size() < 2){ //refuses to execute if current runs >=2
 				System.out.println("Cannot swap, <2 racers running"); //prints error message and returns 
+				systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
 				return false;
 			}
 
@@ -926,12 +982,11 @@ public class ChronoTimer { //main program, links everything together
 					racerFinish1 = copy;
 				}
 			}
-
-			System.out.println("Swapped");
 			return true;
 		}
 		else {
 			System.out.println("Swap can only be called during IND events; wrong event type.");
+			systemLog.add(t.getSystemTime() + " Swap Unsuccessful - Wrong Event Type.");
 			return false;
 		}
 
