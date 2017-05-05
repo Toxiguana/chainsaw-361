@@ -219,7 +219,7 @@ public class GUI extends JFrame {
 								Racer r = tmp.poll();
 								num++;
 								if (r != null) {
-									txtQueue.append("NUM" + r.getNum() + "\n");
+									txtQueue.append("NUM " + r.getNum() + "\n");
 								}
 
 							}
@@ -316,7 +316,7 @@ public class GUI extends JFrame {
 							Racer r = tmp.poll();
 							num++;
 							if (r != null) {
-								txtQueue.append("NUM" + r.getNum() + "\n");
+								txtQueue.append("NUM " + r.getNum() + "\n");
 							}
 
 						}
