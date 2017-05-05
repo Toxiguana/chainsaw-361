@@ -34,7 +34,7 @@ public class ChronoTimer { //main program, links everything together
 	private int placeHoldNum = 1; //keeps track of placeholderNum for GRP race finishes
 	private double groupStart = 0.0; //stores start time for GRP races
 	
-	private int hours = 0;
+	private int hours = 0; //hours, minutes, and seconds of setTime
 	private int minutes = 0;
 	private double seconds = 0.0;
 
