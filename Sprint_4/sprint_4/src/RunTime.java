@@ -15,7 +15,7 @@ public class RunTime implements Runnable {
 				if(update){
 				String tl=t.computeTime(r.getStart(), t.start());
 				tl=tl.substring(0,tl.indexOf('.'));
-				g.updateTime(r.getNum()+" "+tl+" R");
+				g.updateTimeChan1(r.getNum()+" "+tl+" R");
 				}
 			}
 		} catch (InterruptedException e) {
