@@ -6,7 +6,7 @@ public class Racer { //used to represent a person and store data about their rac
 	private String elapsedTime;
 	private int stateRacer; //0 - in Queue, 1 - Racing, 2 - Done Racing
 	private Time t = new Time();
-	
+	public String output="";
 	public Racer(int nR, double sT, double enT, String elT, int sR){
 		numRacer = nR;
 		startTime = sT;
@@ -35,6 +35,9 @@ public class Racer { //used to represent a person and store data about their rac
 	public int getState(){
 		return stateRacer;
 	}
+	public String getOutput(){
+		return output;
+	}
 	
 	//Setters
 	public void setNum(int nR){
@@ -55,5 +58,8 @@ public class Racer { //used to represent a person and store data about their rac
 	
 	public void setState(int sR){
 		this.stateRacer = sR;
+	}
+	public void setOutput(String s){
+		output=s;
 	}
 }

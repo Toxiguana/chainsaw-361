@@ -34,7 +34,7 @@ public class GUI extends JFrame {
 	Thread runTime2;
 	GUI g;
 	ChronoTimer c;
-	String[]runTimearr=new String[8];
+	ArrayList<Racer>runArr=new ArrayList<>();
 	//funuction button variables
 	private JButton btnBack;
 	private JButton btnEnter;
@@ -99,6 +99,9 @@ public class GUI extends JFrame {
 //	ChronoTimer c=new ChronoTimer();
 	public GUI(ChronoTimer _c) {
 		c=_c;
+		c.power();
+		c.setEventType("PARIND");
+		c.newRun();
 		g=this;
 		UIManager s=new UIManager();
 
@@ -196,7 +199,6 @@ public class GUI extends JFrame {
 		txtQueue.setEditable(false);
 		txtQueue.setBounds(187, 224, 200, 58);
 		getContentPane().add(txtQueue);
-		
 		btnTrigChan1 = new JButton("");
 		btnTrigChan1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -207,8 +209,6 @@ public class GUI extends JFrame {
 					e1.printStackTrace();
 				}
 				if (c.getEnabled(0, 0)) {
-					if (runTime == null) {
-					// updating queue
 					if (c.getEventType() == 1) {
 						Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
 						int num = 1;
@@ -223,31 +223,71 @@ public class GUI extends JFrame {
 
 							}
 						}
-						// updating finish display
-						Queue<Racer> finish = new LinkedList<Racer>(c.racerFinish2);
-						txtFinish.setText("");
-						if ( finish!= null) {
-							Object[] r = finish.toArray();
-							if(r.length>=1){
-							 String finishString= (((Racer) r[r.length - 1]).getNum() + " "
-									+ t.computeTime(((Racer) r[r.length - 1]).getStart(),
-											((Racer) r[r.length - 1]).getFinish())
-									+ " F \n");
-							 txtFinish.append(finishString);
+						Queue<Racer> run = new LinkedList<Racer>(c.racerRun1);
+						runArr = null;
+						runArr = new ArrayList<Racer>();
+						while (!run.isEmpty()) {
+							Racer r = run.poll();
+							runArr.add(r);
+						}
+						if (runTime == null) {
+							runTime = new Thread(new RunTime(g, runArr));
+							runTime.start();
+						} else {
+							if (runTime.isAlive()) {
+								runTime.interrupt();
+								runTime = null;
+								runTime = new Thread(new RunTime(g, runArr));
+								runTime.start();
 							}
 						}
-						//updating running display
-						Queue<Racer> run = new LinkedList<Racer>(c.racerRun1);
-						Racer runner = run.poll();
-						if (runner != null) {
-							txtRun.append(runner.getNum() + " " + "0:00" + " R");
-							runTime = new Thread(new RunTime(g, runner));
+					}
+						if (c.getEventType() == 2) {
+							//updating queue
+							Queue<Racer> queue1 = new LinkedList<Racer>(c.racerQueue1);
+							Queue<Racer> queue2 = new LinkedList<Racer>(c.racerQueue1);
+							txtQueue.setText("");
+							Racer r1=queue1.poll();
+							Racer r2=queue2.poll();
+							if(r1!=null){
+								txtQueue.append("NUM "+r1.getNum()+"\n");
+							}
+							if(r2!=null){
+								txtQueue.append("NUM"+r2.getNum()+"\n");
+							}
+						//updating runArr
+						Queue<Racer> run1 = new LinkedList<Racer>(c.racerRun1);
+						Queue<Racer> run2 = new LinkedList<Racer>(c.racerRun2);
+						runArr = null;
+						runArr = new ArrayList<Racer>();
+						while (!run1.isEmpty() && !run2.isEmpty()) {
+							Racer racer1 = run1.poll();
+							Racer racer2 = run2.poll();
+							if (racer1 != null) {
+								runArr.add(racer1);
+							}
+							if (racer2 != null) {
+								runArr.add(racer2);
+							}
+						}
+						//if thread is null start thread
+						if (runTime == null) {
+							runTime = new Thread(new RunTime(g, runArr));
 							runTime.start();
+						//if thread is running stop thread and restart with new runArr	
+						} else {
+							if (runTime.isAlive()) {
+								System.out.println("restarting thread");
+								runTime.interrupt();
+								runTime = null;
+								runTime = new Thread(new RunTime(g, runArr));
+								runTime.start();
+							}
 						}
 					}
+					
 				}
-				}
-			}
+		}
 		});
 		btnTrigChan1.setBounds(233, 47, 42, 26);
 		getContentPane().add(btnTrigChan1);
@@ -255,7 +295,89 @@ public class GUI extends JFrame {
 		btnTrigChan2 = new JButton("");
 		btnTrigChan2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
+				try {
+					c.sendCommand("TRIG 2");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			if(c.getEnabled(1, 0)){
+				if (c.getEventType() == 1) {
+					//clear finish queue
+					txtFinish.setText("");
+					Queue <Racer>run=new LinkedList<Racer>(c.racerFinish2);
+					//Setting Finish Display
+					Object[] finishArr = run.toArray();
+					txtFinish.append(+((Racer)finishArr[finishArr.length - 1]).getNum()+" "+((Racer)finishArr[finishArr.length - 1]).getElapsedTime()+" F");
+					//Resetting Racer ArrayList
+					while(!run.isEmpty()){
+						Racer r=run.poll();
+						if(runArr.contains(r)){
+							int index=runArr.indexOf(r);
+							runArr.remove(index);
+						}
+					}
+					//Restarting Thread
+					if(runTime!=null){
+					if(runTime.isAlive()){
+						if(runArr.isEmpty()){
+							txtRun.setText("");
+						}
+							
+						runTime.interrupt();
+						runTime=null;
+						runTime=new Thread(new RunTime(g,runArr));
+						runTime.start();
+					}
+					}
+				}
+				if(c.getEventType()==2){
+						// updating queue
+						Queue<Racer> queue1 = new LinkedList<Racer>(c.racerQueue1);
+						Queue<Racer> queue2 = new LinkedList<Racer>(c.racerQueue1);
+						txtQueue.setText("");
+						Racer r1 = queue1.poll();
+						Racer r2 = queue2.poll();
+						if (r1 != null) {
+							txtQueue.append("NUM " + r1.getNum() + "\n");
+						}
+						if (r2 != null) {
+							txtQueue.append("NUM" + r2.getNum() + "\n");
+						}
+						txtFinish.setText("");
+						Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
+						// Setting Finish Display
+						Object[] finishArr = run.toArray();
+						txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+								+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F \n");
+						if (finishArr.length >= 2) {
+							txtFinish.append(+((Racer) finishArr[finishArr.length - 2]).getNum() + " "
+									+ ((Racer) finishArr[finishArr.length - 2]).getElapsedTime() + " F");
+						}
+						//Resetting Racer ArrayList
+						while(!run.isEmpty()){
+							Racer r=run.poll();
+							if(runArr.contains(r)){
+								int index=runArr.indexOf(r);
+								runArr.remove(index);
+							}
+						}
+						//Restarting Thread
+						if(runTime!=null){
+						if(runTime.isAlive()){
+							if(runArr.isEmpty()){
+								txtRun.setText("");
+							}
+								
+							runTime.interrupt();
+							runTime=null;
+							runTime=new Thread(new RunTime(g,runArr));
+							runTime.start();
+						}
+						}
+					}
+
+			}
 			}
 		});
 		btnTrigChan2.setBounds(233, 135, 42, 26);
@@ -272,55 +394,51 @@ public class GUI extends JFrame {
 				}
 				if (c.getEnabled(0, 1)) {
 					if (c.getEventType() == 2) {
-					if(runTime2==null){	
-					//updating queue 	
+						// updating queue
+						Queue<Racer> queue1 = new LinkedList<Racer>(c.racerQueue1);
+						Queue<Racer> queue2 = new LinkedList<Racer>(c.racerQueue1);
 						txtQueue.setText("");
-						Queue<Racer> tmp1 = new LinkedList<Racer>(c.racerQueue1);
-						Queue<Racer> tmp2 = new LinkedList<Racer>(c.racerQueue2);
-						if (!tmp1.isEmpty()) {
-							txtQueue.append("NUM " + tmp1.peek().getNum() + "\n");
+						Racer r1 = queue1.poll();
+						Racer r2 = queue2.poll();
+						if (r1 != null) {
+							txtQueue.append("NUM " + r1.getNum() + "\n");
 						}
-						if (!tmp2.isEmpty()) {
-							txtQueue.append("NUM " + tmp2.peek().getNum());
+						if (r2 != null) {
+							txtQueue.append("NUM" + r2.getNum() + "\n");
 						}
-						Queue<Racer> finish = new LinkedList<Racer>(c.racerFinish2);
-						Queue<Racer> queue2 = new LinkedList<Racer>(c.racerRun2);
-						if (!finish.isEmpty()) {
-							Object[] r = finish.toArray();
-							if (r.length >= 2) {
-								fString="";
-								fString = (((Racer) r[r.length - 1]).getNum() + " "
-										+ t.computeTime(((Racer) r[r.length - 1]).getStart(),
-												((Racer) r[r.length - 1]).getFinish())
-										+ " F \n");
-								fString += (((Racer) r[r.length - 2]).getNum() + " "
-										+ t.computeTime(((Racer) r[r.length - 2]).getStart(),
-												((Racer) r[r.length - 2]).getFinish())
-										+ " F");
-								txtRun.append(fString);
-							} else {
-								fString="";
-								fString = (((Racer) r[r.length - 1]).getNum() + " "
-										+ t.computeTime(((Racer) r[r.length - 1]).getStart(),
-												((Racer) r[r.length - 1]).getFinish())
-										+ " F \n");
-								txtRun.append(fString);
-							}
+
+					// updating runArr
+					Queue<Racer> run1 = new LinkedList<Racer>(c.racerRun1);
+					Queue<Racer> run2 = new LinkedList<Racer>(c.racerRun2);
+					runArr = null;
+					runArr = new ArrayList<Racer>();
+					while (!run1.isEmpty() && !run2.isEmpty()) {
+						Racer racer1 = run1.poll();
+						Racer racer2 = run2.poll();
+						if (racer1 != null) {
+							runArr.add(racer1);
 						}
-						//updating display
-						if (!queue2.isEmpty()) {
-							Racer r2 = queue2.poll();
-							if(runner1!=null){
-								txtRun.append(runner1);
-							}
-							runner2 = (r2.getNum() + " " + "0:00" + " R");
-							txtRun.append(runner2);
-							runTime2 = new Thread(new RunTime(g, r2));
-							runTime2.start();
+						if (racer2 != null) {
+							runArr.add(racer2);
+						}
+					}
+					// if thread is null start thread
+					if (runTime == null) {
+						runTime = new Thread(new RunTime(g, runArr));
+						runTime.start();
+					}
+					// if thread is running stop thread and restart with new
+					// runArr
+					else {
+						if (runTime.isAlive()) {
+							runTime.interrupt();
+							runTime = null;
+							runTime = new Thread(new RunTime(g, runArr));
+							runTime.start();
 						}
 					}
 				}
-				}		
+				}
 			}
 		});
 		btnTrigChan3.setBounds(274, 47, 42, 26);
@@ -330,34 +448,11 @@ public class GUI extends JFrame {
 		btnTrigChan4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if (runTime1 != null) {
-						if (runTime1.isAlive()) {
-							runTime1bol=true;
-							runTime1.interrupt();
-							runTime1 = null;
-						}
-					}
 					c.sendCommand("TRIG 4");
-					if (runTime1bol) {
-						Queue<Racer> run1 = new LinkedList<Racer>(c.racerRun1);
-							runTime1bol=false;
-							Racer r=run1.poll();
-							runner2=null;
-							runTime1=new Thread(new RunTime(g,r));
-							runTime1.start();
-							
-						}
-				} catch (IOException e1) {
+					}
+				catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
-				}
-				if(c.getEventType()==2){	
-					if (runTime2 != null) {
-						if (runTime2.isAlive()) {
-							runTime2.interrupt();
-							runTime2 = null;
-						}
-					}
 				}
 				//updating queue 	
 				txtQueue.setText("");
@@ -370,29 +465,37 @@ public class GUI extends JFrame {
 				if (!tmp2.isEmpty()) {
 					txtQueue.append("NUM " + tmp2.peek().getNum());
 				}
-				//updating display
-				Queue<Racer> finish = new LinkedList<Racer>(c.racerFinish2);
-				if (!finish.isEmpty()) {
-					Object[] r = finish.toArray();
-					if (r.length >= 2) {
-						fString="";
-						fString = (((Racer) r[r.length - 1]).getNum() + " "
-								+ t.computeTime(((Racer) r[r.length - 1]).getStart(),
-										((Racer) r[r.length - 1]).getFinish())
-								+ " F \n");
-						fString += (((Racer) r[r.length - 2]).getNum() + " "
-								+ t.computeTime(((Racer) r[r.length - 2]).getStart(),
-										((Racer) r[r.length - 2]).getFinish())
-								+ " F");
-						txtRun.append(fString);
-					} else {
-						fString="";
-						fString = (((Racer) r[r.length - 1]).getNum() + " "
-								+ t.computeTime(((Racer) r[r.length - 1]).getStart(),
-										((Racer) r[r.length - 1]).getFinish())
-								+ " F \n");
-						txtRun.append(fString);
+				//updating finish display
+				txtFinish.setText("");
+				Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
+				// Setting Finish Display
+				Object[] finishArr = run.toArray();
+				txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+						+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F \n");
+				if (finishArr.length >= 2) {
+					txtFinish.append(+((Racer) finishArr[finishArr.length - 2]).getNum() + " "
+							+ ((Racer) finishArr[finishArr.length - 2]).getElapsedTime() + " F");
+				}
+				//Resetting Racer ArrayList
+				while(!run.isEmpty()){
+					Racer r=run.poll();
+					if(runArr.contains(r)){
+						int index=runArr.indexOf(r);
+						runArr.remove(index);
 					}
+				}
+				//Restarting Thread
+				if(runTime!=null){
+				if(runTime.isAlive()){
+					if(runArr.isEmpty()){
+						txtRun.setText("");
+					}
+						
+					runTime.interrupt();
+					runTime=null;
+					runTime=new Thread(new RunTime(g,runArr));
+					runTime.start();
+				}
 				}
 			}
 		});
@@ -807,61 +910,23 @@ public class GUI extends JFrame {
 		});
 		btnPower.setBounds(6, 6, 117, 29);
 		getContentPane().add(btnPower);
+		
+		txtFinish = new JTextArea();
+		txtFinish.setBounds(187, 315, 200, 38);
+		getContentPane().add(txtFinish);
+		
+		txtRun = new JTextArea();
+		txtRun.setBounds(187, 351, 200, 88);
+		getContentPane().add(txtRun);
 	}	
 
-	public void updateTimeChan1(String elaspedTime) {
-		if (c.getEventType() == 1||c.getEventType()==4) {
-			txtFinish.setText(""){
-			txtRun.append(elaspedTime);
-		}
-		if (c.getEventType() == 2) {
-			elaspedTime+="\n";
-			txtRun.setText("");
-			txtRun.append(fString);
-			String[] received = elaspedTime.split(" ");
-			int racerNum = Integer.parseInt(received[0]);
-			if (runner1 != null) {
-				String[] runnerarr1 = runner1.split(" ");
-				int racerNum1 = Integer.parseInt(runnerarr1[0]);
-				if (racerNum == racerNum1) {
-					runner1=elaspedTime;
-					txtRun.append(runner1);
-					if(runner2!=null){
-						txtRun.append(runner2);
-					}
-				}
-				
-			if (runner2 != null) {
-				String[] runnerarr2 = runner2.split(" ");
-				int racerNum2 = Integer.parseInt(runnerarr2[0]);
-				if (racerNum == racerNum2) {
-					if(runner1!=null){
-						txtRun.append(runner1);
-					}
-					runner2=elaspedTime;
-					txtRun.append(runner2);
-				}
-			}
-			}
-		}
-	}
-	public void updateTimeChan2(String elaspedTime) {
-		if (c.getEventType() == 2) {
-			elaspedTime+="\n";
-			txtRun.setText("");
-			String[] received = elaspedTime.split(" ");
-			int racerNum = Integer.parseInt(received[0]);
-			if (runner1 != null) {
-				String[] runnerarr1 = runner1.split(" ");
-				int racerNum1 = Integer.parseInt(runnerarr1[0]);
-				if (racerNum == racerNum1) {
-					runner1=elaspedTime;
-					txtRun.append(runner1);
-					if(runner2!=null){
-						txtRun.append(runner2);
-					}
-				}
-			}
+	public void updateTime(ArrayList<Racer>run) {
+		runArr=run;
+		txtRun.setText("");
+		if (c.getEventType() == 1) {
+			for(int i=0;i<run.size();i++){
+				Racer r=run.get(i);
+				txtRun.append(r.getOutput()+" R"+"\n");
 			}
 		}
 	}

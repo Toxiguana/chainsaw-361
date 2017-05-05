@@ -1,21 +1,25 @@
+import java.util.ArrayList;
 
 public class RunTime implements Runnable {
-	Racer r;
+	ArrayList<Racer>run;
 	GUI g;
-	Boolean update=true;
 	Time t=new Time();
-	public RunTime(GUI _g,Racer _r){
+	public RunTime(GUI _g,ArrayList<Racer> _r){
 		g=_g;
-		r=_r;
+		run=_r;
 	}
 	public void run() {
 		try {
 			while (true) {
 				Thread.sleep(1000);
-				if(update){
-				String tl=t.computeTime(r.getStart(), t.start());
-				tl=tl.substring(0,tl.indexOf('.'));
-				g.updateTimeChan1(r.getNum()+" "+tl+" R");
+				for(int i=0;i<run.size();i++){
+				Racer r=run.get(i);
+				String output=r.getNum()+" ";
+				String time=t.computeTime(r.getStart(), t.start());
+				time=time.substring(0,time.indexOf('.'));
+				output+=time;
+				r.setOutput(output);
+				g.updateTime(run);
 				}
 			}
 		} catch (InterruptedException e) {
