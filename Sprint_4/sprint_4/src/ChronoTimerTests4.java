@@ -2,7 +2,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class ChronoTimerTests4 {
+public class ChronoTimerTests4 { //PARGRP Tests
 
 	ChronoTimer t = new ChronoTimer();
 	Time t1 = new Time();

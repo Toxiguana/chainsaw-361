@@ -1,4 +1,4 @@
-public class Racer {
+public class Racer { //used to represent a person and store data about their race
 
 	private int numRacer;
 	private double startTime;
@@ -23,12 +23,19 @@ public class Racer {
 	public double getStart(){
 		return startTime;
 	}
-	public double getFinish(){
+	
+	public double getEnd(){
 		return endTime;
 	}
+	
 	public String getElapsedTime(){
 		return elapsedTime;
 	}
+	
+	public int getState(){
+		return stateRacer;
+	}
+	
 	//Setters
 	public void setNum(int nR){
 		this.numRacer = nR;

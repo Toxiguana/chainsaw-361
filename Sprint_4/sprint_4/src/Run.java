@@ -7,7 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
-public class Run {
+public class Run { //used to keep track of a run
 
 	private int runNum;
 	private ArrayList<String> runLog;
@@ -21,8 +21,13 @@ public class Run {
 		finish2 = rF2;
 	}
 	
+	//Getters
 	public int getRunNum(){
 		return runNum;
+	}
+	
+	public ArrayList<String> guiPrint(){ //getRunLog() //prints to GUI
+		return runLog;
 	}
 	
 	public Queue<Racer> getFinish1(){
@@ -33,6 +38,7 @@ public class Run {
 		return finish2;
 	}
 	
+	//Setter
 	public boolean setRacerNum(int index, int racerNum){
 		if(index < 0 || index > finish1.size()-1){
 			System.out.println("Finish1 empty.");
@@ -49,9 +55,7 @@ public class Run {
 			System.out.println(runLog.get(i));
 		}
 	}
-	public ArrayList<String> guiPrint(){
-		return runLog;
-	}
+	
 	public void export() throws IOException{
 		Gson g = new Gson();
 		String s = "";
@@ -59,7 +63,7 @@ public class Run {
 			s += runLog.get(i).toString() + "\n";
 		}
 		g.toJson(runLog);
-		
+		// TODO: Make JSON.
 		try(FileWriter file = new FileWriter("RUN"+runNum+".txt")){
 			file.write(s);
 			System.out.println("Exported Run " + runNum + " to RUN"+runNum+".txt");

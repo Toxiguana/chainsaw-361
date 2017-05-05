@@ -1,5 +1,4 @@
-
-public class Sensor {
+public class Sensor { //used to represent sensor hardware
 
 	private int channelNum;
 	

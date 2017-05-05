@@ -3,7 +3,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
-public class Simulator {
+public class Simulator { //used to represent hardware
 	//Issues events for the ChronoTimer by reading in text from file, console, or GUI.
 
 	String inputType; //stores if reading from file, console, or GUI

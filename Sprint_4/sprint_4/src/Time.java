@@ -1,15 +1,16 @@
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class Time {
-//	It is recommended that you create a Time class to handle complex time 
-//	management.
+public class Time { //used to handle complex time management
+	
 	public String getSystemTime(){
+		// TODO: What does this method do? What is it used for?
 		String time = new SimpleDateFormat("HH:mm:ss.S").format(Calendar.getInstance().getTime());
 		
 		return time;
 	}
-	public double start(){		
+	
+	public double start(){ //start time in seconds
 		long s = System.currentTimeMillis(); //one millisecond == 1 1000th of a second
 		double sec = s/1000.0;
 		double round = Math.round(sec*100.0)/100.0;
@@ -17,14 +18,15 @@ public class Time {
 		return round;
 	}
 	
-	public double end(){
+	public double end(){ //end time in seconds
 		long s = System.currentTimeMillis(); //one millisecond == 1 1000th of a second
 		double sec = s/1000.0;
 		double round = Math.round(sec*100.0)/100.0;
 		
 		return round;
 	}
-	public String computeTime(double start, double end){
+	
+	public String computeTime(double start, double end){ //computes time from start & end
 		if(end == -1){
 			return "DNF";
 		}
@@ -36,4 +38,5 @@ public class Time {
 		
 		return endMinutes + ":" + endSeconds;
 	}
+
 }
