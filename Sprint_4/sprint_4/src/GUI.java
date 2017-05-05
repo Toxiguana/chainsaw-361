@@ -210,6 +210,7 @@ public class GUI extends JFrame {
 				}
 				if (c.getEnabled(0, 0)) {
 					if (c.getEventType() == 1) {
+						//updating queue
 						Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
 						int num = 1;
 						txtQueue.setText("");
@@ -230,10 +231,12 @@ public class GUI extends JFrame {
 							Racer r = run.poll();
 							runArr.add(r);
 						}
+						//start thread if not started
 						if (runTime == null) {
 							runTime = new Thread(new RunTime(g, runArr));
 							runTime.start();
 						} else {
+							//if thread is running stop thread and restart with new runArr	
 							if (runTime.isAlive()) {
 								runTime.interrupt();
 								runTime = null;
@@ -245,7 +248,7 @@ public class GUI extends JFrame {
 						if (c.getEventType() == 2) {
 							//updating queue
 							Queue<Racer> queue1 = new LinkedList<Racer>(c.racerQueue1);
-							Queue<Racer> queue2 = new LinkedList<Racer>(c.racerQueue1);
+							Queue<Racer> queue2 = new LinkedList<Racer>(c.racerQueue2);
 							txtQueue.setText("");
 							Racer r1=queue1.poll();
 							Racer r2=queue2.poll();
@@ -253,14 +256,14 @@ public class GUI extends JFrame {
 								txtQueue.append("NUM "+r1.getNum()+"\n");
 							}
 							if(r2!=null){
-								txtQueue.append("NUM"+r2.getNum()+"\n");
+								txtQueue.append("NUM "+r2.getNum()+"\n");
 							}
 						//updating runArr
 						Queue<Racer> run1 = new LinkedList<Racer>(c.racerRun1);
 						Queue<Racer> run2 = new LinkedList<Racer>(c.racerRun2);
 						runArr = null;
 						runArr = new ArrayList<Racer>();
-						while (!run1.isEmpty() && !run2.isEmpty()) {
+						while (!run1.isEmpty() || !run2.isEmpty()) {
 							Racer racer1 = run1.poll();
 							Racer racer2 = run2.poll();
 							if (racer1 != null) {
@@ -273,9 +276,10 @@ public class GUI extends JFrame {
 						//if thread is null start thread
 						if (runTime == null) {
 							runTime = new Thread(new RunTime(g, runArr));
-							runTime.start();
-						//if thread is running stop thread and restart with new runArr	
-						} else {
+							runTime.start();	
+						} 
+						//if thread is running stop thread and restart with new runArr
+						else {
 							if (runTime.isAlive()) {
 								System.out.println("restarting thread");
 								runTime.interrupt();
@@ -303,7 +307,21 @@ public class GUI extends JFrame {
 				}
 			if(c.getEnabled(1, 0)){
 				if (c.getEventType() == 1) {
-					//clear finish queue
+					//updating racing queue display
+					Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
+					int num = 1;
+					txtQueue.setText("");
+					if (!tmp.isEmpty()) {
+						while (num <= 3) {
+							Racer r = tmp.poll();
+							num++;
+							if (r != null) {
+								txtQueue.append("NUM" + r.getNum() + "\n");
+							}
+
+						}
+					}
+					//clear finish display
 					txtFinish.setText("");
 					Queue <Racer>run=new LinkedList<Racer>(c.racerFinish2);
 					//Setting Finish Display
@@ -317,6 +335,7 @@ public class GUI extends JFrame {
 							runArr.remove(index);
 						}
 					}
+					
 					//Restarting Thread
 					if(runTime!=null){
 					if(runTime.isAlive()){
@@ -334,7 +353,7 @@ public class GUI extends JFrame {
 				if(c.getEventType()==2){
 						// updating queue
 						Queue<Racer> queue1 = new LinkedList<Racer>(c.racerQueue1);
-						Queue<Racer> queue2 = new LinkedList<Racer>(c.racerQueue1);
+						Queue<Racer> queue2 = new LinkedList<Racer>(c.racerQueue2);
 						txtQueue.setText("");
 						Racer r1 = queue1.poll();
 						Racer r2 = queue2.poll();
@@ -404,7 +423,7 @@ public class GUI extends JFrame {
 							txtQueue.append("NUM " + r1.getNum() + "\n");
 						}
 						if (r2 != null) {
-							txtQueue.append("NUM" + r2.getNum() + "\n");
+							txtQueue.append("NUM " + r2.getNum() + "\n");
 						}
 
 					// updating runArr
@@ -412,7 +431,7 @@ public class GUI extends JFrame {
 					Queue<Racer> run2 = new LinkedList<Racer>(c.racerRun2);
 					runArr = null;
 					runArr = new ArrayList<Racer>();
-					while (!run1.isEmpty() && !run2.isEmpty()) {
+					while (!run1.isEmpty() || !run2.isEmpty()) {
 						Racer racer1 = run1.poll();
 						Racer racer2 = run2.poll();
 						if (racer1 != null) {
@@ -456,7 +475,6 @@ public class GUI extends JFrame {
 				}
 				//updating queue 	
 				txtQueue.setText("");
-				txtRun.setText("");
 				Queue<Racer> tmp1 = new LinkedList<Racer>(c.racerQueue1);
 				Queue<Racer> tmp2 = new LinkedList<Racer>(c.racerQueue2);
 				if (!tmp1.isEmpty()) {
@@ -923,7 +941,7 @@ public class GUI extends JFrame {
 	public void updateTime(ArrayList<Racer>run) {
 		runArr=run;
 		txtRun.setText("");
-		if (c.getEventType() == 1) {
+		if (c.getEventType() == 1||c.getEventType()==2) {
 			for(int i=0;i<run.size();i++){
 				Racer r=run.get(i);
 				txtRun.append(r.getOutput()+" R"+"\n");
