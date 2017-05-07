@@ -211,6 +211,7 @@ public class GUI extends JFrame {
 				}
 				if (c.getEnabled(0, 0)) {
 					if (c.getEventType() == 1) {
+						//updating queue
 						Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
 						int num = 1;
 						txtQueue.setText("");
@@ -219,7 +220,7 @@ public class GUI extends JFrame {
 								Racer r = tmp.poll();
 								num++;
 								if (r != null) {
-									txtQueue.append("NUM" + r.getNum() + "\n");
+									txtQueue.append("NUM " + r.getNum() + "\n");
 								}
 
 							}
@@ -231,10 +232,12 @@ public class GUI extends JFrame {
 							Racer r = run.poll();
 							runArr.add(r);
 						}
+						//start thread if not started
 						if (runTime == null) {
 							runTime = new Thread(new RunTime(g, runArr));
 							runTime.start();
 						} else {
+							//if thread is running stop thread and restart with new runArr	
 							if (runTime.isAlive()) {
 								runTime.interrupt();
 								runTime = null;
@@ -274,9 +277,10 @@ public class GUI extends JFrame {
 						//if thread is null start thread
 						if (runTime == null) {
 							runTime = new Thread(new RunTime(g, runArr));
-							runTime.start();
-						//if thread is running stop thread and restart with new runArr	
-						} else {
+							runTime.start();	
+						} 
+						//if thread is running stop thread and restart with new runArr
+						else {
 							if (runTime.isAlive()) {
 								System.out.println("restarting thread");
 								runTime.interrupt();
@@ -304,7 +308,21 @@ public class GUI extends JFrame {
 				}
 			if(c.getEnabled(1, 0)){
 				if (c.getEventType() == 1) {
-					//clear finish queue
+					//updating racing queue display
+					Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
+					int num = 1;
+					txtQueue.setText("");
+					if (!tmp.isEmpty()) {
+						while (num <= 3) {
+							Racer r = tmp.poll();
+							num++;
+							if (r != null) {
+								txtQueue.append("NUM " + r.getNum() + "\n");
+							}
+
+						}
+					}
+					//clear finish display
 					txtFinish.setText("");
 					Queue <Racer>run=new LinkedList<Racer>(c.racerFinish2);
 					//Setting Finish Display
@@ -318,6 +336,7 @@ public class GUI extends JFrame {
 							runArr.remove(index);
 						}
 					}
+					
 					//Restarting Thread
 					if(runTime!=null){
 					if(runTime.isAlive()){
@@ -458,27 +477,35 @@ public class GUI extends JFrame {
 				if (c.getEventType() == 2) {
 					// updating queue
 					txtQueue.setText("");
-				
-					txtRun.setText("");
-					Queue<Racer> tmp1 = new LinkedList<Racer>(c.racerQueue1);
-					Queue<Racer> tmp2 = new LinkedList<Racer>(c.racerQueue2);
-					if (!tmp1.isEmpty()) {
-						txtQueue.append("NUM " + tmp1.peek().getNum() + "\n");
+				//updating queue 	
+				txtQueue.setText("");
+				Queue<Racer> tmp1 = new LinkedList<Racer>(c.racerQueue1);
+				Queue<Racer> tmp2 = new LinkedList<Racer>(c.racerQueue2);
+				if (!tmp1.isEmpty()) {
+					txtQueue.append("NUM " + tmp1.peek().getNum() + "\n");
+				}
+				if (!tmp2.isEmpty()) {
+					txtQueue.append("NUM " + tmp2.peek().getNum());
+				}
+				//updating finish display
+				txtFinish.setText("");
+				Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
+				// Setting Finish Display
+				Object[] finishArr = run.toArray();
+				txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+						+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F \n");
+				if (finishArr.length >= 2) {
+					txtFinish.append(+((Racer) finishArr[finishArr.length - 2]).getNum() + " "
+							+ ((Racer) finishArr[finishArr.length - 2]).getElapsedTime() + " F");
+				}
+				//Resetting Racer ArrayList
+				while(!run.isEmpty()){
+					Racer r=run.poll();
+					if(runArr.contains(r)){
+						int index=runArr.indexOf(r);
+						runArr.remove(index);
 					}
-					if (!tmp2.isEmpty()) {
-						txtQueue.append("NUM " + tmp2.peek().getNum());
-					}
-					// updating finish display
-					txtFinish.setText("");
-					Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
-					// Setting Finish Display
-					Object[] finishArr = run.toArray();
-					txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
-							+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F \n");
-					if (finishArr.length >= 2) {
-						txtFinish.append(+((Racer) finishArr[finishArr.length - 2]).getNum() + " "
-								+ ((Racer) finishArr[finishArr.length - 2]).getElapsedTime() + " F");
-					}
+				}
 					// Resetting Racer ArrayList
 					while (!run.isEmpty()) {
 						Racer r = run.poll();
@@ -499,9 +526,9 @@ public class GUI extends JFrame {
 							runTime = new Thread(new RunTime(g, runArr));
 							runTime.start();
 						}
+					}	
 					}
 				}
-			}
 		});
 		btnTrigChan4.setBounds(274, 135, 42, 26);
 		getContentPane().add(btnTrigChan4);
@@ -946,8 +973,7 @@ public class GUI extends JFrame {
 		txtRun = new JTextArea();
 		txtRun.setBounds(187, 351, 200, 88);
 		getContentPane().add(txtRun);
-	}	
-
+	}
 	public void updateTime(ArrayList<Racer>run) {
 		runArr=run;
 		txtRun.setText("");
@@ -956,6 +982,6 @@ public class GUI extends JFrame {
 				Racer r=run.get(i);
 				txtRun.append(r.getOutput()+" R"+"\n");
 			}
-		}
+	}
 	}
 }
