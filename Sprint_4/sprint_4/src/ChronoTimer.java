@@ -18,6 +18,9 @@ public class ChronoTimer { //main program, links everything together
 	ArrayList<Run> runList = new ArrayList<Run>(); //list of previous runs
 	private int runNum = 1; //number of the current run
 
+	
+	private int queueSize = racerQueue1.size();
+	private boolean AlreadyStarted = false;
 	private boolean power = false;
 	Time t = new Time(); //time instance to do functions
 
@@ -300,6 +303,8 @@ public class ChronoTimer { //main program, links everything together
 		enabled = new boolean[2][4];
 		connected = new Sensor[2][4];
 		runStarted = false;
+		
+		AlreadyStarted = false;
 
 		hours = 0;
 		minutes = 0;
@@ -342,6 +347,9 @@ public class ChronoTimer { //main program, links everything together
 		else if(s.equalsIgnoreCase("GRP")){
 			eventType = 4;
 		}
+		else if(s.equalsIgnoreCase("PARGRP")){ //PARGRP
+			eventType = 5;
+		}
 		systemLog.add(t.getSystemTime() + " Setting EventType Successful.");
 		return true;
 	}
@@ -373,6 +381,9 @@ public class ChronoTimer { //main program, links everything together
 			}
 			else if(eventType == 4){
 				systemLog.add(t.getSystemTime() + " New GRP Run Started.");
+			}
+			else if(eventType == 5){
+				systemLog.add(t.getSystemTime() + " New PARGRP Run Started."); //PARGRP
 			}
 			systemLog.add(t.getSystemTime() + " NewRun Successful.");
 		}
@@ -464,6 +475,12 @@ public class ChronoTimer { //main program, links everything together
 			systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
 			racerFinish1.add(r);
 		}
+		else if(eventType == 5){  //PARGRP
+			Racer r = new Racer(placeHoldNum, groupStart, -1, "DNF", 2); //pargrp
+			placeHoldNum++;
+			systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
+			racerFinish1.add(r);
+		}
 		// TODO: Implement PARGRP
 		return true;
 	}
@@ -513,7 +530,11 @@ public class ChronoTimer { //main program, links everything together
 			System.out.println("cancelRacer cannot be called on GRP runs.");
 			return false;
 		}
-		// TODO: Implement PARGRP
+		else if(eventType == 5){  //PARGRP
+			systemLog.add(t.getSystemTime() + " cancelRacer cannot be called on PARGRP runs.");
+			System.out.println("cancelRacer cannot be called on PARGRP runs.");
+			return false;
+		}
 		return true;
 	}
 
@@ -733,7 +754,134 @@ public class ChronoTimer { //main program, links everything together
 				return false;
 			}
 		}//end GRP
-		// TODO: Implement PARGRP
+		else if(eventType == 5){
+			
+				if(channelNum == 1 && !AlreadyStarted){ //start
+					if(enabled[0][0]){
+						groupStart = t.start();
+						systemLog.add(t.getSystemTime() + " Group of Parellel Racers " + " started racing.");
+						AlreadyStarted = true;
+						return true;
+					}
+					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+					return false;
+				}
+				else if(channelNum != 1 || channelNum != 2 || channelNum != 3 || channelNum != 4 || channelNum != 5 || channelNum != 6 ||channelNum != 7 || channelNum != 8 )
+				{
+					return false;
+				}
+				else if(channelNum == 1 && AlreadyStarted){ 
+					if(enabled[0][0]){
+						double end = t.end();
+						r.setElapsed(groupStart, end);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+						racerFinish1.add(r);
+						return true;
+					}
+					
+					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+					return false;
+				}
+				
+				
+				else if(channelNum == 2 && AlreadyStarted){
+					if(enabled[1][0]){
+						double end = t.end();
+						r.setElapsed(groupStart, end);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+						racerFinish1.add(r);
+						return true;
+					}
+					
+					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+					return false;
+				}
+				
+				else if(channelNum == 3 && AlreadyStarted){
+					if(enabled[0][1]){
+						double end = t.end();
+						r.setElapsed(groupStart, end);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+						racerFinish1.add(r);
+						return true;
+					}
+					
+					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+					return false;
+				}
+				
+				
+				else if(channelNum == 4 && AlreadyStarted){
+					if(enabled[1][1]){
+						double end = t.end();
+						r.setElapsed(groupStart, end);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+						racerFinish1.add(r);
+						return true;
+					}
+					
+					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+					return false;
+				}
+				
+				
+				else if(channelNum == 5 && AlreadyStarted){
+					if(enabled[0][2]){
+						double end = t.end();
+						r.setElapsed(groupStart, end);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+						racerFinish1.add(r);
+						return true;
+					}
+					
+					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+					return false;
+				}
+				
+				
+				else if(channelNum == 6 && AlreadyStarted){
+					if(enabled[1][2]){
+						double end = t.end();
+						r.setElapsed(groupStart, end);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+						racerFinish1.add(r);
+						return true;
+					}
+					
+					
+					else if(channelNum == 7 && AlreadyStarted){
+						if(enabled[0][3]){
+							double end = t.end();
+							r.setElapsed(groupStart, end);
+							systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+							racerFinish1.add(r);
+							return true;
+						}
+						
+						systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+						return false;
+					}
+					
+					else if(channelNum == 8 && AlreadyStarted){
+						if(enabled[1][3]){
+							double end = t.end();
+							r.setElapsed(groupStart, end);
+							systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+							racerFinish1.add(r);
+							return true;
+						}
+						
+						systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+						return false;
+					}
+					
+					
+					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+					return false;
+				}
+				
+		}		
+		
 		systemLog.add(t.getSystemTime() + " Event Type " + eventType + " is not valid.");
 		return false;
 	}
