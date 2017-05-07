@@ -30,12 +30,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 import com.alee.laf.WebLookAndFeel;
 public class GUI extends JFrame {
 	Thread runTime;
-	Thread runTime1;
-	Thread runTime2;
 	GUI g;
 	ChronoTimer c;
 	ArrayList<Racer>runArr=new ArrayList<>();
-	//funuction button variables
+	//function button variables
 	private JButton btnBack;
 	private JButton btnEnter;
 	private JButton btnSwap;
@@ -94,6 +92,10 @@ public class GUI extends JFrame {
 	private JButton btnNum9;
 	private JTextField numTxtFld;
 	private JTextArea printTxt;
+	private JButton btnDnf;
+	private JButton btnCancel;
+	private JLabel lblRun_1;
+	private JButton btnSetGroupNumber;
 	/**
 	 * Create the frame.
 	 */
@@ -132,7 +134,7 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnSwap.setBounds(6, 443, 117, 29);
+		btnSwap.setBounds(0, 305, 117, 29);
 		getContentPane().add(btnSwap);
 		
 		lblStart = new JLabel("Start");
@@ -939,7 +941,7 @@ public class GUI extends JFrame {
 					}
 			}
 		});
-		btnPower.setBounds(6, 6, 117, 29);
+		btnPower.setBounds(0, 6, 117, 29);
 		getContentPane().add(btnPower);
 		
 		printTxt=new JTextArea();
@@ -952,8 +954,10 @@ public class GUI extends JFrame {
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<String>arr=c.printGUI();
-				for(int i=0;i<arr.size();i++){
-					printTxt.append(arr.get(i)+"\n");
+				if (arr != null) {
+					for (int i = 0; i < arr.size(); i++) {
+						printTxt.append(arr.get(i) + "\n");
+					}
 				}
 				try {
 					c.sendCommand("PRINT "+(c.getRunNum()-1));
@@ -973,6 +977,139 @@ public class GUI extends JFrame {
 		txtRun = new JTextArea();
 		txtRun.setBounds(187, 351, 200, 88);
 		getContentPane().add(txtRun);
+		
+		JLabel lblEventType = new JLabel("Event Type:");
+		lblEventType.setForeground(Color.WHITE);
+		lblEventType.setBounds(0, 47, 85, 16);
+		getContentPane().add(lblEventType);
+		
+		JButton btnInd = new JButton("IND");
+		btnInd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					c.sendCommand("EVENT IND");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnInd.setBounds(0, 60, 117, 29);
+		getContentPane().add(btnInd);
+		
+		JButton btnParind = new JButton("PARIND");
+		btnParind.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					c.sendCommand("EVENT PARIND");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnParind.setBounds(0, 85, 117, 29);
+		getContentPane().add(btnParind);
+		
+		JButton btnPargrp = new JButton("PARGRP");
+		btnPargrp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					c.sendCommand("EVENT PARGRP");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnPargrp.setBounds(0, 110, 117, 29);
+		getContentPane().add(btnPargrp);
+		
+		JButton btnGrp = new JButton("GRP");
+		btnGrp.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					c.sendCommand("EVENT GRP");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnGrp.setBounds(0, 135, 117, 29);
+		getContentPane().add(btnGrp);
+		
+		JLabel lblRun = new JLabel("Run:");
+		lblRun.setForeground(Color.WHITE);
+		lblRun.setBounds(0, 161, 85, 16);
+		getContentPane().add(lblRun);
+		
+		JButton btnNewRun = new JButton("New Run");
+		btnNewRun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					c.sendCommand("NEWRUN");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnNewRun.setBounds(0, 175, 117, 29);
+		getContentPane().add(btnNewRun);
+		
+		JButton btnEncRun = new JButton("End Run");
+		btnEncRun.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					c.sendCommand("ENDRUN");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnEncRun.setBounds(0, 200, 117, 29);
+		getContentPane().add(btnEncRun);
+		
+		JLabel lblRacer = new JLabel("Racer:");
+		lblRacer.setForeground(Color.WHITE);
+		lblRacer.setBounds(0, 225, 85, 16);
+		getContentPane().add(lblRacer);
+		
+		btnDnf = new JButton("DNF");
+		btnDnf.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					c.sendCommand("DNF");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnDnf.setBounds(0, 240, 117, 29);
+		getContentPane().add(btnDnf);
+		
+		btnCancel = new JButton("Cancel");
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					c.sendCommand("CANCEL");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnCancel.setBounds(0, 265, 117, 29);
+		getContentPane().add(btnCancel);
+		
+		lblRun_1 = new JLabel("Run:");
+		lblRun_1.setForeground(Color.WHITE);
+		lblRun_1.setBounds(0, 291, 85, 16);
+		getContentPane().add(lblRun_1);
+		
+		btnSetGroupNumber = new JButton("Set Group Number");
+		btnSetGroupNumber.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+			}
+		});
+		btnSetGroupNumber.setBounds(449, 357, 145, 29);
+		getContentPane().add(btnSetGroupNumber);
 	}
 	public void updateTime(ArrayList<Racer>run) {
 		runArr=run;
