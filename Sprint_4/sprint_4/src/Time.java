@@ -35,7 +35,7 @@ public class Time { //used to handle complex time management
 		int endMinutes = seconds/60;
 		double minutes = totalSeconds/60.0;
 		double endSeconds = (minutes - endMinutes)*60.0;
-		
+		endSeconds=Math.round(endSeconds*100.0)/100.0;
 		return endMinutes + ":" + endSeconds;
 	}
 
