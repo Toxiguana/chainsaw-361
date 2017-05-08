@@ -38,5 +38,5 @@ public class Time { //used to handle complex time management
 		endSeconds=Math.round(endSeconds*100.0)/100.0;
 		return endMinutes + ":" + endSeconds;
 	}
-
+ 
 }
