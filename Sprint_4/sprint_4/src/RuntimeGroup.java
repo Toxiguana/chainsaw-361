@@ -8,7 +8,7 @@ public class RuntimeGroup implements Runnable {
 	public RuntimeGroup(GUI _g,Double _startTime){
 		g=_g;
 		startTime=_startTime;
-	}
+	} 
 	//updates the output string for each racer so it can be printed out to the running display
 	public void run() {
 		try {

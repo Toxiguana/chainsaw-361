@@ -64,7 +64,7 @@ public class ChronoTimer { //main program, links everything together
 	public int getEventType(){ //returns eventType //used for testing
 		return eventType;
 	}
-	
+	 
 	public boolean getEnabled(int i, int j){ //returns enabled at a given index //used for testing
 		return enabled[i][j];
 	}

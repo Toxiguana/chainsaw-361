@@ -92,7 +92,7 @@ public class GUI extends JFrame {
 	private JButton btnNum7;
 	private JButton btnNum8;
 	private JButton btnNum9;
-	private JTextField numTxtFld;
+	private JTextField numTxtFld; 
 	private JTextArea printTxt;
 	private JButton btnDnf;
 	private JButton btnCancel;
