@@ -1182,6 +1182,7 @@ public class ChronoTimer { //main program, links everything together
 //		}
 
 	}
+
 	
-	// TODO: Add CLR method.
+	
 }//end ChronoTimer
