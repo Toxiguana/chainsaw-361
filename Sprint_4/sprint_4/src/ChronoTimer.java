@@ -20,7 +20,7 @@ public class ChronoTimer { //main program, links everything together
 
 	
 	private int queueSize = 0;// Is used in trigger to keep track of the size of racerQueue1
-	private boolean AlreadyStarted = false; // Keeps track of whether or not race has started, for PARGRP
+	public boolean AlreadyStarted = false; // Keeps track of whether or not race has started, for PARGRP
 	
 	private boolean power = false;
 	Time t = new Time(); //time instance to do functions

@@ -296,6 +296,11 @@ public class GUI extends JFrame {
 							runTimeGroup.start();
 						}
 					}
+				if(c.getEventType()==5){
+					if(c.AlreadyStarted){
+						
+					}
+				}
 
 				}
 			}
@@ -845,48 +850,74 @@ public class GUI extends JFrame {
 		btnEnter = new JButton("+");
 		btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(!numTxtFld.getText().equals("")){
-				if (c.getEventType() == 1 || c.getEventType() == 2) {
-					try {
-						c.sendCommand("NUM " + numTxtFld.getText());
-						numTxtFld.setText("");
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
-				} else if (c.getEventType() == 4) {
-					try {
-						c.sendCommand("GROUP " + numTxtFld.getText());
-						numTxtFld.setText("");
-						
-					} catch (IOException e1) {
-						e1.printStackTrace();
-					}
+				if (!numTxtFld.getText().equals("")) {
+					if (c.getEventType() == 1 || c.getEventType() == 2) {
+						try {
+							c.sendCommand("NUM " + numTxtFld.getText());
+							numTxtFld.setText("");
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+					} else if (c.getEventType() == 4) {
+						try {
+							c.sendCommand("GROUP " + numTxtFld.getText());
+							numTxtFld.setText("");
+
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 						txtQueue.setText("Number of Racers at Finish " + c.racerFinish1.size());
-				}
-				if (c.getEventType() == 1) {
-					txtQueue.setText("");
-					Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
-					int num = 1;
-					for (Racer r : tmp) {
-						if (num <= 3) {
-							num++;
-							txtQueue.append("NUM " + r.getNum() + "\n");
-						} else {
-							break;
+					}
+					if (c.getEventType() == 1) {
+						txtQueue.setText("");
+						Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
+						int num = 1;
+						for (Racer r : tmp) {
+							if (num <= 3) {
+								num++;
+								txtQueue.append("NUM " + r.getNum() + "\n");
+							} else {
+								break;
+							}
 						}
 					}
-				}
-				if (c.getEventType() == 2) {
-					txtQueue.setText("");
-					Queue<Racer> tmp1 = new LinkedList<Racer>(c.racerQueue1);
-					Queue<Racer> tmp2 = new LinkedList<Racer>(c.racerQueue2);
-					if (!tmp1.isEmpty()) {
-						txtQueue.append("NUM " + tmp1.poll().getNum() + "\n");
+					if (c.getEventType() == 2) {
+						txtQueue.setText("");
+						Queue<Racer> tmp1 = new LinkedList<Racer>(c.racerQueue1);
+						Queue<Racer> tmp2 = new LinkedList<Racer>(c.racerQueue2);
+						if (!tmp1.isEmpty()) {
+							txtQueue.append("NUM " + tmp1.poll().getNum() + "\n");
+						}
+						if (!tmp2.isEmpty()) {
+							txtQueue.append("NUM " + tmp2.poll().getNum());
+						}
 					}
-					if (!tmp2.isEmpty()) {
-						txtQueue.append("NUM " + tmp2.poll().getNum());
+					if (c.getEventType() == 5) {
+						try {
+							c.sendCommand("NUM " + numTxtFld.getText());
+							numTxtFld.setText("");
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
+						int rowCount = 0;
+						int num = 0;
+						Queue<Racer> tmp1 = new LinkedList<Racer>(c.racerQueue1);
+						while (!tmp1.isEmpty()) {
+							if (num <= 7) {
+								if (rowCount <= 2) {
+									txtQueue.append("NUM " + tmp1.poll().getNum() + "     ");
+									rowCount++;
+									num++;
+								} else {
+									rowCount = 0;
+									txtQueue.append("\n");
+									txtQueue.append("NUM " + tmp1.poll().getNum() + "     ");
+									rowCount++;
+									num++;
+								}
+							}
+						}
 					}
-				}
 				}
 			}
 		});
