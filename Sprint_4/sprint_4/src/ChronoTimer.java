@@ -33,7 +33,7 @@ public class ChronoTimer { //main program, links everything together
 	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
 
 	private int placeHoldNum = 1; //keeps track of placeholderNum for GRP race finishes
-	private double groupStart = 0.0; //stores start time for GRP races
+	public double groupStart = 0.0; //stores start time for GRP races
 	
 	private int hours = 0; //hours, minutes, and seconds of setTime
 	private int minutes = 0;
@@ -1162,7 +1162,6 @@ public class ChronoTimer { //main program, links everything together
 			systemLog.add(t.getSystemTime() + " Swap Unsuccessful - Wrong Event Type.");
 			return false;
 		}
-
 //		public boolean swap(){
 
 //			Racer swap1 = racerRun1.remove();
