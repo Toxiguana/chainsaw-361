@@ -19,17 +19,15 @@ public class ChronoTimer { //main program, links everything together
 	private int runNum = 1; //number of the current run
 
 	
-	private int queueSize = racerQueue1.size();
-	private boolean AlreadyStarted = false;
+	private int queueSize = 0;// Is used in trigger to keep track of the size of racerQueue1
+	private boolean AlreadyStarted = false; // Keeps track of whether or not race has started, for PARGRP
+	
 	private boolean power = false;
 	Time t = new Time(); //time instance to do functions
 
 	private boolean[][] enabled = new boolean[2][4]; //array holding enable for each channel
 	private Sensor[][] connected = new Sensor[2][4]; //array holding connected for each sensor	
 	private boolean runStarted = false; //a run must be created before almost everything else
-
-	// TODO: Add variables for PARGRP; eventType
-	// something to keep track of start/finish channel 1 & which channel to start next racer
 
 	private int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run, 4 is GRP
 	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
@@ -290,7 +288,6 @@ public class ChronoTimer { //main program, links everything together
 			systemLog.add(t.getSystemTime() + " Reset Unsuccessful.");
 			return false;
 		}
-		// TODO: Reset variables that you need to.
 		racerQueue1 = new LinkedList<Racer>();
 		racerQueue2 = new LinkedList<Racer>();
 		racerRun1 = new LinkedList<Racer>();
@@ -337,7 +334,6 @@ public class ChronoTimer { //main program, links everything together
 			systemLog.add(t.getSystemTime() + " Setting EventType Unsuccessful.");
 			return false;
 		}
-		// TODO: Implement PARGRP
 		if(s.equalsIgnoreCase("IND")){
 			eventType = 1;
 		}
@@ -370,7 +366,6 @@ public class ChronoTimer { //main program, links everything together
 			systemLog.add(t.getSystemTime() + " NewRun Unsuccessful.");
 			return false;
 		}
-		// TODO: Implement PARGRP
 		if(runStarted != true){
 			runStarted = true;
 			if(eventType == 1){
@@ -476,12 +471,10 @@ public class ChronoTimer { //main program, links everything together
 			racerFinish1.add(r);
 		}
 		else if(eventType == 5){  //PARGRP
-			Racer r = new Racer(placeHoldNum, groupStart, -1, "DNF", 2); //pargrp
-			placeHoldNum++;
-			systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
-			racerFinish1.add(r);
+			systemLog.add(t.getSystemTime() + " dnfRacer cannot be called on PARGRP runs.");
+			System.out.println("dnfRacer cannot be called on PARGRP runs.");
+			return false;
 		}
-		// TODO: Implement PARGRP
 		return true;
 	}
 
@@ -759,6 +752,14 @@ public class ChronoTimer { //main program, links everything together
 				if(channelNum == 1 && !AlreadyStarted){ //start
 					if(enabled[0][0]){
 						groupStart = t.start();
+						queueSize = racerQueue1.size();
+						for(int i = 1; i < queueSize + 1; i ++)
+						{
+							Racer RacerSwitch = racerQueue1.remove();
+							RacerSwitch.setState(1);
+							RacerSwitch.setStart(groupStart);
+							racerRun1.add(RacerSwitch);
+						}
 						systemLog.add(t.getSystemTime() + " Group of Parellel Racers " + " started racing.");
 						AlreadyStarted = true;
 						return true;
@@ -770,9 +771,11 @@ public class ChronoTimer { //main program, links everything together
 				{
 					return false;
 				}
-				else if(channelNum == 1 && AlreadyStarted){ 
+				else if(channelNum == 1 && AlreadyStarted && queueSize >= 1){ 
 					if(enabled[0][0]){
 						double end = t.end();
+						Racer r = racerQueue1.remove();
+						r.setState(2);
 						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
@@ -784,9 +787,11 @@ public class ChronoTimer { //main program, links everything together
 				}
 				
 				
-				else if(channelNum == 2 && AlreadyStarted){
+				else if(channelNum == 2 && AlreadyStarted && queueSize >= 2){
 					if(enabled[1][0]){
 						double end = t.end();
+						Racer r = racerQueue1.remove();
+						r.setState(2);
 						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
@@ -797,9 +802,11 @@ public class ChronoTimer { //main program, links everything together
 					return false;
 				}
 				
-				else if(channelNum == 3 && AlreadyStarted){
+				else if(channelNum == 3 && AlreadyStarted && queueSize >= 3){
 					if(enabled[0][1]){
 						double end = t.end();
+						Racer r = racerQueue1.remove();
+						r.setState(2);
 						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
@@ -811,9 +818,11 @@ public class ChronoTimer { //main program, links everything together
 				}
 				
 				
-				else if(channelNum == 4 && AlreadyStarted){
+				else if(channelNum == 4 && AlreadyStarted && queueSize >= 4){
 					if(enabled[1][1]){
 						double end = t.end();
+						Racer r = racerQueue1.remove();
+						r.setState(2);
 						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
@@ -825,9 +834,11 @@ public class ChronoTimer { //main program, links everything together
 				}
 				
 				
-				else if(channelNum == 5 && AlreadyStarted){
+				else if(channelNum == 5 && AlreadyStarted && queueSize >= 5){
 					if(enabled[0][2]){
 						double end = t.end();
+						Racer r = racerQueue1.remove();
+						r.setState(2);
 						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
@@ -839,9 +850,11 @@ public class ChronoTimer { //main program, links everything together
 				}
 				
 				
-				else if(channelNum == 6 && AlreadyStarted){
+				else if(channelNum == 6 && AlreadyStarted && queueSize >= 6){
 					if(enabled[1][2]){
 						double end = t.end();
+						Racer r = racerQueue1.remove();
+						r.setState(2);
 						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
@@ -849,9 +862,11 @@ public class ChronoTimer { //main program, links everything together
 					}
 					
 					
-					else if(channelNum == 7 && AlreadyStarted){
+					else if(channelNum == 7 && AlreadyStarted && queueSize >= 7){
 						if(enabled[0][3]){
 							double end = t.end();
+							Racer r = racerQueue1.remove();
+							r.setState(2);
 							r.setElapsed(groupStart, end);
 							systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 							racerFinish1.add(r);
@@ -862,9 +877,11 @@ public class ChronoTimer { //main program, links everything together
 						return false;
 					}
 					
-					else if(channelNum == 8 && AlreadyStarted){
+					else if(channelNum == 8 && AlreadyStarted && queueSize >= 8){
 						if(enabled[1][3]){
 							double end = t.end();
+							Racer r = racerQueue1.remove();
+							r.setState(2);
 							r.setElapsed(groupStart, end);
 							systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 							racerFinish1.add(r);
@@ -872,6 +889,10 @@ public class ChronoTimer { //main program, links everything together
 						}
 						
 						systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+						return false;
+					}
+					else if(channelNum < 9 && channelNum > 1 && !AlreadyStarted)
+					{
 						return false;
 					}
 					
@@ -933,7 +954,10 @@ public class ChronoTimer { //main program, links everything together
 			System.out.println("Racers cannot be added to GRP event in this way");
 			return false;
 		}
-		// TODO: Implement PARGRP
+		else if(eventType == 5){
+			racerQueue1.add(r);
+			systemLog.add(t.getSystemTime() + " Racer Num " + racerNum + " has been added to PARGRP event.");
+		}
 		return true;
 	}
 
@@ -1023,7 +1047,6 @@ public class ChronoTimer { //main program, links everything together
 			systemLog.add(t.getSystemTime() + " SetGroupRacerNum Unsuccessful.");
 			return false;
 		}
-		// TODO: Implement PARIND
 		Racer r = racerFinish1.remove();
 		r.setNum(racerNum);
 		racerFinish2.add(r);
