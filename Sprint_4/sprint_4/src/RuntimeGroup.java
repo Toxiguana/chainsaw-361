@@ -3,11 +3,11 @@ import java.util.ArrayList;
 public class RuntimeGroup implements Runnable {
 	GUI g;
 	Time t=new Time();
-	double startTime;
 	String output="";
-	public RuntimeGroup(GUI _g,Double _startTime){
+	ChronoTimer c=new ChronoTimer();
+	public RuntimeGroup(GUI _g,ChronoTimer _c){
 		g=_g;
-		startTime=_startTime;
+		c=_c;
 	}  
 	//updates the output string for each racer so it can be printed out to the running display
 	public void run() {
@@ -15,7 +15,7 @@ public class RuntimeGroup implements Runnable {
 			while (true) {
 				//thread sleeps and then runs every second
 				Thread.sleep(1000);
-				output=t.computeTime(startTime, t.start());
+				output=t.computeTime(c.groupStart, t.start());
 				g.updateTimeGroup(output+" R");
 			}
 		} catch (InterruptedException e) {

@@ -292,7 +292,7 @@ public class GUI extends JFrame {
 					}
 					if(c.getEventType()==4){
 						if(runTimeGroup==null){
-							runTimeGroup=new Thread(new RuntimeGroup(g,c.groupStart));
+							runTimeGroup=new Thread(new RuntimeGroup(g,c));
 							runTimeGroup.start();
 						}
 					}
@@ -410,8 +410,9 @@ public class GUI extends JFrame {
 						Object[] finishArr = run.toArray();
 						txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
 								+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+						txtQueue.setText("Number of Racers at Finish "+c.racerFinish1.size());
+						
 					}
-					txtQueue.setText("Number of Racers at Finish "+c.racerFinish1.size());
 				}
 			}
 		});
@@ -848,6 +849,7 @@ public class GUI extends JFrame {
 				if (c.getEventType() == 1 || c.getEventType() == 2) {
 					try {
 						c.sendCommand("NUM " + numTxtFld.getText());
+						numTxtFld.setText("");
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -1147,12 +1149,14 @@ public class GUI extends JFrame {
 
 	}
 	public void updateTimeGroup(String output){
-		if(c.getEventType()!=3){
+		if(c.getEventType()!=0){
 		txtRun.setText("");
 		txtRun.append(output);
 		}
 		else{
 			txtRun.setText("");
+			runTimeGroup.interrupt();
+			runTimeGroup=null;
 		}
 	}
 }
