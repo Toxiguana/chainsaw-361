@@ -66,7 +66,7 @@ public class GUI_Back extends JFrame {
 		radiobuttonChan1 = new JRadioButton("");
 		radiobuttonChan1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radiobuttonChan1.isSelected() == false) {
+				if (radiobuttonChan1.isSelected() == true) {
 					try {
 						c.sendCommand("CONN 1");
 					} catch (IOException e1) {
@@ -102,7 +102,7 @@ public class GUI_Back extends JFrame {
 		radioButtonChan3 = new JRadioButton("");
 		radioButtonChan3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioButtonChan3.isSelected() == false) {
+				if (radioButtonChan3.isSelected() == true) {
 					try {
 						c.sendCommand("CONN 3");
 					} catch (IOException e1) {
@@ -132,7 +132,7 @@ public class GUI_Back extends JFrame {
 		radioButtonChan5 = new JRadioButton("");
 		radioButtonChan5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioButtonChan5.isSelected() == false) {
+				if (radioButtonChan5.isSelected() == true) {
 					try {
 						c.sendCommand("CONN 5");
 					} catch (IOException e1) {
@@ -163,7 +163,7 @@ public class GUI_Back extends JFrame {
 		radioButtonChan7 = new JRadioButton("");
 		radioButtonChan7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioButtonChan7.isSelected() == false) {
+				if (radioButtonChan7.isSelected() == true) {
 					try {
 						c.sendCommand("CONN 7");
 					} catch (IOException e1) {
@@ -194,7 +194,7 @@ public class GUI_Back extends JFrame {
 		radioButtonChan2 = new JRadioButton("");
 		radioButtonChan2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioButtonChan2.isSelected() == false) {
+				if (radioButtonChan2.isSelected() == true) {
 					try {
 						c.sendCommand("CONN 2");
 					} catch (IOException e1) {
@@ -225,7 +225,7 @@ public class GUI_Back extends JFrame {
 		radioButtonChan4 = new JRadioButton("");
 		radioButtonChan4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioButtonChan4.isSelected() == false) {
+				if (radioButtonChan4.isSelected() == true) {
 					try {
 						c.sendCommand("CONN 4");
 					} catch (IOException e1) {
@@ -256,7 +256,7 @@ public class GUI_Back extends JFrame {
 		radioButtonChan6 = new JRadioButton("");
 		radioButtonChan6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioButtonChan6.isSelected() == false) {
+				if (radioButtonChan6.isSelected() == true) {
 					try {
 						c.sendCommand("CONN 6");
 					} catch (IOException e1) {
@@ -287,7 +287,7 @@ public class GUI_Back extends JFrame {
 		radioButtonChan8 = new JRadioButton("");
 		radioButtonChan8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (radioButtonChan8.isSelected() == false) {
+				if (radioButtonChan8.isSelected() == true) {
 					try {
 						c.sendCommand("CONN 8");
 					} catch (IOException e1) {

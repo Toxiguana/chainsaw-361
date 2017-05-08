@@ -22,8 +22,6 @@ public class RunTime implements Runnable {
 				String output=r.getNum()+" ";
 				//computers current time for the racer
 				String time=t.computeTime(r.getStart(), t.start());
-				//substrings the time string to get rid of the milliseconds
-				time=time.substring(0,time.indexOf('.'));
 				//adds the time to the output string
 				output+=time;
 				//sets the output string for the racer

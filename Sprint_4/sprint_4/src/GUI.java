@@ -844,6 +844,7 @@ public class GUI extends JFrame {
 		btnEnter = new JButton("+");
 		btnEnter.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if(!numTxtFld.getText().equals("")){
 				if (c.getEventType() == 1 || c.getEventType() == 2) {
 					try {
 						c.sendCommand("NUM " + numTxtFld.getText());
@@ -852,10 +853,13 @@ public class GUI extends JFrame {
 					}
 				} else if (c.getEventType() == 4) {
 					try {
-						c.sendCommand("GRPADD " + numTxtFld.getText());
+						c.sendCommand("GROUP " + numTxtFld.getText());
+						numTxtFld.setText("");
+						
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
+						txtQueue.setText("Number of Racers at Finish " + c.racerFinish1.size());
 				}
 				if (c.getEventType() == 1) {
 					txtQueue.setText("");
@@ -881,7 +885,7 @@ public class GUI extends JFrame {
 						txtQueue.append("NUM " + tmp2.poll().getNum());
 					}
 				}
-				numTxtFld.setText("");
+				}
 			}
 		});
 		btnEnter.setBounds(541, 317, 41, 36);
@@ -1114,7 +1118,15 @@ public class GUI extends JFrame {
 		btnSetGroupNumber = new JButton("Set Group Number");
 		btnSetGroupNumber.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-
+				if (c.getEventType() == 4) {
+					try {
+						c.sendCommand("GROUP " + numTxtFld.getText());
+						numTxtFld.setText("");
+							txtQueue.setText("Number of Racers at Finish "+c.racerFinish1.size());
+					} catch (IOException e1) {
+						e1.printStackTrace();
+					}
+				}
 			}
 		});
 		btnSetGroupNumber.setBounds(449, 357, 145, 29);
