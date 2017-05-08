@@ -29,7 +29,7 @@ public class ChronoTimer { //main program, links everything together
 	public Sensor[][] connected = new Sensor[2][4]; //array holding connected for each sensor	
 	private boolean runStarted = false; //a run must be created before almost everything else
 
-	private int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run, 4 is GRP
+	private int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run, 4 is GRP, 5 is PARGRP
 	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
 
 	private int placeHoldNum = 1; //keeps track of placeholderNum for GRP race finishes
