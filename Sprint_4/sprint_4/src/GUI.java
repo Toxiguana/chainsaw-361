@@ -1119,12 +1119,14 @@ public class GUI extends JFrame {
 		btnSetGroupNumber.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (c.getEventType() == 4) {
-					try {
-						c.sendCommand("GROUP " + numTxtFld.getText());
-						numTxtFld.setText("");
-							txtQueue.setText("Number of Racers at Finish "+c.racerFinish1.size());
-					} catch (IOException e1) {
-						e1.printStackTrace();
+					if (!numTxtFld.getText().equals("")) {
+						try {
+							c.sendCommand("GROUP " + numTxtFld.getText());
+							numTxtFld.setText("");
+							txtQueue.setText("Number of Racers at Finish " + c.racerFinish1.size());
+						} catch (IOException e1) {
+							e1.printStackTrace();
+						}
 					}
 				}
 			}
