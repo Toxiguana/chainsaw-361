@@ -72,7 +72,7 @@ public class ChronoTimer { //main program, links everything together
 	public int getRunNum(){ //used for testing
 		return runNum;
 	}
-	
+	 
 	public Sensor getConnected(int i, int j){ //returns sensor at a given index //used for testing
 		return connected[i][j];
 	}
