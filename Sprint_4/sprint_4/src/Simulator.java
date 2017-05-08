@@ -57,7 +57,7 @@ public class Simulator { //used to represent hardware
 						System.out.println("1. Individual Run");
 						System.out.println("2. Parallel Individual Run");
 						System.out.println("3. Group Run");
-						// TODO: ADD PARGRP!
+						System.out.println("4. Paralllel Group Run");
 						int runChoice = input.nextInt();
 						switch (runChoice){
 						case 1:
@@ -66,7 +66,8 @@ public class Simulator { //used to represent hardware
 							return "EVENT PARIND";
 						case 3:
 							return "EVENT GRP";
-						// TODO: ADD PARGRP!
+						case 4:
+							return "EVENT PARGRP";
 						default:
 							System.out.println("Invalid Input.");
 						}
