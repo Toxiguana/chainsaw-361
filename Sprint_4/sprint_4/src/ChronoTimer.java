@@ -56,6 +56,8 @@ public class ChronoTimer { //main program, links everything together
 		if(command.equals("GUI")){
 			GUI frame = new GUI(t);
 			frame.setVisible(true);
+			GUI_Back back=new GUI_Back(t);
+			back.setVisible(true);
 		}
 	}
 	
