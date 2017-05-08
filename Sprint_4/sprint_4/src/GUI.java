@@ -102,9 +102,6 @@ public class GUI extends JFrame {
 //	ChronoTimer c=new ChronoTimer();
 	public GUI(ChronoTimer _c) {
 		c=_c;
-		c.power();
-		c.setEventType("PARIND");
-		c.newRun();
 		g=this;
 		UIManager s=new UIManager();
 
@@ -114,7 +111,7 @@ public class GUI extends JFrame {
 	    } 
 	    catch (Exception e) 
 	    {
-	    	
+	    	e.printStackTrace();
 	    }
 		Time t=new Time();
 		setResizable(false);
@@ -971,10 +968,12 @@ public class GUI extends JFrame {
 		getContentPane().add(btnPrint);
 		
 		txtFinish = new JTextArea();
+		txtFinish.setEditable(false);
 		txtFinish.setBounds(187, 315, 200, 38);
 		getContentPane().add(txtFinish);
 		
 		txtRun = new JTextArea();
+		txtRun.setEditable(false);
 		txtRun.setBounds(187, 351, 200, 88);
 		getContentPane().add(txtRun);
 		
