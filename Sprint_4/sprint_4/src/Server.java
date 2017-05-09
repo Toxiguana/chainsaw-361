@@ -3,16 +3,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Queue;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
-import Test.DisplayHandler;
-import Test.PostHandler;
-import Test.cssHandler;
-
 public class Server {
+	static Run r = new Run(0, null, null, null);
 	static String sharedResponse = "";
 	public void startServer() throws IOException{
 		// set up a simple HTTP server on our local host
@@ -63,17 +61,19 @@ public class Server {
             response += "<tr><th>RunnerNumber</th>\n<th>First Initial</th>\n<th>Last Name</th>";
             response += "<th>Time</th>";
             
+            Queue<Racer> finishQ = r.getFinish1();
             ArrayList<Racer> run = new ArrayList<Racer>();
-            RacerComparator rc= new RacerComparator();
-            run= r.getArraylist();
+            for(Racer a: finishQ){
+            	run.add(a);
+            }
+            RacerComparator rc = new RacerComparator();
             run.sort(rc);
-            for(int i = 0; i < run.size() ; i++)
+            for(Racer b : run)
             {
-            	Racer r = run.get(i);
-            	response += "<tr>\n<td>" + r.getRunNumber() + "</td>"; 
-            	response += "\n<td>" + r.getFirstInitial() + "</td>";
-            	response += "\n<td>" + r.getLast() + "</td>"; 
-            	response += "\n<td>" + r.getTime() + "</td>";
+            	response += "<tr>\n<td>" + b.getNum() + "</td>"; 
+            	response += "\n<td>" + b.getFirstInitial() + "</td>";
+            	response += "\n<td>" + b.getLast() + "</td>"; 
+            	response += "\n<td>" + b.getTime() + "</td>";
             	response += "\n</tr>";
             
             }
