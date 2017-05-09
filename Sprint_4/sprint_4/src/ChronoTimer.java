@@ -750,7 +750,8 @@ public class ChronoTimer { //main program, links everything together
 			}
 		}//end GRP
 		else if(eventType == 5){
-			
+			if(racerRun1.size() <= 8)
+			{
 				if(channelNum == 1 && !AlreadyStarted){ //start
 					if(enabled[0][0]){
 						groupStart = t.start();
@@ -902,7 +903,7 @@ public class ChronoTimer { //main program, links everything together
 					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
 					return false;
 				}
-				
+			}
 		}		
 		
 		systemLog.add(t.getSystemTime() + " Event Type " + eventType + " is not valid.");
