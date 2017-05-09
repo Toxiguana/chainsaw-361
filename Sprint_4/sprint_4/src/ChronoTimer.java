@@ -752,7 +752,7 @@ public class ChronoTimer { //main program, links everything together
 			}
 		}//end GRP
 		else if(eventType == 5){
-			if(racerRun1.size() <= 8) //makes sure you dont add more than 8 racers
+			if(racerRun1.size() <= 8) // makes sure you dont add more than 8 racers
 			{
 				if(channelNum == 1 && !AlreadyStarted){ //start
 					if(enabled[0][0]){
