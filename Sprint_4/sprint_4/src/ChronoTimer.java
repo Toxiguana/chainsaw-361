@@ -1006,15 +1006,28 @@ public class ChronoTimer { //main program, links everything together
 		return false;
 	}
 
-	public boolean start(){ //triggers channel 1
+	/**
+	 * Triggers Channel 1.
+	 * @return boolean: whether or not start() was successful
+	 */
+	public boolean start(){
 		return trigChannel(1);
 	}
 
-	public boolean finish(){//triggers channel 2
+	/**
+	 * Triggers Channel 2.
+	 * @return boolean: whether or not finish() was successful
+	 */
+	public boolean finish(){
 		return trigChannel(2);
 	}
 
-	public boolean addRacer(int racerNum){ //same as num //adds racer to queue
+	/**
+	 * Adds Racer to Queue. (NUM)
+	 * @param racerNum: number of the racer you want to add
+	 * @return boolean: whether or not addRacer() was successful
+	 */
+	public boolean addRacer(int racerNum){ 
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " Adding Racer Unsuccessful.");
@@ -1060,7 +1073,12 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 
-	public boolean print(int rNum){ //prints a run to the console
+	/**
+	 * Prints a run to the console
+	 * @param rNum
+	 * @return
+	 */
+	public boolean print(int rNum){
 		if(rNum > runList.size()){
 			System.out.println("Try Again - " + rNum + " is not a valid run number.");
 			systemLog.add(t.getSystemTime() + " " + rNum + " is not a valid run number.");
