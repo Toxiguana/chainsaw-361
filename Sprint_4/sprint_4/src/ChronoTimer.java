@@ -728,7 +728,7 @@ public class ChronoTimer { //main program, links everything together
 					Racer r1 = racerRun1.remove();
 					double end = t.end();
 					r1.setEnd(end);
-					r1.setElapsed(r1.getStart(), end);
+//					r1.setElapsed(r1.getStart(), end);
 					r1.setState(2);
 					racerFinish2.add(r1);
 					systemLog.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
@@ -791,7 +791,7 @@ public class ChronoTimer { //main program, links everything together
 						double end = t.end();
 						r1.setEnd(end);
 						r1.setState(2);
-						r1.setElapsed(r1.getStart(), end);
+//						r1.setElapsed(r1.getStart(), end);
 						racerFinish2.add(r1);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
 						return true;
@@ -804,7 +804,7 @@ public class ChronoTimer { //main program, links everything together
 						double end = t.end();
 						r1.setEnd(end);
 						r1.setState(2);
-						r1.setElapsed(r1.getStart(), end);
+//						r1.setElapsed(r1.getStart(), end);
 						racerFinish2.add(r1);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r1.getNum() + " finished racing.");
 						return true;
@@ -834,9 +834,11 @@ public class ChronoTimer { //main program, links everything together
 			else if(channelNum == 2){ //end
 				if(enabled[1][0]){
 					double end = t.end();
-					Racer r = new Racer(placeHoldNum, groupStart, end,"", 2);
+					Racer r = new Racer(placeHoldNum, 0, 0,"", 2);
+					r.setStart(groupStart);
+					r.setEnd(end);
 					placeHoldNum++;
-					r.setElapsed(groupStart, end);
+//					r.setElapsed(groupStart, end);
 					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 					racerFinish1.add(r);
 					return true;
@@ -875,7 +877,9 @@ public class ChronoTimer { //main program, links everything together
 						double end = t.end();
 						Racer r = racerQueue1.remove();
 						r.setState(2);
-						r.setElapsed(groupStart, end);
+						r.setStart(groupStart);
+						r.setEnd(end);
+//						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
 						return true;
@@ -891,7 +895,9 @@ public class ChronoTimer { //main program, links everything together
 						double end = t.end();
 						Racer r = racerQueue1.remove();
 						r.setState(2);
-						r.setElapsed(groupStart, end);
+						r.setStart(groupStart);
+						r.setEnd(end);
+//						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
 						return true;
@@ -906,7 +912,9 @@ public class ChronoTimer { //main program, links everything together
 						double end = t.end();
 						Racer r = racerQueue1.remove();
 						r.setState(2);
-						r.setElapsed(groupStart, end);
+						r.setStart(groupStart);
+						r.setEnd(end);
+//						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
 						return true;
@@ -922,7 +930,9 @@ public class ChronoTimer { //main program, links everything together
 						double end = t.end();
 						Racer r = racerQueue1.remove();
 						r.setState(2);
-						r.setElapsed(groupStart, end);
+						r.setStart(groupStart);
+						r.setEnd(end);
+//						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
 						return true;
@@ -938,7 +948,9 @@ public class ChronoTimer { //main program, links everything together
 						double end = t.end();
 						Racer r = racerQueue1.remove();
 						r.setState(2);
-						r.setElapsed(groupStart, end);
+						r.setStart(groupStart);
+						r.setEnd(end);
+//						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
 						return true;
@@ -954,7 +966,9 @@ public class ChronoTimer { //main program, links everything together
 						double end = t.end();
 						Racer r = racerQueue1.remove();
 						r.setState(2);
-						r.setElapsed(groupStart, end);
+						r.setStart(groupStart);
+						r.setEnd(end);
+//						r.setElapsed(groupStart, end);
 						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 						racerFinish1.add(r);
 						return true;
@@ -966,7 +980,9 @@ public class ChronoTimer { //main program, links everything together
 							double end = t.end();
 							Racer r = racerQueue1.remove();
 							r.setState(2);
-							r.setElapsed(groupStart, end);
+							r.setStart(groupStart);
+							r.setEnd(end);
+//							r.setElapsed(groupStart, end);
 							systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 							racerFinish1.add(r);
 							return true;
@@ -981,7 +997,9 @@ public class ChronoTimer { //main program, links everything together
 							double end = t.end();
 							Racer r = racerQueue1.remove();
 							r.setState(2);
-							r.setElapsed(groupStart, end);
+							r.setStart(groupStart);
+							r.setEnd(end);
+//							r.setElapsed(groupStart, end);
 							systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
 							racerFinish1.add(r);
 							return true;

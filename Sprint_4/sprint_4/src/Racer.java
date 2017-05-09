@@ -55,10 +55,11 @@ public class Racer { //used to represent a person and store data about their rac
 	
 	public void setEnd(double enT){
 		this.endTime = enT;
+		setElapsed();
 	}
 	
-	public void setElapsed(double sT, double enT){
-		this.elapsedTime = t.computeTime(sT, enT);
+	private void setElapsed(){
+		this.elapsedTime = t.computeTime(startTime, endTime);
 		
 		if(elapsedTime.equals("DNF")){
 			elapsedTimeSec = -1;
