@@ -1129,7 +1129,10 @@ public class ChronoTimer { //main program, links everything together
 			systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
 			return false;
 		}
-		
+		if(eventType == 0){
+			System.out.println("Try Again - Event Type must be set.");
+			return false;
+		}
 		if(runStarted == false){
 			System.out.println("Try Again - A Run has not been started.");
 			systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
@@ -1143,48 +1146,47 @@ public class ChronoTimer { //main program, links everything together
 				return false;
 			}
 
-			Queue<Racer> copy = new LinkedList<Racer>();
-			copy.addAll(racerFinish1);
-
-			int startSize = racerFinish1.size(); //initial size of list of finished competitors
-			while(racerFinish1.size() == startSize+1){ //when the list of finished competitors is incremented
-				while(racerFinish1.size() == startSize+2){ //when the list of finished racers increments by 2
-					for(int i = -2; i < racerFinish1.size(); i++){//FOR loop removes all but the most recent 2 entries to the "finished" queue
-						racerFinish1.remove();
-					}
-					Racer hold = racerFinish1.remove();
-					copy.add(racerFinish1.remove());
-					copy.add(hold);
-					racerFinish1 = copy;
-				}
-			}
-			return true;
-		}
-		else {
-			System.out.println("Swap can only be called during IND events; wrong event type.");
-			systemLog.add(t.getSystemTime() + " Swap Unsuccessful - Wrong Event Type.");
-			return false;
-		}
-//		public boolean swap(){
-
-//			Racer swap1 = racerRun1.remove();
-//			Racer swap2 = racerRun1.remove();
+//			Queue<Racer> copy = new LinkedList<Racer>();
+//			copy.addAll(racerFinish1);
 //
-//			Queue<Racer> swap = new LinkedList<Racer>();
-//			swap.add(swap2);
-//			swap.add(swap1);
-//
-//			while(!racerRun1.isEmpty()){
-//				Racer r = racerRun1.remove();
-//				swap.add(r);
+//			int startSize = racerFinish1.size(); //initial size of list of finished competitors
+//			while(racerFinish1.size() == startSize+1){ //when the list of finished competitors is incremented
+//				while(racerFinish1.size() == startSize+2){ //when the list of finished racers increments by 2
+//					for(int i = -2; i < racerFinish1.size(); i++){//FOR loop removes all but the most recent 2 entries to the "finished" queue
+//						racerFinish1.remove();
+//					}
+//					Racer hold = racerFinish1.remove();
+//					copy.add(racerFinish1.remove());
+//					copy.add(hold);
+//					racerFinish1 = copy;
+//				}
 //			}
-//			racerRun1 = swap;
 //			return true;
-//
 //		}
+//		else {
+//			System.out.println("Swap can only be called during IND events; wrong event type.");
+//			systemLog.add(t.getSystemTime() + " Swap Unsuccessful - Wrong Event Type.");
+//			return false;
+//		}
+//
 
+			Racer swap1 = racerRun1.remove();
+			Racer swap2 = racerRun1.remove();
+
+			Queue<Racer> swap = new LinkedList<Racer>();
+			swap.add(swap2);
+			swap.add(swap1);
+
+			while(!racerRun1.isEmpty()){
+				Racer r = racerRun1.remove();
+				swap.add(r);
+			}
+			racerRun1 = swap;
+			return true;
+
+		}
+		return false;
 	}
 
-	
 	
 }//end ChronoTimer
