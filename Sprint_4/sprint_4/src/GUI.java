@@ -129,6 +129,23 @@ public class GUI extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				if (c.getEventType() == 1) {
+					Queue<Racer> run = new LinkedList<Racer>(c.racerRun1);
+					if (run.size() >= 2) {
+						runArr = null;
+						runArr = new ArrayList<Racer>();
+						while (!run.isEmpty()) {
+							Racer r = run.poll();
+							runArr.add(r);
+						}
+						if (runTime.isAlive()) {
+							runTime.interrupt();
+							runTime = null;
+							runTime = new Thread(new RunTime(g, runArr));
+							runTime.start();
+						}
+					}
+				}
 			}
 		});
 		btnSwap.setBounds(0, 305, 117, 29);
@@ -196,7 +213,7 @@ public class GUI extends JFrame {
 
 		txtQueue = new JTextArea();
 		txtQueue.setEditable(false);
-		txtQueue.setBounds(187, 224, 200, 58);
+		txtQueue.setBounds(171, 224, 230, 58);
 		getContentPane().add(txtQueue);
 		
 		btnTrigChan1 = new JButton("");
@@ -376,12 +393,12 @@ public class GUI extends JFrame {
 							if (runTime.isAlive()) {
 								if (runArr.isEmpty()) {
 									txtRun.setText("");
+								} else {
+									runTime.interrupt();
+									runTime = null;
+									runTime = new Thread(new RunTime(g, runArr));
+									runTime.start();
 								}
-
-								runTime.interrupt();
-								runTime = null;
-								runTime = new Thread(new RunTime(g, runArr));
-								runTime.start();
 							}
 						}
 					}
@@ -967,7 +984,7 @@ public class GUI extends JFrame {
 
 		JLabel lblQueue = new JLabel("Queue");
 		lblQueue.setForeground(Color.WHITE);
-		lblQueue.setBounds(187, 207, 61, 16);
+		lblQueue.setBounds(171, 205, 61, 16);
 		getContentPane().add(lblQueue);
 
 		JLabel lblRunningfinalTime = new JLabel("Running/Final Time");
@@ -1124,8 +1141,8 @@ public class GUI extends JFrame {
 		btnNewRun.setBounds(0, 175, 117, 29);
 		getContentPane().add(btnNewRun);
 
-		JButton btnEncRun = new JButton("End Run");
-		btnEncRun.addActionListener(new ActionListener() {
+		JButton btnEndRun = new JButton("End Run");
+		btnEndRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					c.sendCommand("ENDRUN");
@@ -1134,8 +1151,8 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnEncRun.setBounds(0, 200, 117, 29);
-		getContentPane().add(btnEncRun);
+		btnEndRun.setBounds(0, 200, 117, 29);
+		getContentPane().add(btnEndRun);
 
 		JLabel lblRacer = new JLabel("Racer:");
 		lblRacer.setForeground(Color.WHITE);
@@ -1149,6 +1166,51 @@ public class GUI extends JFrame {
 					c.sendCommand("DNF");
 				} catch (IOException e1) {
 					e1.printStackTrace();
+				}
+				if(c.getEventType()==1){
+					Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
+					int num = 1;
+					txtQueue.setText("");
+					if (!tmp.isEmpty()) {
+						while (num <= 3) {
+							Racer r = tmp.poll();
+							num++;
+							if (r != null) {
+								txtQueue.append("NUM " + r.getNum() + "\n");
+							}
+						}
+					}
+					Queue<Racer> run = new LinkedList<Racer>(c.racerRun1);
+					runArr = null;
+					runArr = new ArrayList<Racer>();
+					while (!run.isEmpty()) {
+						Racer r = run.poll();
+						runArr.add(r);
+					}
+					// start thread if not started
+					if (runTime == null) {
+						runTime = new Thread(new RunTime(g, runArr));
+						runTime.start();
+					} else {
+						// if thread is running stop thread and restart with
+						// new runArr
+						if (runTime.isAlive()) {
+							runTime.interrupt();
+							runTime = null;
+							runTime = new Thread(new RunTime(g, runArr));
+							runTime.start();
+						}
+						// clear finish display
+						txtFinish.setText("");
+						Queue<Racer> finish = new LinkedList<Racer>(c.racerFinish2);
+						// Setting Finish Display
+						Object[] finishArr = finish.toArray();
+						txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+								+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+					if(runArr.size()==0){
+						txtRun.setText("");
+					}
+					}
 				}
 			}
 		});
@@ -1218,6 +1280,19 @@ public class GUI extends JFrame {
 		});
 		btnSetGroupNumber.setBounds(449, 357, 145, 29);
 		getContentPane().add(btnSetGroupNumber);
+		
+		JButton btnClear = new JButton("Clear");
+		btnClear.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					c.sendCommand("CLEAR");
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnClear.setBounds(0, 333, 117, 29);
+		getContentPane().add(btnClear);
 	}
 
 	public void updateTime(ArrayList<Racer> run) {
