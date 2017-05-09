@@ -10,9 +10,20 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 public class Server {
-	static Run r = new Run(0, null, null, null);
 	static String sharedResponse = "";
+	static Queue<Racer> racerFinish1;
+	static Queue<Racer> racerFinish2;
+	static ArrayList<Run> runList;
+	
+	public Server(Queue<Racer> RACERFINISH1, Queue<Racer> RACERFINISH2, ArrayList<Run> RUNLIST){
+		racerFinish1 = RACERFINISH1;
+		racerFinish2 = RACERFINISH2;
+		runList = RUNLIST;
+	}
+	
 	public void startServer() throws IOException{
+		
+		
 		// set up a simple HTTP server on our local host
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
@@ -60,23 +71,25 @@ public class Server {
             response += "<h1>Run Results</h1>\n<table>";
             response += "<tr><th>RunnerNumber</th>\n<th>First Initial</th>\n<th>Last Name</th>";
             response += "<th>Time</th>";
-            
-            Queue<Racer> finishQ = r.getFinish1();
-            ArrayList<Racer> run = new ArrayList<Racer>();
-            for(Racer a: finishQ){
-            	run.add(a);
+
+            for(Run r : runList){ //traverse runList
+            	Queue<Racer> finishQ = r.getFinish1();
+            	ArrayList<Racer> run = new ArrayList<Racer>();
+            	for(Racer a: finishQ){ //convert Queue to ArrayList, needed for sorting
+            		run.add(a);
+            	}
+            	RacerComparator rc = new RacerComparator();
+            	run.sort(rc);
+            	for(Racer b : run)
+            	{
+            		response += "<tr>\n<td>" + b.getNum() + "</td>"; 
+            		response += "\n<td>" + "FIRSTNAME PLACEHOLDER" + "</td>";
+            		response += "\n<td>" + "LASTNAME PLACEHOLDER" + "</td>"; 
+            		response += "\n<td>" + b.getElapsedTime() + "</td>";
+            		response += "\n</tr>";
+            	}
             }
-            RacerComparator rc = new RacerComparator();
-            run.sort(rc);
-            for(Racer b : run)
-            {
-            	response += "<tr>\n<td>" + b.getNum() + "</td>"; 
-            	response += "\n<td>" + "FIRSTNAME PLACEHOLDER" + "</td>";
-            	response += "\n<td>" + "LASTNAME PLACEHOLDER" + "</td>"; 
-            	response += "\n<td>" + b.getElapsedTime() + "</td>";
-            	response += "\n</tr>";
             
-            }
             
             response += "\n</table>\n</body>\n</html>";
             
@@ -90,7 +103,8 @@ public class Server {
         }
     }
 
-//POST HANDLER.  I DONT THINK WE NEED IT    
+//POST HANDLER.  I DONT THINK WE NEED IT
+//could be wrong though
     
 //    static class PostHandler implements HttpHandler {
 //        public void handle(HttpExchange transmission) throws IOException {

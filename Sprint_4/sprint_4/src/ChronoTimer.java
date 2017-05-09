@@ -42,6 +42,7 @@ public class ChronoTimer { //main program, links everything together
 	public static void main(String args[]) throws IOException{ //runs the ChronoTimer
 		Simulator sim = new Simulator();
 		ChronoTimer t = new ChronoTimer();
+		Server server = new Server(t.racerFinish1, t.racerFinish2, t.runList);
 
 		String command; //input from simulator
 
@@ -59,6 +60,7 @@ public class ChronoTimer { //main program, links everything together
 			GUI_Back back=new GUI_Back(t);
 			back.setVisible(true);
 		}
+		server.startServer();
 	}
 	
 	public int getEventType(){ //returns eventType //used for testing
