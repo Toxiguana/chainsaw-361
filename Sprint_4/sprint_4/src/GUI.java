@@ -99,7 +99,7 @@ public class GUI extends JFrame {
 	private JLabel lblRun_1;
 	private JButton btnSetGroupNumber;
 
-	/**
+	 /**
 	 * Create the frame.
 	 */
 	// ChronoTimer c=new ChronoTimer();
@@ -198,6 +198,7 @@ public class GUI extends JFrame {
 		txtQueue.setEditable(false);
 		txtQueue.setBounds(187, 224, 200, 58);
 		getContentPane().add(txtQueue);
+		
 		btnTrigChan1 = new JButton("");
 		btnTrigChan1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -298,10 +299,31 @@ public class GUI extends JFrame {
 					}
 				if(c.getEventType()==5){
 					if(c.AlreadyStarted){
-						
+						txtQueue.setText("");
+						//adding racers to runArr for updating textBox
+						Queue<Racer> run = new LinkedList<Racer>(c.racerRun1);
+						runArr = null;
+						runArr = new ArrayList<Racer>();
+						while (!run.isEmpty()) {
+							Racer r = run.poll();
+							runArr.add(r);
+						}
+						// start thread if not started
+						if (runTime == null) {
+							runTime = new Thread(new RunTime(g, runArr));
+							runTime.start();
+						}
+						 else {
+							// if thread is running stop thread and restart with
+							if (runTime.isAlive()) {
+								runTime.interrupt();
+								runTime = null;
+								runTime = new Thread(new RunTime(g, runArr));
+								runTime.start();
+							}
+						}
 					}
-				}
-
+					}
 				}
 			}
 		});
@@ -1022,9 +1044,10 @@ public class GUI extends JFrame {
 		getContentPane().add(txtFinish);
 
 		txtRun = new JTextArea();
+		JScrollPane paneRun=new JScrollPane(txtRun);
 		txtRun.setEditable(false);
-		txtRun.setBounds(187, 351, 200, 88);
-		getContentPane().add(txtRun);
+		paneRun.setBounds(187, 352, 201, 88);
+		getContentPane().add(paneRun);
 
 		JLabel lblEventType = new JLabel("Event Type:");
 		lblEventType.setForeground(Color.WHITE);
@@ -1140,6 +1163,33 @@ public class GUI extends JFrame {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				if(c.getEventType()==1){
+					if(runTime!=null){
+						runTime.interrupt();
+						if(runArr.size()>0){
+						runArr.remove(0);
+						}
+						runTime=null;
+						runTime=new Thread(new RunTime(g,runArr));
+						runTime.start();
+						
+					}
+				if(runArr.size()==0){
+					txtRun.setText("");
+				}
+					Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
+					int num = 1;
+					txtQueue.setText("");
+					if (!tmp.isEmpty()) {
+						while (num <= 3) {
+							Racer r = tmp.poll();
+							num++;
+							if (r != null) {
+								txtQueue.append("NUM " + r.getNum() + "\n");
+							}
+						}
+					}
+				}
 			}
 		});
 		btnCancel.setBounds(0, 265, 117, 29);
@@ -1173,7 +1223,7 @@ public class GUI extends JFrame {
 	public void updateTime(ArrayList<Racer> run) {
 		runArr = run;
 		txtRun.setText("");
-		if (c.getEventType() == 1 || c.getEventType() == 2) {
+		if (c.getEventType() == 1 || c.getEventType() == 2||c.getEventType()==5) {
 			for (int i = 0; i < run.size(); i++) {
 				Racer r = run.get(i);
 				txtRun.append(r.getOutput() + " R" + "\n");
@@ -1192,4 +1242,5 @@ public class GUI extends JFrame {
 			runTimeGroup=null;
 		}
 	}
-}
+	}
+	
