@@ -1024,7 +1024,7 @@ public class ChronoTimer { //main program, links everything together
 
 	/**
 	 * Adds Racer to Queue. (NUM)
-	 * @param racerNum: number of the racer you want to add
+	 * @param racerNum: number of the racer you want to add (int)
 	 * @return boolean: whether or not addRacer() was successful
 	 */
 	public boolean addRacer(int racerNum){ 
@@ -1074,9 +1074,9 @@ public class ChronoTimer { //main program, links everything together
 	}
 
 	/**
-	 * Prints a run to the console
-	 * @param rNum
-	 * @return
+	 * Prints a Run to the Console.
+	 * @param rNum: number of the run you want to print (int)
+	 * @return boolean: whether or not print() was successful
 	 */
 	public boolean print(int rNum){
 		if(rNum > runList.size()){
