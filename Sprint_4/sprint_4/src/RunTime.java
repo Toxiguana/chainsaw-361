@@ -13,7 +13,7 @@ public class RunTime implements Runnable {
 		try {
 			while (true) {
 				//thread sleeps and then runs every second
-				Thread.sleep(1000);
+				Thread.sleep(1);
 				//goes through the racer arrayList and updates the time of each racer
 				for(int i=0;i<run.size();i++){
 				//gets a racer from the arrayList
@@ -22,8 +22,6 @@ public class RunTime implements Runnable {
 				String output=r.getNum()+" ";
 				//computers current time for the racer
 				String time=t.computeTime(r.getStart(), t.start());
-				//substrings the time string to get rid of the milliseconds
-				time=time.substring(0,time.indexOf('.'));
 				//adds the time to the output string
 				output+=time;
 				//sets the output string for the racer

@@ -20,7 +20,7 @@ public class ChronoTimer { //main program, links everything together
 
 	
 	private int queueSize = 0;// Is used in trigger to keep track of the size of racerQueue1
-	private boolean AlreadyStarted = false; // Keeps track of whether or not race has started, for PARGRP
+	public boolean AlreadyStarted = false; // Keeps track of whether or not race has started, for PARGRP
 	
 	private boolean power = false;
 	Time t = new Time(); //time instance to do functions
@@ -33,7 +33,7 @@ public class ChronoTimer { //main program, links everything together
 	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
 
 	private int placeHoldNum = 1; //keeps track of placeholderNum for GRP race finishes
-	private double groupStart = 0.0; //stores start time for GRP races
+	public double groupStart = 0.0; //stores start time for GRP races
 	
 	private int hours = 0; //hours, minutes, and seconds of setTime
 	private int minutes = 0;
@@ -42,6 +42,7 @@ public class ChronoTimer { //main program, links everything together
 	public static void main(String args[]) throws IOException{ //runs the ChronoTimer
 		Simulator sim = new Simulator();
 		ChronoTimer t = new ChronoTimer();
+		Server server = new Server(t.racerFinish1, t.racerFinish2, t.runList);
 
 		String command; //input from simulator
 
@@ -59,12 +60,13 @@ public class ChronoTimer { //main program, links everything together
 			GUI_Back back=new GUI_Back(t);
 			back.setVisible(true);
 		}
+		server.startServer();
 	}
 	
 	public int getEventType(){ //returns eventType //used for testing
 		return eventType;
 	}
-	
+	 
 	public boolean getEnabled(int i, int j){ //returns enabled at a given index //used for testing
 		return enabled[i][j];
 	}
@@ -72,7 +74,7 @@ public class ChronoTimer { //main program, links everything together
 	public int getRunNum(){ //used for testing
 		return runNum;
 	}
-	
+	 
 	public Sensor getConnected(int i, int j){ //returns sensor at a given index //used for testing
 		return connected[i][j];
 	}
@@ -1163,7 +1165,6 @@ public class ChronoTimer { //main program, links everything together
 			systemLog.add(t.getSystemTime() + " Swap Unsuccessful - Wrong Event Type.");
 			return false;
 		}
-
 //		public boolean swap(){
 
 //			Racer swap1 = racerRun1.remove();

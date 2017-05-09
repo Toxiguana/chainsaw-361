@@ -1,9 +1,10 @@
 public class Racer { //used to represent a person and store data about their race
 
 	private int numRacer;
-	private double startTime;
+	private double startTime; //in seconds.milliseconds 0000000000.00
 	private double endTime;
-	private String elapsedTime;
+	private String elapsedTime; //in minutes:seconds int:double
+	private double elapsedTimeSec; //elapsed time in seconds.milliseconds
 	private int stateRacer; //0 - in Queue, 1 - Racing, 2 - Done Racing
 	private Time t = new Time();
 	public String output="";
@@ -32,6 +33,10 @@ public class Racer { //used to represent a person and store data about their rac
 		return elapsedTime;
 	}
 	
+	public double getElapsedTimeSec(){
+		return elapsedTimeSec;
+	}
+	
 	public int getState(){
 		return stateRacer;
 	}
@@ -54,6 +59,13 @@ public class Racer { //used to represent a person and store data about their rac
 	
 	public void setElapsed(double sT, double enT){
 		this.elapsedTime = t.computeTime(sT, enT);
+		
+		if(elapsedTime.equals("DNF")){
+			elapsedTimeSec = -1;
+		}
+		else{
+			elapsedTimeSec = endTime - startTime;
+		}
 	}
 	
 	public void setState(int sR){

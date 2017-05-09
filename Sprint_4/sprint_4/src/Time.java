@@ -4,7 +4,10 @@ import java.util.Calendar;
 public class Time { //used to handle complex time management
 	
 	public String getSystemTime(){
-		// TODO: What does this method do? What is it used for?
+		/**
+		 * returns the system time as a string in format "Hours:Minutes:Seconds.Milliseconds"
+		 * for example if it is 8:29 pm and 34.583 seconds, it will print out "20:29:34:583"
+		 */
 		String time = new SimpleDateFormat("HH:mm:ss.S").format(Calendar.getInstance().getTime());
 		
 		return time;
