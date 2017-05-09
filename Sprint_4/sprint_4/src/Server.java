@@ -79,9 +79,10 @@ public class Server {
             		run.add(a);
             	}
             	RacerComparator rc = new RacerComparator();
-            	run.sort(rc);
-            	for(Racer b : run)
+            	run.sort(rc); //sort racers in a run
+            	for(Racer b : run) //display a run
             	{
+            		//TODO: figure out if we should be keeping the runs separate or combining them and sorting them all in one
             		response += "<tr>\n<td>" + b.getNum() + "</td>"; 
             		response += "\n<td>" + "FIRSTNAME PLACEHOLDER" + "</td>";
             		response += "\n<td>" + "LASTNAME PLACEHOLDER" + "</td>"; 
@@ -89,6 +90,7 @@ public class Server {
             		response += "\n</tr>";
             	}
             }
+            //TODO: display racers from racerFinish1 and racerFinish2
             
             
             response += "\n</table>\n</body>\n</html>";
