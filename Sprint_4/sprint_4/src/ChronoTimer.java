@@ -135,15 +135,28 @@ public class ChronoTimer { //main program, links everything together
 		else if(command.contains("TIME")){
 			String[] time = command.split(" ");
 			String[] splitTime = time[1].split(":");
+			if(splitTime.length>=2){
 			if(splitTime[0] == null || splitTime[1] == null || splitTime[2] == null){
 				return;
 			}
-			int _hours = Integer.parseInt(splitTime[0]);
-			int _minutes = Integer.parseInt(splitTime[1]);
-			double _seconds = Double.parseDouble(splitTime[2]);
-			boolean b = setTime(_hours, _minutes,_seconds);
-			if(b) System.out.println("Time has been set to " + _hours + ":" + _minutes + ":" + _seconds + ".");
-			else System.out.println("Try Again - Time has not been set.");
+			}
+			try{
+				if(splitTime.length>=2)	{
+				int _hours = Integer.parseInt(splitTime[0]);
+				int _minutes = Integer.parseInt(splitTime[1]);
+				double _seconds = Double.parseDouble(splitTime[2]);
+				boolean b = setTime(_hours, _minutes,_seconds);
+				if(b) System.out.println("Time has been set to " + _hours + ":" + _minutes + ":" + _seconds + ".");
+				else System.out.println("Try Again - Time has not been set.");
+				}
+				else{
+					System.out.println("Invalid Time Format");
+					return;
+				}
+				}catch (NumberFormatException e) {
+				    System.out.println("Invalid Time Format");
+				    return;
+				}
 		}
 		//4
 		else if(command.contains("EVENT")){

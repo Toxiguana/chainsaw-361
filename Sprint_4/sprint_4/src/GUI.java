@@ -44,6 +44,7 @@ public class GUI extends JFrame {
 	private JTextArea txtFinish;
 	private JTextArea txtRun;
 	private JTextArea txtQueue;
+	private JTextField textTime;
 	// Channel Labels
 	private JLabel lblStart;
 	private JLabel lblEnableisable1;
@@ -98,7 +99,6 @@ public class GUI extends JFrame {
 	private JButton btnCancel;
 	private JLabel lblRun_1;
 	private JButton btnSetGroupNumber;
-
 	 /**
 	 * Create the frame.
 	 */
@@ -1291,8 +1291,36 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnClear.setBounds(0, 333, 117, 29);
+		btnClear.setBounds(465, 384, 117, 29);
 		getContentPane().add(btnClear);
+		
+		textTime = new JTextField();
+		textTime.setBounds(10, 373, 130, 26);
+		getContentPane().add(textTime);
+		textTime.setColumns(10);
+		
+		JLabel lblhoursminutesseconds = new JLabel("(Hours:Minutes:Seconds)");
+		lblhoursminutesseconds.setForeground(Color.WHITE);
+		lblhoursminutesseconds.setBounds(0, 362, 156, 16);
+		getContentPane().add(lblhoursminutesseconds);
+		
+		JButton btnSetTime = new JButton("Set Time");
+		btnSetTime.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if(!textTime.getText().equals("")){
+					String send=textTime.getText();
+					try {
+						c.sendCommand("TIME "+send);
+					} catch (IOException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					textTime.setText("");
+				}
+			}
+		});
+		btnSetTime.setBounds(0, 398, 117, 29);
+		getContentPane().add(btnSetTime);
 	}
 
 	public void updateTime(ArrayList<Racer> run) {
