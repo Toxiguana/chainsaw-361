@@ -99,7 +99,7 @@ public class GUI extends JFrame {
 	private JLabel lblRun_1;
 	private JButton btnSetGroupNumber;
 
-	/**
+	 /**
 	 * Create the frame.
 	 */
 	// ChronoTimer c=new ChronoTimer();
