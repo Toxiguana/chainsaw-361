@@ -38,8 +38,13 @@ public class ChronoTimer { //main program, links everything together
 	private int hours = 0; //hours, minutes, and seconds of setTime
 	private int minutes = 0;
 	private double seconds = 0.0;
-
-	public static void main(String args[]) throws IOException{ //runs the ChronoTimer
+	
+	/**
+	 * Runs the ChronoTimer.
+	 * @param args: its the main method (String[])
+	 * @throws IOException: happens when sendCommand is called on a bad file
+	 */
+	public static void main(String args[]) throws IOException{
 		Simulator sim = new Simulator();
 		ChronoTimer t = new ChronoTimer();
 
@@ -61,27 +66,56 @@ public class ChronoTimer { //main program, links everything together
 		}
 	}
 	
-	public int getEventType(){ //returns eventType //used for testing
+	/**
+	 * Returns eventType. *Testing Use Only*
+	 * @return int: eventType - IND/PARIND/GRP/PARGRP
+	 */
+	public int getEventType(){
 		return eventType;
 	}
-	 
-	public boolean getEnabled(int i, int j){ //returns enabled at a given index //used for testing
+	
+	/**
+	 * Returns enabled[i][j]. *Testing Use Only*
+	 * @param i: row index (int)
+	 * @param j: column index (int)
+	 * @return boolean: enabled at [i][j]
+	 */
+	public boolean getEnabled(int i, int j){
 		return enabled[i][j];
 	}
-
-	public int getRunNum(){ //used for testing
+	
+	/**
+	 * Returns runNum. *Testing Use Only*
+	 * @return int: runNum
+	 */
+	public int getRunNum(){
 		return runNum;
 	}
-	 
-	public Sensor getConnected(int i, int j){ //returns sensor at a given index //used for testing
+	
+	/**
+	 * Returns connected[i][j]. *Testing Use Only*
+	 * @param i: row index (int)
+	 * @param j: column index (int)
+	 * @return Sensor: connected at [i][j]
+	 */
+	public Sensor getConnected(int i, int j){
 		return connected[i][j];
 	}
 
-	public boolean getRunStart(){ //used for testing
+	/**
+	 * Returns runStarted. *Testing Use Only*
+	 * @return boolean: runStarted
+	 */
+	public boolean getRunStart(){
 		return runStarted;
 	}
 
-	public void sendCommand(String command) throws IOException{ //receives commands from Simulator
+	/**
+	 * Translates and calls commands from Simulator.
+	 * @param command: method call from Simulator (String)
+	 * @throws IOException: reading from a bad file
+	 */
+	public void sendCommand(String command) throws IOException{
 		//1
 		if(command.contains("POWER")){
 			power();
@@ -259,11 +293,20 @@ public class ChronoTimer { //main program, links everything together
 		System.out.println(""); //returns nothing if no legal command
 	}
 
-	public boolean isPowerOn(){ //returns power boolean
+	/**
+	 * Returns whether or not PowerIsOn.
+	 * @return boolean: power - ON/OFF
+	 */
+	public boolean isPowerOn(){
 		return power;
 	}
 
-	public void power(){ //if(on) -> turn off, stay in simulator //else if(off) -> turn on
+	/**
+	 * Switches Power On & Off.
+	 * If "Power" is On -> Turn Off & Stay in Simulator.
+	 * Else If "Power" is Off -> Turn On.
+	 */
+	public void power(){
 		if(power){
 			power = false;
 			systemLog.add(t.getSystemTime() + " Power Turned Off.");
@@ -274,7 +317,10 @@ public class ChronoTimer { //main program, links everything together
 		}
 	}
 
-	public void exit(){	//"quits program" //exit simulator
+	/**
+	 *  Exits Simulator. AKA Quits Program.
+	 */
+	public void exit(){
 		if(isPowerOn()) {
 			System.out.println("Try Again - Power must be 'Off'.");
 			systemLog.add(t.getSystemTime() + " Exit Unsuccessful.");
@@ -284,7 +330,11 @@ public class ChronoTimer { //main program, links everything together
 		System.exit(0);
 	}
 
-	public boolean reset(){ //sets variables to initial values
+	/**
+	 * Resets system variables to initial values.
+	 * @return boolean: whether or not the reset() was successful
+	 */
+	public boolean reset(){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " Reset Unsuccessful.");
@@ -316,7 +366,14 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 	
-	public boolean setTime(int hrs, int min, double sec){ //allows user to set time
+	/**
+	 * Allows User to Set Time.
+	 * @param hrs: hours (int)
+	 * @param min: minutes (int)
+	 * @param sec: seconds (double)
+	 * @return boolean: whether or not the setTime() was successful
+	 */
+	public boolean setTime(int hrs, int min, double sec){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " Setting Time Unsuccessful.");
@@ -330,7 +387,13 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 
-	public boolean setEventType(String s){ //sets IND, PARIND, GRP, PARGRP
+	/**
+	 * Sets EventType to Individual (IND), Parallel Individual (PARIND),
+	 * Group (GRP), or Parallel Group (PARGRP).
+	 * @param s: the string passed from the command (String)
+	 * @return boolean: whether or not setEventType() was successful
+	 */
+	public boolean setEventType(String s){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " Setting EventType Unsuccessful.");
@@ -352,7 +415,11 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 
-	public boolean newRun(){ //creates a new run
+	/**
+	 * Creates a New Run.
+	 * @return boolean: whether or not starting a newRun() was successful
+	 */
+	public boolean newRun(){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " NewRun Unsuccessful.");
@@ -388,7 +455,11 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 
-	public boolean endRun(){ //ends a run
+	/**
+	 * Ends a Run.
+	 * @return boolean: whether or not endRun() was successful
+	 */
+	public boolean endRun(){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " EndRun Unsuccessful.");
@@ -416,7 +487,12 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 
-	public boolean dnfRacer(){ //sets end time of next racer to finish to DNF, not return to queue
+	/**
+	 * Sets end time of next racer to finish to "Did Not Finish" (DNF).
+	 * Racer does not return to racerQueue.
+	 * @return boolean: whether or not DNF() was successful
+	 */
+	public boolean dnfRacer(){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " DNF Unsuccessful.");
@@ -480,7 +556,12 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 
-	public boolean cancelRacer(){ //discard race for 1st racer & put back in queue as next to start
+	/**
+	 * Discard race for 1st racer in racerRun.
+	 * Put that racer back in racerQueue as next to start.
+	 * @return boolean: whether or not cancelRacer() was successful
+	 */
+	public boolean cancelRacer(){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " Cancel Unsuccessful.");
@@ -533,7 +614,12 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 
-	public boolean togChannel(int channelNum){ //enable or disable the channel
+	/**
+	 * Toggle (Enable/Disable) the specified channel.
+	 * @param channelNum: number of the channel you want to toggle (int)
+	 * @return boolean: whether or not togChannel() was successful
+	 */
+	public boolean togChannel(int channelNum){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " Toggle Unsuccessful.");
@@ -580,7 +666,15 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}//end method
 
-	public boolean trigChannel(int channelNum){ //trigger the channel num & pulls racer from queue
+	/**
+	 * Trigger the specified channel to start or end a Racer.
+	 * Moves Racer between queues.
+	 * Racer Start -> racerQueue to racerRun
+	 * Racer Finish -> racerRun to racerFinish
+	 * @param channelNum: number of the channel you want to trigger (int)
+	 * @return boolean: whether or not trigChannel() was successful
+	 */
+	public boolean trigChannel(int channelNum){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " Trigger Unsuccessful.");
