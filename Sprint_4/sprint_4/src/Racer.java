@@ -8,12 +8,12 @@ public class Racer { //used to represent a person and store data about their rac
 	private int stateRacer; //0 - in Queue, 1 - Racing, 2 - Done Racing
 	private Time t = new Time();
 	public String output="";
-	public Racer(int nR, double sT, double enT, String elT, int sR){
-		numRacer = nR;
-		startTime = sT;
-		endTime = enT;
-		elapsedTime = elT;
-		stateRacer = sR;
+	public Racer(int RACERNUMBER, double STARTTIME, double ENDTIME, String ELAPSEDTIME, int STATERACER){
+		numRacer = RACERNUMBER;
+		startTime = STARTTIME;
+		endTime = ENDTIME;
+		elapsedTime = ELAPSEDTIME;
+		stateRacer = STATERACER;
 	}
 	
 	//Getters

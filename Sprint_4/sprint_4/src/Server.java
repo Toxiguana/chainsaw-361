@@ -45,6 +45,7 @@ public class Server {
     	{
     		String response = "";
             response += "h1{text-align: center;}\n";
+            response += "h2{text-align: center;}\n";
             response += "table {margin-left: auto; margin-right: auto; border: 2px solid black;}\n";
             response += "th, td {border: 2px solid black;}\n";
             response += "tr:nth-child(even){background-color: lightgray;}\n";
@@ -68,18 +69,20 @@ public class Server {
             // set up the header
             response += "<!DOCTYPE html>\n<html>\n<head><title>Run</title>";
             response += "<link rel=\"stylesheet\" href=\"/displayresults/css\">\n</head>\n<body>";
-            response += "<h1>Run Results</h1>\n<table>";
-            response += "<tr><th>RunnerNumber</th>\n<th>First Initial</th>\n<th>Last Name</th>";
-            response += "<th>Time</th>";
+            response += "<h1>Run Results</h1>";
 
             for(Run r : runList){ //traverse runList
-            	Queue<Racer> finishQ = r.getFinish1();
+            	Queue<Racer> finishQ = r.getFinish2();
             	ArrayList<Racer> run = new ArrayList<Racer>();
             	for(Racer a: finishQ){ //convert Queue to ArrayList, needed for sorting
             		run.add(a);
             	}
             	RacerComparator rc = new RacerComparator();
             	run.sort(rc); //sort racers in a run
+            	response += "\n<table>";
+                response += "<tr><th>RunnerNumber</th>\n<th>First Initial</th>\n<th>Last Name</th>";
+                response += "<th>Time</th>";
+            	response += "<h2> Run " + r.getRunNum() + "</h2>";
             	for(Racer b : run) //display a run
             	{
             		//TODO: figure out if we should be keeping the runs separate or combining them and sorting them all in one

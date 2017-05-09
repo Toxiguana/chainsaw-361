@@ -82,7 +82,7 @@ public class ChronoTimer { //main program, links everything together
 	public boolean getRunStart(){ //used for testing
 		return runStarted;
 	}
-
+	
 	public void sendCommand(String command) throws IOException{ //receives commands from Simulator
 		//1
 		if(command.contains("POWER")){
