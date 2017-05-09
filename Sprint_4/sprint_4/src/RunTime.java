@@ -13,7 +13,7 @@ public class RunTime implements Runnable {
 		try {
 			while (true) {
 				//thread sleeps and then runs every second
-				Thread.sleep(1000);
+				Thread.sleep(1);
 				//goes through the racer arrayList and updates the time of each racer
 				for(int i=0;i<run.size();i++){
 				//gets a racer from the arrayList

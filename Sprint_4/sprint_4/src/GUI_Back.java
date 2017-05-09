@@ -43,9 +43,10 @@ public class GUI_Back extends JFrame {
 	String[]sensors={"","Button","Electric Eye","Gate","Pad"};
 	ChronoTimer c;
 	public GUI_Back(ChronoTimer _c) {
+		setResizable(false);
 		c=_c;
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 350, 150);
+		setBounds(100, 100, 375, 150);
 		getContentPane().setLayout(null);
 		getContentPane().setBackground(Color.darkGray);
 		UIManager s=new UIManager();

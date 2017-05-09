@@ -901,17 +901,19 @@ public class GUI extends JFrame {
 						}
 						int rowCount = 0;
 						int num = 0;
+						txtQueue.setText("");
 						Queue<Racer> tmp1 = new LinkedList<Racer>(c.racerQueue1);
 						while (!tmp1.isEmpty()) {
+							Racer r=tmp1.poll();
 							if (num <= 7) {
 								if (rowCount <= 2) {
-									txtQueue.append("NUM " + tmp1.poll().getNum() + "     ");
+									txtQueue.append("NUM " + r.getNum() + "     ");
 									rowCount++;
 									num++;
 								} else {
 									rowCount = 0;
 									txtQueue.append("\n");
-									txtQueue.append("NUM " + tmp1.poll().getNum() + "     ");
+									txtQueue.append("NUM " + r.getNum() + "     ");
 									rowCount++;
 									num++;
 								}
