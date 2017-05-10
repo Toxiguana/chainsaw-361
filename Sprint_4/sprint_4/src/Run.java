@@ -14,11 +14,11 @@ public class Run { //used to keep track of a run
 	private Queue<Racer> finish1; //has placeholder numbers
 	private Queue<Racer> finish2; //has real numbers
 
-	public Run(int rN, ArrayList<String> rL, Queue<Racer> rF1, Queue<Racer> rF2){
-		runNum = rN;
-		runLog = rL;
-		finish1 = rF1;
-		finish2 = rF2;
+	public Run(int RUNNUM, ArrayList<String> RUNLOG, Queue<Racer> FINISH1, Queue<Racer> FINISH2){
+		runNum = RUNNUM;
+		runLog = RUNLOG;
+		finish1 = FINISH1;
+		finish2 = FINISH2;
 	}
 	
 	//Getters
