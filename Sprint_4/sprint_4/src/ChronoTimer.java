@@ -470,7 +470,7 @@ public class ChronoTimer { //main program, links everything together
 				systemLog.add(t.getSystemTime() + " New GRP Run Started.");
 			}
 			else if(eventType == 5){
-				systemLog.add(t.getSystemTime() + " New PARGRP Run Started."); //PARGRP
+				systemLog.add(t.getSystemTime() + " New PARGRP Run Started."); 
 			}
 			systemLog.add(t.getSystemTime() + " NewRun Successful.");
 		}
@@ -563,6 +563,15 @@ public class ChronoTimer { //main program, links everything together
 				r.setState(2);
 				systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
 				racerFinish2.add(r);
+			}
+			for(int i = 0; i < racerRunPARGRP.length; i++){
+				if(racerRunPARGRP[i] != null){
+					Racer r = racerRunPARGRP[i];
+					r.setEnd(-1);
+					r.setState(2);
+					systemLog.add(t.getSystemTime() + " Racer " + r.getNum() + " did not finish.");
+					racerFinish2.add(r);
+				}
 			}
 		}
 		else if(eventType == 4){ //GRP
@@ -866,6 +875,13 @@ public class ChronoTimer { //main program, links everything together
 		
 		//PARGRP
 		else if(eventType == 5){
+			if(racerQueue1.size() > 8){
+				Queue<Racer> temp = new LinkedList<Racer>();
+				for(int i = 0; i < 8; i++){
+					temp.add(racerQueue1.remove());
+				}
+				racerQueue1 = temp;
+			}
 			if(racerQueue1.size() <= 8) // makes sure you dont add more than 8 racers
 			{
 				if(channelNum != 1 && channelNum != 2 && channelNum != 3 && channelNum != 4 && channelNum != 5 && channelNum != 6 && channelNum != 7 && channelNum != 8){
