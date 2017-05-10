@@ -51,7 +51,7 @@ public class ChronoTimerTests4 { //PARGRP Tests
 	}
 	
 	@Test
-	public void PARGROUPTest2() {
+	public void PARGROUPMoreThan8() {
 		t.power();
 		t.setEventType("PARGRP");
 		t.newRun();
