@@ -12,6 +12,8 @@ public class ChronoTimer { //main program, links everything together
 	Queue<Racer> racerRun2 = new LinkedList<Racer>(); //running2
 	Queue<Racer> racerFinish1 = new LinkedList<Racer>(); //done w/o numbers
 	Queue<Racer> racerFinish2 = new LinkedList<Racer>(); //done w/ numbers
+	
+	Racer[] racerRunPARGRP = new Racer[8];
 
 	ArrayList<String> systemLog = new ArrayList<String>(); //stores one run at a time
 
@@ -878,10 +880,9 @@ public class ChronoTimer { //main program, links everything together
 							Racer RacerSwitch = racerQueue1.remove();
 							RacerSwitch.setState(1);
 							RacerSwitch.setStart(groupStart);
-							racerRun1.add(RacerSwitch);
+							racerRunPARGRP[i-1] = RacerSwitch;
 						}
-						queueSize = racerRun1.size();
-						systemLog.add(t.getSystemTime() + " Group of Parellel Racers " + " started racing.");
+						systemLog.add(t.getSystemTime() + " Group of Parallel Racers " + " started racing.");
 						AlreadyStarted = true;
 						return true;
 					}
@@ -890,8 +891,13 @@ public class ChronoTimer { //main program, links everything together
 				}
 				else if(channelNum == 1 && AlreadyStarted && queueSize >= 1){ 
 					if(enabled[0][0]){
+						if(racerRunPARGRP[0] == null){
+							systemLog.add(t.getSystemTime() + " Channel " + channelNum + " has already finished.");
+							return false;
+						}
 						double end = t.end();
-						Racer r = racerRun1.remove();
+						Racer r = racerRunPARGRP[0];
+						racerRunPARGRP[0] = null;
 						r.setState(2);
 						r.setEnd(end);
 //						r.setElapsed(groupStart, end);
@@ -904,8 +910,13 @@ public class ChronoTimer { //main program, links everything together
 				}
 				else if(channelNum == 2 && AlreadyStarted && queueSize >= 2){
 					if(enabled[1][0]){
+						if(racerRunPARGRP[1] == null){
+							systemLog.add(t.getSystemTime() + " Channel " + channelNum + " has already finished.");
+							return false;
+						}
 						double end = t.end();
-						Racer r = racerRun1.remove();
+						Racer r = racerRunPARGRP[1];
+						racerRunPARGRP[1] = null;
 						r.setState(2);
 						r.setEnd(end);
 //						r.setElapsed(groupStart, end);
@@ -918,8 +929,13 @@ public class ChronoTimer { //main program, links everything together
 				}
 				else if(channelNum == 3 && AlreadyStarted && queueSize >= 3){
 					if(enabled[0][1]){
+						if(racerRunPARGRP[2] == null){
+							systemLog.add(t.getSystemTime() + " Channel " + channelNum + " has already finished.");
+							return false;
+						}
 						double end = t.end();
-						Racer r = racerRun1.remove();
+						Racer r = racerRunPARGRP[2];
+						racerRunPARGRP[2] = null;
 						r.setState(2);
 						r.setEnd(end);
 //						r.setElapsed(groupStart, end);
@@ -933,8 +949,13 @@ public class ChronoTimer { //main program, links everything together
 				}				
 				else if(channelNum == 4 && AlreadyStarted && queueSize >= 4){
 					if(enabled[1][1]){
+						if(racerRunPARGRP[3] == null){
+							systemLog.add(t.getSystemTime() + " Channel " + channelNum + " has already finished.");
+							return false;
+						}
 						double end = t.end();
-						Racer r = racerRun1.remove();
+						Racer r = racerRunPARGRP[3];
+						racerRunPARGRP[3] = null;
 						r.setState(2);
 						r.setEnd(end);
 //						r.setElapsed(groupStart, end);
@@ -947,8 +968,13 @@ public class ChronoTimer { //main program, links everything together
 				}
 				else if(channelNum == 5 && AlreadyStarted && queueSize >= 5){
 					if(enabled[0][2]){
+						if(racerRunPARGRP[4] == null){
+							systemLog.add(t.getSystemTime() + " Channel " + channelNum + " has already finished.");
+							return false;
+						}
 						double end = t.end();
-						Racer r = racerRun1.remove();
+						Racer r = racerRunPARGRP[4];
+						racerRunPARGRP[4] = null;
 						r.setState(2);
 						r.setEnd(end);
 //						r.setElapsed(groupStart, end);
@@ -961,8 +987,13 @@ public class ChronoTimer { //main program, links everything together
 				}				
 				else if(channelNum == 6 && AlreadyStarted && queueSize >= 6){
 					if(enabled[1][2]){
+						if(racerRunPARGRP[5] == null){
+							systemLog.add(t.getSystemTime() + " Channel " + channelNum + " has already finished.");
+							return false;
+						}
 						double end = t.end();
-						Racer r = racerRun1.remove();
+						Racer r = racerRunPARGRP[5];
+						racerRunPARGRP[5] = null;
 						r.setState(2);
 						r.setEnd(end);
 //						r.setElapsed(groupStart, end);
@@ -975,8 +1006,13 @@ public class ChronoTimer { //main program, links everything together
 				}
 				else if(channelNum == 7 && AlreadyStarted && queueSize >= 7){
 					if(enabled[0][3]){
+						if(racerRunPARGRP[6]== null){
+							systemLog.add(t.getSystemTime() + " Channel " + channelNum + " has already finished.");
+							return false;
+						}
 						double end = t.end();
-						Racer r = racerRun1.remove();
+						Racer r = racerRunPARGRP[6];
+						racerRunPARGRP[6] = null;
 						r.setState(2);
 						r.setEnd(end);
 //						r.setElapsed(groupStart, end);
@@ -988,23 +1024,28 @@ public class ChronoTimer { //main program, links everything together
 					return false;
 				}
 				else if(channelNum == 8 && AlreadyStarted && queueSize >= 8){
-						if(enabled[1][3]){
-							double end = t.end();
-							Racer r = racerRun1.remove();
-							r.setState(2);
-							r.setEnd(end);
-//							r.setElapsed(groupStart, end);
-							systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
-							racerFinish2.add(r);
-							return true;
+					if(enabled[1][3]){
+						if(racerRunPARGRP[7]== null){
+							systemLog.add(t.getSystemTime() + " Channel " + channelNum + " has already finished.");
+							return false;
 						}
-						systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
-						return false;
+						double end = t.end();
+						Racer r = racerRunPARGRP[7];
+						racerRunPARGRP[7] = null;
+						r.setState(2);
+						r.setEnd(end);
+//						r.setElapsed(groupStart, end);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+						racerFinish2.add(r);
+						return true;
 					}
-					else if(channelNum < 9 && channelNum > 1 && !AlreadyStarted)
-					{
-						return false;
-					}
+					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+					return false;
+				}
+				else if(channelNum < 9 && channelNum > 1 && !AlreadyStarted)
+				{
+					return false;
+				}
 			} //end outside if
 		} //end PARGRP		
 		
