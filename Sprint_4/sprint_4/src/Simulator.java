@@ -112,8 +112,8 @@ public class Simulator { //used to represent hardware
 					return "SWAP";
 				case 14:
 					System.out.println("Which racer do you want to clear?");
-					int clr = input.nextInt();
-					return "CLR " + clr;
+					int clr1 = input.nextInt();
+					return "CLR " + clr1;
 				case 15:
 					System.out.println("Which channel do you want to connect a sensor to?");
 					int con = input.nextInt();

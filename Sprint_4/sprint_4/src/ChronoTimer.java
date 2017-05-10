@@ -366,11 +366,6 @@ public class ChronoTimer { //main program, links everything together
 	 * @return boolean: whether or not the reset() was successful
 	 */
 	public boolean reset(){
-		if(!isPowerOn()) {
-			System.out.println("Try Again - Power must be 'On'.");
-			systemLog.add(t.getSystemTime() + " Reset Unsuccessful.");
-			return false;
-		}
 		racerQueue1 = new LinkedList<Racer>();
 		racerQueue2 = new LinkedList<Racer>();
 		racerRun1 = new LinkedList<Racer>();
