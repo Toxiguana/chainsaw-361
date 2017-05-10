@@ -1172,6 +1172,9 @@ public class ChronoTimer { //main program, links everything together
 			return false;
 		}
 		else{
+			if(runList.size() < 1){
+				return false;
+			}
 			Run r = runList.get(rNum-1);
 			r.print();
 		}
@@ -1194,7 +1197,10 @@ public class ChronoTimer { //main program, links everything together
 			systemLog.add(t.getSystemTime() + " GUIPrint Unsuccessful.");
 			return null;
 		}
-		else{	
+		else{
+			if(runList.size() < 1){
+				return null;
+			}
 			Run r = runList.get(runNum-2);
 			systemLog.add(t.getSystemTime() + " GUIPrint Successful.");
 			return r.guiPrint();
