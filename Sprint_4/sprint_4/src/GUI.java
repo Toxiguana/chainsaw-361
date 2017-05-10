@@ -101,6 +101,16 @@ public class GUI extends JFrame {
 	private JLabel lblRun_1;
 	private JButton btnSetGroupNumber;
 	private JTextField textFieldExport;
+	private JLabel lblhoursminutesseconds;
+	private JButton btnSetTime;
+	private JButton btnExport;
+	private JLabel lblRunNumber;
+	private JButton btnClear;
+	private JButton btnEndRun;
+	private JButton btnPrint;
+	private JLabel lblRacer;
+	private JLabel lblEventType;
+	private JTextPane txtpnStuff;
 	 /**
 	 * Create the frame.
 	 */
@@ -1216,11 +1226,7 @@ public class GUI extends JFrame {
 		btnEnter.setBounds(541, 317, 41, 36);
 		getContentPane().add(btnEnter);
 
-		JTextPane txtpnStuff = new JTextPane();
-		txtpnStuff.setText("stuff");
-		txtpnStuff.setForeground(Color.WHITE);
-		txtpnStuff.setBounds(567, 26, -127, 123);
-		getContentPane().add(txtpnStuff);
+		
 
 		numTxtFld = new JTextField();
 		numTxtFld.setEditable(false);
@@ -1286,7 +1292,7 @@ public class GUI extends JFrame {
 		scrollPane.setBounds(422, 47, 145, 109);
 		getContentPane().add(scrollPane);
 
-		JButton btnPrint = new JButton("Print");
+		btnPrint = new JButton("Print");
 		btnPrint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ArrayList<String> arr = c.printGUI();
@@ -1316,7 +1322,7 @@ public class GUI extends JFrame {
 		txtRun.setBounds(187, 352, 200, 88);
 		getContentPane().add(txtRun);
 
-		JLabel lblEventType = new JLabel("Event Type:");
+		lblEventType = new JLabel("Event Type:");
 		lblEventType.setForeground(Color.WHITE);
 		lblEventType.setBounds(0, 47, 85, 16);
 		getContentPane().add(lblEventType);
@@ -1391,7 +1397,7 @@ public class GUI extends JFrame {
 		btnNewRun.setBounds(0, 175, 117, 29);
 		getContentPane().add(btnNewRun);
 
-		JButton btnEndRun = new JButton("End Run");
+		btnEndRun = new JButton("End Run");
 		btnEndRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (tglChan1.isSelected()) {
@@ -1431,7 +1437,7 @@ public class GUI extends JFrame {
 		btnEndRun.setBounds(0, 200, 117, 29);
 		getContentPane().add(btnEndRun);
 
-		JLabel lblRacer = new JLabel("Racer:");
+		lblRacer = new JLabel("Racer:");
 		lblRacer.setForeground(Color.WHITE);
 		lblRacer.setBounds(0, 225, 85, 16);
 		getContentPane().add(lblRacer);
@@ -1566,7 +1572,7 @@ public class GUI extends JFrame {
 		btnSetGroupNumber.setBounds(449, 357, 145, 29);
 		getContentPane().add(btnSetGroupNumber);
 		
-		JButton btnClear = new JButton("Clear");
+		btnClear = new JButton("Clear");
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -1638,12 +1644,12 @@ public class GUI extends JFrame {
 		getContentPane().add(textTime);
 		textTime.setColumns(10);
 		
-		JLabel lblhoursminutesseconds = new JLabel("(Hours:Minutes:Seconds)");
+		lblhoursminutesseconds = new JLabel("(Hours:Minutes:Seconds)");
 		lblhoursminutesseconds.setForeground(Color.WHITE);
 		lblhoursminutesseconds.setBounds(0, 336, 156, 16);
 		getContentPane().add(lblhoursminutesseconds);
 		
-		JButton btnSetTime = new JButton("Set Time");
+		btnSetTime = new JButton("Set Time");
 		btnSetTime.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!textTime.getText().equals("")){
@@ -1661,7 +1667,7 @@ public class GUI extends JFrame {
 		btnSetTime.setBounds(0, 373, 117, 29);
 		getContentPane().add(btnSetTime);
 		
-		JButton btnExport = new JButton("Export");
+		btnExport =new JButton("Export");
 		btnExport.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -1684,7 +1690,7 @@ public class GUI extends JFrame {
 		textFieldExport.setBounds(90, 425, 50, 26);
 		getContentPane().add(textFieldExport);
 		
-		JLabel lblRunNumber = new JLabel("Run Number:");
+		lblRunNumber= new JLabel("Run Number:");
 		lblRunNumber.setForeground(Color.WHITE);
 		lblRunNumber.setBounds(0, 430, 85, 16);
 		getContentPane().add(lblRunNumber);
