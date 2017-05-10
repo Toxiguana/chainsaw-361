@@ -15,11 +15,12 @@ import com.sun.net.httpserver.HttpServer;
 
 public class Server {
 	static String sharedResponse = "";
-	static Queue<Racer> racerFinish1;
-	static Queue<Racer> racerFinish2;
 	static ArrayList<Run> runList;
 	static ArrayList<Name> nameList = new ArrayList<Name>();
 	
+	/**
+	 * Subclass for storing associating names with racerNumbers
+	 */
 	class Name{
 		int number;
 		String firstName;
@@ -32,9 +33,12 @@ public class Server {
 		}
 	}
 	
-	public Server(Queue<Racer> RACERFINISH1, Queue<Racer> RACERFINISH2, ArrayList<Run> RUNLIST){
-		racerFinish1 = RACERFINISH1;
-		racerFinish2 = RACERFINISH2;
+	/**
+	 * server constructor.  Attempts to read and parse a file containing racer numbers and their
+	 * associated names
+	 * @param RUNLIST : ArrayList containing all previous runs
+	 */
+	public Server(ArrayList<Run> RUNLIST){
 		runList = RUNLIST;
 		
 		//reads file and puts names and numbers into a linked list
@@ -51,6 +55,10 @@ public class Server {
 		}
 	}
 	
+	/**
+	 * Method which runs the server
+	 * @throws IOException
+	 */
 	public void startServer() throws IOException{
 		
 		
@@ -81,8 +89,6 @@ public class Server {
             response += "tr:nth-child(even){background-color: lightgray;}\n";
             response += "tr {text-align: center;}\n";
             
-//            System.out.println(response);
-            
             // write out the response
             t.sendResponseHeaders(200, response.length());
             OutputStream os = t.getResponseBody();
@@ -102,25 +108,27 @@ public class Server {
             response += "<h1>Run Results</h1>";
 
             for(Run r : runList){ //traverse runList
-            	Queue<Racer> finishQ = r.getFinish2();
-            	ArrayList<Racer> run = new ArrayList<Racer>();
-            	for(Racer a: finishQ){ //convert Queue to ArrayList, needed for sorting
-            		run.add(a);
+            	Queue<Racer> finishQ = r.getFinish2(); //retrieve the finish2 queue from a given run
+            	ArrayList<Racer> finishList = new ArrayList<Racer>();  //new ArrayList
+            	for(Racer a: finishQ){ //convert Queue to ArrayList so that it can be sorted
+            		finishList.add(a);
             	}
-            	RacerComparator rc = new RacerComparator();
-            	run.sort(rc); //sort racers in a run
+            	RacerComparator rc = new RacerComparator(); //new comparator
+            	finishList.sort(rc); //sort racers in a run
+            	//table headers
             	response += "\n<table>";
                 response += "<tr><th>Place</th>\n<th>RunnerNumber</th>\n<th>First Name</th>\n<th>Last Name</th>";
                 response += "<th>Time</th>";
             	response += "<h2> Run " + r.getRunNum() + "</h2>";
-            	int count = 0;
-            	for(Racer b : run) //display a run
+            	
+            	int placeCounter = 0; //used to count places for displaying results in table
+            	for(Racer b : finishList) //display all racers in a run
             	{
-            		count++;
+            		placeCounter++;
             		String first = "FIRSTNAME";
             		String last = "LASTNAME";
-            		try{
-            			for(Name n : nameList){
+            		try{ //try block used to prevent crash as a result of nameList being null due to a bad text file
+            			for(Name n : nameList){ //searches nameList for a given racerNumber
             				if(n.number == b.getNum()){
             					first = n.firstName;
             					last = n.lastName;
@@ -130,22 +138,16 @@ public class Server {
             			first = "FIRSTNAME";
             			last = "LASTNAME";
             		}
-            		response += "<tr>\n<td>" + count + "</td>";
+            		//displays a racer
+            		response += "<tr>\n<td>" + placeCounter + "</td>";
             		response += "\n<td>" + b.getNum() + "</td>"; 
             		response += "\n<td>" + first + "</td>";
             		response += "\n<td>" + last + "</td>"; 
             		response += "\n<td>" + b.getElapsedTime() + "</td>";
             		response += "\n</tr>";
-            		
-            		//nameList.get(b.getNum()).lastName
             	}
-            }
-            //TODO: display racers from racerFinish1 and racerFinish2
-            
-            
+            }    
             response += "\n</table>\n</body>\n</html>";
-            
-//            System.out.println(response);
             
             // write out the response
             t.sendResponseHeaders(200, response.length());
@@ -154,79 +156,4 @@ public class Server {
             os.close();
         }
     }
-
-//POST HANDLER.  I DONT THINK WE NEED IT
-//could be wrong though
-    
-//    static class PostHandler implements HttpHandler {
-//        public void handle(HttpExchange transmission) throws IOException {
-//        	
-//            //  shared data that is used with other handlers
-//            sharedResponse = "";
-//
-//            // set up a stream to read the body of the request
-//            InputStream inputStr = transmission.getRequestBody();
-//
-//            // set up a stream to write out the body of the response
-//            OutputStream outputStream = transmission.getResponseBody();
-//
-//            // string to hold the result of reading in the request
-//            StringBuilder sb = new StringBuilder();
-//
-//            // read the characters from the request byte by byte and build up the sharedResponse
-//            int nextChar = inputStr.read();
-//            while (nextChar > -1) {
-//                sb = sb.append((char)nextChar);
-//                nextChar = inputStr.read();
-//            }
-//
-//            // create our response String to use in other handler
-//            sharedResponse = sharedResponse + sb.toString();
-//
-//            System.out.println(sharedResponse);
-//         
-//            String[] s1 = sharedResponse.split(" ");
-//            String s2 = s1[0];
-//            String pr2 = "";
-//            
-//            if(s2.equalsIgnoreCase("Add")){
-//            	String s = s1[1];
-//            	String[] s3 = s.split("\"");
-//            	
-//            	if(s3[3].equals("")){
-//            		s2 = "NOT Added";
-//            		pr2 = "ERROR: Please fill out the fields!";
-//            	}
-//            	else{
-//            		r.add(s3[3], s3[7], s3[11], s3[15]);
-////	            	System.out.println(s3[3] + s3[7] + s3[11] + s3[15]);
-//            		pr2 = "Added " + s3[3] + " " + s3[7] + " to Directory.";
-//            	}
-//            }
-//            else if(s2.equalsIgnoreCase("Clear")){
-//            	r.clear();
-//            	pr2 = "Cleared Directory.";
-//            }
-//            else if(s2.equalsIgnoreCase("Print")){
-//            	pr2 = r.print();
-//            }
-//            
-//            // respond to the POST with ROGER
-//            String postResponse = "ROGER JSON RECEIVED: " + s2 + "\n" + pr2 + "\n";
-//            
-//            
-//            System.out.println("response: " + sharedResponse + "\n");
-//
-//            //Desktop dt = Desktop.getDesktop();
-//            //dt.open(new File("raceresults.html"));
-//
-//            // assume that stuff works all the time
-//            transmission.sendResponseHeaders(300, postResponse.length());
-//
-//            // write it and return it
-//            outputStream.write(postResponse.getBytes());
-//
-//            outputStream.close();
-//        }
-//    }
 }

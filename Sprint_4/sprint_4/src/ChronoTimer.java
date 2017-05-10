@@ -41,7 +41,7 @@ public class ChronoTimer {
 	private double seconds = 0.0;
 	
 	static ChronoTimer T = new ChronoTimer(); //instance for Server
-	static Server server = new Server(T.racerFinish1, T.racerFinish2, T.runList); //instance for Server2
+	static Server server = new Server(T.runList); //instance for Server2
 	
 	/**
 	 * Runs the ChronoTimer.
@@ -345,7 +345,7 @@ public class ChronoTimer {
 			reset();
 			runList = new ArrayList<Run>();
 			runNum = 0;
-			server = new Server(T.racerFinish1, T.racerFinish2, T.runList);
+			server = new Server(T.runList);
 		}
 		else{
 			power = true;
