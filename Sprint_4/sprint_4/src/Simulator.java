@@ -33,10 +33,10 @@ public class Simulator { //used to represent hardware
 				System.out.println("1. Power | 2. Reset | 3. Time | 4. Event Type");
 				System.out.println("5. New Run | 6. Add Runner | 7. Toggle");
 				System.out.println("8. Trigger | 9. Start | 10. Finish");
-				System.out.println("11. DNF | 12. Cancel | 13. Swap");
-				System.out.println("14. Connect Sensor | 15. Disconnect Sensor");
-				System.out.println("16. Group Racer Number Set | 17. End Run");
-				System.out.println("18. Print | 19. Export | 20. Exit");
+				System.out.println("11. DNF | 12. Cancel | 13. Swap | 14. Clear");
+				System.out.println("15. Connect Sensor | 16. Disconnect Sensor");
+				System.out.println("17. Group Racer Number Set | 18. End Run");
+				System.out.println("19. Print | 20. Export | 21. Exit");
 				
 				int menuChoice = input.nextInt();
 
@@ -111,6 +111,10 @@ public class Simulator { //used to represent hardware
 				case 13:
 					return "SWAP";
 				case 14:
+					System.out.println("Which racer do you want to clear?");
+					int clr = input.nextInt();
+					return "CLR " + clr;
+				case 15:
 					System.out.println("Which channel do you want to connect a sensor to?");
 					int con = input.nextInt();
 					if(con >= 1 && con <= 8){
@@ -119,7 +123,7 @@ public class Simulator { //used to represent hardware
 					else{
 						System.out.println("Invalid Input.");
 					}
-				case 15:
+				case 16:
 					System.out.println("Which channel do you want to disconnect a sensor from?");
 					int discon = input.nextInt();
 					if(discon >= 1 && discon <= 8){
@@ -128,21 +132,21 @@ public class Simulator { //used to represent hardware
 					else{
 						System.out.println("Invalid Input.");
 					}
-				case 16:
+				case 17:
 					System.out.println("What is the number you want to set the GRP racer to?");
 					int gN = input.nextInt();
 					return "GROUP " + gN;
-				case 17:
-					return "ENDRUN";
 				case 18:
+					return "ENDRUN";
+				case 19:
 					System.out.println("Which run do you want to print out?");
 					int runNum = input.nextInt();
 					return "PRINT " + runNum;
-				case 19:
+				case 20:
 					System.out.println("Which run do you want to export?");
 					int runNumExport = input.nextInt();
 					return "EXPORT " + runNumExport;
-				case 20:
+				case 21:
 					return "EXIT";
 				default:
 					System.out.println("Invalid Input.");

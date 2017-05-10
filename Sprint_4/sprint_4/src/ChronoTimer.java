@@ -240,6 +240,17 @@ public class ChronoTimer { //main program, links everything together
 			else System.out.println("Swap was not successful.");
 		}
 		//14
+		else if(command.contains("CLR")){
+			String[] clr = command.split(" ");
+			if(clr[1] == null){
+				return;
+			}
+			int clearNum = Integer.parseInt(clr[1]);
+			boolean b = clear(clearNum);
+			if(b) System.out.println("Clearing Racer was successful.");
+			else System.out.println("Clearing Racer was not successful.");
+		}
+		//15
 		else if(command.contains("CONN")){
 			String[] conn = command.split(" ");
 			if(conn[1] == null){
@@ -250,7 +261,7 @@ public class ChronoTimer { //main program, links everything together
 			if(b) System.out.println("Connecting Sensor was successful.");
 			else System.out.println("Connecting Sensor was not successful.");
 		}
-		//15
+		//16
 		else if(command.contains("DISC")){
 			String[] disc = command.split(" ");
 			if(disc[1] == null){
@@ -261,7 +272,7 @@ public class ChronoTimer { //main program, links everything together
 			if(b) System.out.println("Disconnecting Sensor was successful.");
 			else System.out.println("Disconnecting Sensor was not successful.");	
 		}
-		//16
+		//17
 		else if(command.contains("GROUP")){
 			String[] runNum = command.split(" ");
 			if(runNum[1] == null){
@@ -272,13 +283,13 @@ public class ChronoTimer { //main program, links everything together
 			if(b) System.out.println("Setting Group Racer Number was successful.");
 			else System.out.println("Setting Group Racer Number was not successful.");
 		}
-		//17
+		//18
 		else if(command.contains("ENDRUN")){
 			boolean b = endRun();
 			if(b) System.out.println("Run has been ended.");
 			else System.out.println("Run has NOT been ended.");
 		}
-		//18
+		//19
 		else if(command.contains("PRINT")){
 			String[] runNumArray = command.split(" ");
 			if(runNumArray[1] == null){
@@ -290,7 +301,7 @@ public class ChronoTimer { //main program, links everything together
 			if(b) System.out.println("Printing Run was successful.");
 			else System.out.println("Printing Run was not successful.");
 		}
-		//19
+		//20
 		else if(command.contains("EXPORT")){
 			String[] runNum = command.split(" ");
 			if(runNum[1] == null){
@@ -302,7 +313,7 @@ public class ChronoTimer { //main program, links everything together
 			if(b) System.out.println("Exporting Run was successful.");
 			else System.out.println("Exporting Run was not successful.");
 		}
-		//20
+		//21
 		else if(command.contains("EXIT")){
 			System.out.println("Exiting Program.");
 			exit();
