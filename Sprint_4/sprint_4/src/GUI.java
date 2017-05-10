@@ -1655,7 +1655,11 @@ public class GUI extends JFrame {
 				if(num<=5){
 				num++;
 				Racer r = run.get(i);
-				txtRun.append(r.getOutput() + " R" + "\n");
+				
+				try{txtRun.append(r.getOutput() + " R" + "\n");
+				}
+				catch(Exception ex){
+				}
 				}
 			}
 			}
