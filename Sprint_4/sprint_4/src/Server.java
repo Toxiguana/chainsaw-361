@@ -46,7 +46,7 @@ public class Server {
 				Name n = new Name(Integer.parseInt(parts[0]), parts[1], parts[2]);
 				nameList.add(n);
 			}
-		} catch (FileNotFoundException e) {
+		} catch (Exception e) {
 			System.out.println("Error: bad file format for names.txt");
 		}
 	}
@@ -117,11 +117,16 @@ public class Server {
             	{
             		String first = "FIRSTNAME";
             		String last = "LASTNAME";
-            		for(Name n : nameList){
-            			if(n.number == b.getNum()){
-            				first = n.firstName;
-            				last = n.lastName;
+            		try{
+            			for(Name n : nameList){
+            				if(n.number == b.getNum()){
+            					first = n.firstName;
+            					last = n.lastName;
+            				}
             			}
+            		}catch(Exception e){
+            			first = "FIRSTNAME";
+            			last = "LASTNAME";
             		}
             		response += "<tr>\n<td>" + b.getNum() + "</td>"; 
             		response += "\n<td>" + first + "</td>";
