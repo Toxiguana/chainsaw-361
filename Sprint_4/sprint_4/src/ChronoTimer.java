@@ -307,11 +307,16 @@ public class ChronoTimer { //main program, links everything together
 			if(runNum[1] == null){
 				return;
 			}
-			int runnerNumEx = Integer.parseInt(runNum[1]);
-			System.out.println("Exporting Run " + runnerNumEx + ".");
-			boolean b = export(runnerNumEx);
-			if(b) System.out.println("Exporting Run was successful.");
-			else System.out.println("Exporting Run was not successful.");
+			try{
+				int runnerNumEx = Integer.parseInt(runNum[1]);
+				System.out.println("Exporting Run " + runnerNumEx + ".");
+				boolean b = export(runnerNumEx);
+				if(b) System.out.println("Exporting Run was successful.");
+				else System.out.println("Exporting Run was not successful.");
+			}catch(Exception e){
+				System.out.println("Invalid Format.");
+			}
+
 		}
 		//21
 		else if(command.contains("EXIT")){
