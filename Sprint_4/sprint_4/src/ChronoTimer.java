@@ -866,7 +866,7 @@ public class ChronoTimer { //main program, links everything together
 		else if(eventType == 5){
 			if(racerQueue1.size() <= 8) // makes sure you dont add more than 8 racers
 			{
-				if(channelNum != 1 || channelNum != 2 || channelNum != 3 || channelNum != 4 || channelNum != 5 || channelNum != 6 ||channelNum != 7 || channelNum != 8){
+				if(channelNum != 1 && channelNum != 2 && channelNum != 3 && channelNum != 4 && channelNum != 5 && channelNum != 6 && channelNum != 7 && channelNum != 8){
 					return false;
 				}
 				else if(channelNum == 1 && !AlreadyStarted){ //start
