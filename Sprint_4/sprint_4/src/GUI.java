@@ -260,7 +260,7 @@ public class GUI extends JFrame {
 							if (runTime.isAlive()) {
 								runTime.interrupt();
 								runTime = null;
-								txtRun.setText("");
+								//txtRun.setText("");("");
 								runTime = new Thread(new RunTime(g, runArr));
 								runTime.start();
 							}
@@ -306,7 +306,7 @@ public class GUI extends JFrame {
 								System.out.println("restarting thread");
 								runTime.interrupt();
 								runTime = null;
-								txtRun.setText("");
+								//txtRun.setText("");("");
 								runTime = new Thread(new RunTime(g, runArr));
 								runTime.start();
 							}
@@ -339,7 +339,7 @@ public class GUI extends JFrame {
 							if (runTime.isAlive()) {
 								runTime.interrupt();
 								runTime = null;
-								txtRun.setText("");
+								//txtRun.setText("");("");
 								runTime = new Thread(new RunTime(g, runArr));
 								runTime.start();
 								// clear finish display
@@ -409,7 +409,7 @@ public class GUI extends JFrame {
 							if (runTime.isAlive()) {
 									runTime.interrupt();
 									runTime = null;
-									txtRun.setText("");
+									//txtRun.setText("");("");
 									runTime = new Thread(new RunTime(g, runArr));
 									runTime.start();
 								}
@@ -452,7 +452,7 @@ public class GUI extends JFrame {
 							if (runTime.isAlive()) {
 								runTime.interrupt();
 								runTime = null;
-								txtRun.setText("");
+								//txtRun.setText("");("");
 								runTime = new Thread(new RunTime(g, runArr));
 								runTime.start();
 							}
@@ -473,9 +473,11 @@ public class GUI extends JFrame {
 								txtFinish.setText("");
 								Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
 								// Setting Finish Display
+								if(run.size()>=1){
 								Object[] finishArr = run.toArray();
 								txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
 										+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+								}
 								// Resetting Racer ArrayList
 								while (!run.isEmpty()) {
 									Racer r = run.poll();
@@ -490,7 +492,7 @@ public class GUI extends JFrame {
 									if (runTime.isAlive()) {
 											runTime.interrupt();
 											runTime = null;
-											txtRun.setText("");
+											//txtRun.setText("");("");
 											runTime = new Thread(new RunTime(g, runArr));
 											runTime.start();
 										}
@@ -552,7 +554,7 @@ public class GUI extends JFrame {
 							if (runTime.isAlive()) {
 								runTime.interrupt();
 								runTime = null;
-								txtRun.setText("");
+								//txtRun.setText("");("");
 								runTime = new Thread(new RunTime(g, runArr));
 								runTime.start();
 							}
@@ -581,11 +583,11 @@ public class GUI extends JFrame {
 									if (runArr.isEmpty()) {
 										runTime.interrupt();
 										runTime=null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 									} else {
 										runTime.interrupt();
 										runTime = null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 										runTime = new Thread(new RunTime(g, runArr));
 										runTime.start();
 									}
@@ -651,7 +653,7 @@ public class GUI extends JFrame {
 						if (runTime.isAlive()) {
 							runTime.interrupt();
 							runTime = null;
-							txtRun.setText("");
+							//txtRun.setText("");("");
 							runTime = new Thread(new RunTime(g, runArr));
 							runTime.start();
 						}
@@ -680,11 +682,11 @@ public class GUI extends JFrame {
 									if (runArr.isEmpty()) {
 										runTime.interrupt();
 										runTime=null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 									} else {
 										runTime.interrupt();
 										runTime = null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 										runTime = new Thread(new RunTime(g, runArr));
 										runTime.start();
 									}
@@ -708,7 +710,6 @@ public class GUI extends JFrame {
 				}
 				if (c.getEnabled(0, 2)) {
 					if (c.getEventType() == 5) {
-						if (c.racerRunPARGRP[4]!=null) {
 							// clear finish display
 							txtFinish.setText("");
 							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
@@ -730,18 +731,17 @@ public class GUI extends JFrame {
 								if (runTime.isAlive()) {
 									if (runArr.isEmpty()) {
 										runTime = null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 									} else {
 										runTime.interrupt();
 										runTime = null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 										runTime = new Thread(new RunTime(g, runArr));
 										runTime.start();
 									}
 								}
 							}
 						}
-					}
 				}
 			}
 		});
@@ -782,11 +782,11 @@ public class GUI extends JFrame {
 									if (runArr.isEmpty()) {
 										runTime.interrupt();
 										runTime = null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 									} else {
 										runTime.interrupt();
 										runTime = null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 										runTime = new Thread(new RunTime(g, runArr));
 										runTime.start();
 									}
@@ -833,11 +833,11 @@ public class GUI extends JFrame {
 									if (runArr.isEmpty()) {
 										runTime.interrupt();
 										runTime = null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 									} else {
 										runTime.interrupt();
 										runTime = null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 										runTime = new Thread(new RunTime(g, runArr));
 										runTime.start();
 									}
@@ -883,11 +883,11 @@ public class GUI extends JFrame {
 									if (runArr.isEmpty()) {
 										runTime.interrupt();
 										runTime = null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 									} else {
 										runTime.interrupt();
 										runTime = null;
-										txtRun.setText("");
+										//txtRun.setText("");("");
 										runTime = new Thread(new RunTime(g, runArr));
 										runTime.start();
 									}
@@ -1424,7 +1424,7 @@ public class GUI extends JFrame {
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
-				txtRun.setText("");
+				//txtRun.setText("");("");
 				txtQueue.setText("");
 				txtFinish.setText("");
 			}
@@ -1481,7 +1481,7 @@ public class GUI extends JFrame {
 						txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
 								+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
 						if (runArr.size() == 0) {
-							txtRun.setText("");
+							//txtRun.setText("");("");
 						}
 					}
 				}
@@ -1523,7 +1523,7 @@ public class GUI extends JFrame {
 						
 					}
 				if(runArr.size()==0){
-					txtRun.setText("");
+					//txtRun.setText("");("");
 				}
 					Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
 					int num = 1;
@@ -1573,7 +1573,7 @@ public class GUI extends JFrame {
 				try {
 					if (!numTxtFld.getText().equals("")) {
 					String res=numTxtFld.getText();
-					c.sendCommand("CLEAR "+res);
+					c.sendCommand("CLR "+res);
 					numTxtFld.setText("");
 					}
 				} catch (IOException e1) {
@@ -1655,7 +1655,6 @@ public class GUI extends JFrame {
 				if(num<=5){
 				num++;
 				Racer r = run.get(i);
-				
 				try{txtRun.append(r.getOutput() + " R" + "\n");
 				}
 				catch(Exception ex){
@@ -1668,7 +1667,7 @@ public class GUI extends JFrame {
 	}
 	public void updateTimeGroup(String output){
 		if(c.getEventType()!=0){
-		txtRun.setText("");
+		//txtRun.setText("");("");
 		txtRun.append(output);
 		}
 		else{
