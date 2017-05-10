@@ -110,11 +110,13 @@ public class Server {
             	RacerComparator rc = new RacerComparator();
             	run.sort(rc); //sort racers in a run
             	response += "\n<table>";
-                response += "<tr><th>RunnerNumber</th>\n<th>First Initial</th>\n<th>Last Name</th>";
+                response += "<tr><th>Place</th>\n<th>RunnerNumber</th>\n<th>First Name</th>\n<th>Last Name</th>";
                 response += "<th>Time</th>";
             	response += "<h2> Run " + r.getRunNum() + "</h2>";
+            	int count = 0;
             	for(Racer b : run) //display a run
             	{
+            		count++;
             		String first = "FIRSTNAME";
             		String last = "LASTNAME";
             		try{
@@ -128,7 +130,8 @@ public class Server {
             			first = "FIRSTNAME";
             			last = "LASTNAME";
             		}
-            		response += "<tr>\n<td>" + b.getNum() + "</td>"; 
+            		response += "<tr>\n<td>" + count + "</td>";
+            		response += "\n<td>" + b.getNum() + "</td>"; 
             		response += "\n<td>" + first + "</td>";
             		response += "\n<td>" + last + "</td>"; 
             		response += "\n<td>" + b.getElapsedTime() + "</td>";
