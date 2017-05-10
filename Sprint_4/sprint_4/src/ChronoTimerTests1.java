@@ -119,6 +119,33 @@ public class ChronoTimerTests1 { //IND Tests
 	}
 	
 	@Test
+	public void testCancel2(){
+		t.power();
+		t.setEventType("IND");
+		t.newRun();
+
+		t.addRacer(25);
+		t.addRacer(26);
+	
+		t.togChannel(1);
+		t.togChannel(2);
+		
+		t.trigChannel(1);
+		t.trigChannel(1);
+		assertFalse(t.trigChannel(3));
+		
+		t.cancelRacer();
+		assertEquals(1, t.racerRun1.size());
+		assertEquals(1, t.racerQueue1.size());
+		
+		t.trigChannel(1);
+		assertEquals(2, t.racerRun1.size());
+		
+		t.power();
+		assertFalse(t.isPowerOn());
+	}
+	
+	@Test
 	public void dnfRacer(){
 		t.power();
 		t.setEventType("IND");
@@ -194,63 +221,6 @@ public class ChronoTimerTests1 { //IND Tests
 		assertTrue(t.racerFinish2.isEmpty());
 	}
 	
-	@Test
-	public void testCancel(){
-		t.power();
-		t.setEventType("IND");
-		t.newRun();
 
-		t.addRacer(25);
-		t.addRacer(26);
-	
-		t.togChannel(1);
-		t.togChannel(2);
-		
-		t.trigChannel(1);
-		t.trigChannel(1);
-		assertFalse(t.trigChannel(3));
-		
-		t.cancelRacer();
-		assertEquals(1, t.racerRun1.size());
-		assertEquals(1, t.racerQueue1.size());
-		
-		t.trigChannel(1);
-		assertEquals(2, t.racerRun1.size());
-		
-		t.power();
-		assertFalse(t.isPowerOn());
-	}
-	
-	@Test
-	public void testNewRun(){
-		t.power();
-		t.setEventType("IND");
-		t.newRun();
-		
-		assertEquals(1, t.getRunNum());
-		assertTrue(t.getRunStart());
-	}
-	
-	@Test
-	public void testEndRun(){
-		t.power();
-		t.setEventType("IND");
-		t.newRun();
-		t.addRacer(22);
-		t.addRacer(23);
-		t.togChannel(1);
-		t.togChannel(2);
-		t.trigChannel(1);
-		t.trigChannel(2);
-		
-		assertEquals(1, t.getRunNum());
-
-		t.endRun();
-		
-		assertFalse(t.runList.isEmpty());
-		assertTrue(t.racerRun1.isEmpty());
-		assertEquals(2, t.getRunNum());
-		assertEquals(1, t.runList.get(0).getRunNum());
-	}
 
 }
