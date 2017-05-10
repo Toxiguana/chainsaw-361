@@ -9,11 +9,11 @@ public class RacerComparator implements Comparator{
 		if(r1.getElapsedTimeSec() == r2.getElapsedTimeSec()){
 			return 0;
 		}
-		else if(r1.getElapsedTimeSec() == -1){
-			return -1;
-		}
-		else if(r2.getElapsedTimeSec() == -1){
+		else if(r1.getElapsedTime().equals("DNF")){
 			return 1;
+		}
+		else if(r2.getElapsedTime().equals("DNF")){
+			return -1;
 		}
 		else if(r1.getElapsedTimeSec() > r2.getElapsedTimeSec()){
 			return 1;

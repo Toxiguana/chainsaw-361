@@ -1,9 +1,13 @@
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Queue;
+import java.util.Scanner;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
@@ -14,11 +18,37 @@ public class Server {
 	static Queue<Racer> racerFinish1;
 	static Queue<Racer> racerFinish2;
 	static ArrayList<Run> runList;
+	static ArrayList<Name> nameList = new ArrayList<Name>();
+	
+	class Name{
+		int number;
+		String firstName;
+		String lastName;
+		
+		public Name(int racerNumber, String fName, String lName){
+			number = racerNumber;
+			firstName = fName;
+			lastName = lName;
+		}
+	}
 	
 	public Server(Queue<Racer> RACERFINISH1, Queue<Racer> RACERFINISH2, ArrayList<Run> RUNLIST){
 		racerFinish1 = RACERFINISH1;
 		racerFinish2 = RACERFINISH2;
 		runList = RUNLIST;
+		
+		//reads file and puts names and numbers into a linked list
+		try(Scanner s = new Scanner(new FileReader("src/names.txt"))){
+			String line;
+			while(s.hasNextLine()){
+				line = s.nextLine();
+				String[] parts = line.split(":");
+				Name n = new Name(Integer.parseInt(parts[0]), parts[1], parts[2]);
+				nameList.add(n);
+			}
+		} catch (FileNotFoundException e) {
+			System.out.println("Error: bad file format for names.txt");
+		}
 	}
 	
 	public void startServer() throws IOException{
@@ -85,12 +115,21 @@ public class Server {
             	response += "<h2> Run " + r.getRunNum() + "</h2>";
             	for(Racer b : run) //display a run
             	{
-            		//TODO: figure out if we should be keeping the runs separate or combining them and sorting them all in one
+            		String first = "FIRSTNAME";
+            		String last = "LASTNAME";
+            		for(Name n : nameList){
+            			if(n.number == b.getNum()){
+            				first = n.firstName;
+            				last = n.lastName;
+            			}
+            		}
             		response += "<tr>\n<td>" + b.getNum() + "</td>"; 
-            		response += "\n<td>" + "FIRSTNAME PLACEHOLDER" + "</td>";
-            		response += "\n<td>" + "LASTNAME PLACEHOLDER" + "</td>"; 
+            		response += "\n<td>" + first + "</td>";
+            		response += "\n<td>" + last + "</td>"; 
             		response += "\n<td>" + b.getElapsedTime() + "</td>";
             		response += "\n</tr>";
+            		
+            		//nameList.get(b.getNum()).lastName
             	}
             }
             //TODO: display racers from racerFinish1 and racerFinish2
