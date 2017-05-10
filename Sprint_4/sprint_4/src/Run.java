@@ -63,7 +63,6 @@ public class Run { //used to keep track of a run
 			s += runLog.get(i).toString() + "\n";
 		}
 		g.toJson(runLog);
-		// TODO: Make JSON.
 		try(FileWriter file = new FileWriter("RUN"+runNum+".txt")){
 			file.write(s);
 			System.out.println("Exported Run " + runNum + " to RUN"+runNum+".txt");
