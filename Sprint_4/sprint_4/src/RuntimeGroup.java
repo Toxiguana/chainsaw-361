@@ -15,6 +15,7 @@ public class RuntimeGroup implements Runnable {
 			while (true) {
 				//thread sleeps and then runs every second
 				Thread.sleep(1);
+				g.resetTextBox();
 				output=t.computeTime(c.groupStart, t.start());
 				g.updateTimeGroup(output+" R");
 			}

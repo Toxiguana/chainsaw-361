@@ -110,7 +110,12 @@ public class GUI extends JFrame {
 	private JButton btnPrint;
 	private JLabel lblRacer;
 	private JLabel lblEventType;
-	private JTextPane txtpnStuff;
+	private JButton btnInd;
+	private JButton btnParind;
+	private JButton btnPargrp;
+	private JButton btnGrp;
+	private JButton btnNewRun;
+	private JLabel lblRun;
 	 /**
 	 * Create the frame.
 	 */
@@ -1327,7 +1332,7 @@ public class GUI extends JFrame {
 		lblEventType.setBounds(0, 47, 85, 16);
 		getContentPane().add(lblEventType);
 
-		JButton btnInd = new JButton("IND");
+		btnInd = new JButton("IND");
 		btnInd.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -1340,7 +1345,7 @@ public class GUI extends JFrame {
 		btnInd.setBounds(0, 60, 117, 29);
 		getContentPane().add(btnInd);
 
-		JButton btnParind = new JButton("PARIND");
+		btnParind = new JButton("PARIND");
 		btnParind.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -1353,7 +1358,7 @@ public class GUI extends JFrame {
 		btnParind.setBounds(0, 85, 117, 29);
 		getContentPane().add(btnParind);
 
-		JButton btnPargrp = new JButton("PARGRP");
+		btnPargrp= new JButton("PARGRP");
 		btnPargrp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -1366,7 +1371,7 @@ public class GUI extends JFrame {
 		btnPargrp.setBounds(0, 110, 117, 29);
 		getContentPane().add(btnPargrp);
 
-		JButton btnGrp = new JButton("GRP");
+		btnGrp = new JButton("GRP");
 		btnGrp.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
@@ -1379,12 +1384,12 @@ public class GUI extends JFrame {
 		btnGrp.setBounds(0, 135, 117, 29);
 		getContentPane().add(btnGrp);
 
-		JLabel lblRun = new JLabel("Run:");
+		lblRun = new JLabel("Run:");
 		lblRun.setForeground(Color.WHITE);
 		lblRun.setBounds(0, 161, 85, 16);
 		getContentPane().add(lblRun);
 
-		JButton btnNewRun = new JButton("New Run");
+		btnNewRun = new JButton("New Run");
 		btnNewRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
