@@ -41,6 +41,8 @@ public class ChronoTimer { //main program, links everything together
 	private int minutes = 0;
 	private double seconds = 0.0;
 	
+	static ChronoTimer T = new ChronoTimer();
+	static Server server = new Server(T.racerFinish1, T.racerFinish2, T.runList);
 	/**
 	 * Runs the ChronoTimer.
 	 * @param args: its the main method (String[])
@@ -48,8 +50,8 @@ public class ChronoTimer { //main program, links everything together
 	 */
 	public static void main(String args[]) throws IOException{
 		Simulator sim = new Simulator();
-		ChronoTimer t = new ChronoTimer();
-		Server server = new Server(t.racerFinish1, t.racerFinish2, t.runList);
+//		ChronoTimer t = new ChronoTimer();
+		
 
 		String command; //input from simulator
 
@@ -58,13 +60,13 @@ public class ChronoTimer { //main program, links everything together
 			if(command == "" || command == "GUI"){
 				break;
 			}
-			t.sendCommand(command);
+			T.sendCommand(command);
 		}while(true);
 		
 		if(command.equals("GUI")){
-			GUI frame = new GUI(t);
+			GUI frame = new GUI(T);
 			frame.setVisible(true);
-			GUI_Back back=new GUI_Back(t);
+			GUI_Back back=new GUI_Back(T);
 			back.setVisible(true);
 		}
 		server.startServer();
@@ -341,6 +343,7 @@ public class ChronoTimer { //main program, links everything together
 			reset();
 			runList = new ArrayList<Run>();
 			runNum = 0;
+			server = new Server(T.racerFinish1, T.racerFinish2, T.runList);
 		}
 		else{
 			power = true;
