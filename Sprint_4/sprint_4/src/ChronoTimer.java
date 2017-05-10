@@ -1,8 +1,12 @@
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.Queue;
- 
+
+import com.thoughtworks.xstream.converters.collections.CollectionConverter;
+
 public class ChronoTimer { //main program, links everything together
 
 	//Queues of Racers
@@ -18,8 +22,9 @@ public class ChronoTimer { //main program, links everything together
 	ArrayList<Run> runList = new ArrayList<Run>(); //list of previous runs
 	private int runNum = 1; //number of the current run
 
-	
+
 	private int queueSize = 0;// Is used in trigger to keep track of the size of racerQueue1
+
 	public boolean AlreadyStarted = false; // Keeps track of whether or not race has started, for PARGRP
 	
 	private boolean power = false;
@@ -34,7 +39,6 @@ public class ChronoTimer { //main program, links everything together
 
 	private int placeHoldNum = 1; //keeps track of placeholderNum for GRP race finishes
 	public double groupStart = 0.0; //stores start time for GRP races
-	
 	private int hours = 0; //hours, minutes, and seconds of setTime
 	private int minutes = 0;
 	private double seconds = 0.0;
@@ -58,7 +62,7 @@ public class ChronoTimer { //main program, links everything together
 			}
 			t.sendCommand(command);
 		}while(true);
-		
+
 		if(command.equals("GUI")){
 			GUI frame = new GUI(t);
 			frame.setVisible(true);
@@ -367,7 +371,7 @@ public class ChronoTimer { //main program, links everything together
 		enabled = new boolean[2][4];
 		connected = new Sensor[2][4];
 		runStarted = false;
-		
+
 		AlreadyStarted = false;
 
 		hours = 0;
@@ -376,11 +380,11 @@ public class ChronoTimer { //main program, links everything together
 
 		eventType = 0;
 		queueNum = 1;
-		
+
 		systemLog.add(t.getSystemTime() + " Reset Successful.");
 		return true;
 	}
-	
+
 	/**
 	 * Allows User to Set Time.
 	 * @param hrs: hours (int)
@@ -629,6 +633,36 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 
+	public boolean clear(int num){
+		Queue<Racer> rc1 = new LinkedList<Racer>();
+		Queue<Racer> rc2 = new LinkedList<Racer>();
+
+		boolean ret = false;
+
+		for(int i = 0; i < racerQueue1.size(); i++){
+			if(racerQueue1.peek().getNum()!=num){
+				rc1.add(racerQueue1.remove());
+			}		
+			else{racerQueue1.remove();
+			ret = true;
+			break;
+			}
+		}
+		racerQueue1 = rc1;
+
+
+		for(int i = 0; i < racerQueue2.size(); i++){
+			if(racerQueue2.peek().getNum()!=num){
+				rc2.add(racerQueue2.remove());
+			}		
+			else{racerQueue2.remove();
+			ret = true;
+			break;		
+			}
+			racerQueue2 = rc2;
+		} return ret;
+	} 
+
 	/**
 	 * Toggle (Enable/Disable) the specified channel.
 	 * @param channelNum: number of the channel you want to toggle (int)
@@ -861,6 +895,17 @@ public class ChronoTimer { //main program, links everything together
 			}
 		}//end GRP
 		else if(eventType == 5){
+
+			if(channelNum == 1 && !AlreadyStarted){ //start
+				if(enabled[0][0]){
+					groupStart = t.start();
+					queueSize = racerQueue1.size();
+					for(int i = 1; i < queueSize + 1; i ++)
+					{
+						Racer RacerSwitch = racerQueue1.remove();
+						RacerSwitch.setState(1);
+						RacerSwitch.setStart(groupStart);
+						racerRun1.add(RacerSwitch);
 			if(racerRun1.size() <= 8) // makes sure you dont add more than 8 racers
 			{
 				if(channelNum == 1 && !AlreadyStarted){ //start
@@ -878,13 +923,73 @@ public class ChronoTimer { //main program, links everything together
 						AlreadyStarted = true;
 						return true;
 					}
-					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
-					return false;
+					systemLog.add(t.getSystemTime() + " Group of Parellel Racers " + " started racing.");
+					AlreadyStarted = true;
+					return true;
 				}
-				else if(channelNum != 1 || channelNum != 2 || channelNum != 3 || channelNum != 4 || channelNum != 5 || channelNum != 6 ||channelNum != 7 || channelNum != 8 )
-				{
-					return false;
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
+			}
+			else if(channelNum != 1 || channelNum != 2 || channelNum != 3 || channelNum != 4 || channelNum != 5 || channelNum != 6 ||channelNum != 7 || channelNum != 8 )
+			{
+				return false;
+			}
+			else if(channelNum == 1 && AlreadyStarted && queueSize >= 1){ 
+				if(enabled[0][0]){
+					double end = t.end();
+					Racer r = racerQueue1.remove();
+					r.setState(2);
+					r.setElapsed(groupStart, end);
+					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+					racerFinish1.add(r);
+					return true;
 				}
+
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
+			}
+
+
+			else if(channelNum == 2 && AlreadyStarted && queueSize >= 2){
+				if(enabled[1][0]){
+					double end = t.end();
+					Racer r = racerQueue1.remove();
+					r.setState(2);
+					r.setElapsed(groupStart, end);
+					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+					racerFinish1.add(r);
+					return true;
+				}
+
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
+			}
+
+			else if(channelNum == 3 && AlreadyStarted && queueSize >= 3){
+				if(enabled[0][1]){
+					double end = t.end();
+					Racer r = racerQueue1.remove();
+					r.setState(2);
+					r.setElapsed(groupStart, end);
+					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+					racerFinish1.add(r);
+					return true;
+				}
+
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
+			}
+
+
+			else if(channelNum == 4 && AlreadyStarted && queueSize >= 4){
+				if(enabled[1][1]){
+					double end = t.end();
+					Racer r = racerQueue1.remove();
+					r.setState(2);
+					r.setElapsed(groupStart, end);
+					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+					racerFinish1.add(r);
+					return true;
 				else if(channelNum == 1 && AlreadyStarted && queueSize >= 1){ 
 					if(enabled[0][0]){
 						double end = t.end();
@@ -901,138 +1006,85 @@ public class ChronoTimer { //main program, links everything together
 					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
 					return false;
 				}
-				
-				
-				else if(channelNum == 2 && AlreadyStarted && queueSize >= 2){
-					if(enabled[1][0]){
-						double end = t.end();
-						Racer r = racerQueue1.remove();
-						r.setState(2);
-						r.setStart(groupStart);
-						r.setEnd(end);
-//						r.setElapsed(groupStart, end);
-						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
-						racerFinish1.add(r);
-						return true;
-					}
-					
-					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
-					return false;
-				}
-				
-				else if(channelNum == 3 && AlreadyStarted && queueSize >= 3){
-					if(enabled[0][1]){
-						double end = t.end();
-						Racer r = racerQueue1.remove();
-						r.setState(2);
-						r.setStart(groupStart);
-						r.setEnd(end);
-//						r.setElapsed(groupStart, end);
-						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
-						racerFinish1.add(r);
-						return true;
-					}
-					
-					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
-					return false;
-				}
-				
-				
-				else if(channelNum == 4 && AlreadyStarted && queueSize >= 4){
-					if(enabled[1][1]){
-						double end = t.end();
-						Racer r = racerQueue1.remove();
-						r.setState(2);
-						r.setStart(groupStart);
-						r.setEnd(end);
-//						r.setElapsed(groupStart, end);
-						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
-						racerFinish1.add(r);
-						return true;
-					}
-					
-					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
-					return false;
-				}
-				
-				
-				else if(channelNum == 5 && AlreadyStarted && queueSize >= 5){
-					if(enabled[0][2]){
-						double end = t.end();
-						Racer r = racerQueue1.remove();
-						r.setState(2);
-						r.setStart(groupStart);
-						r.setEnd(end);
-//						r.setElapsed(groupStart, end);
-						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
-						racerFinish1.add(r);
-						return true;
-					}
-					
-					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
-					return false;
-				}
-				
-				
-				else if(channelNum == 6 && AlreadyStarted && queueSize >= 6){
-					if(enabled[1][2]){
-						double end = t.end();
-						Racer r = racerQueue1.remove();
-						r.setState(2);
-						r.setStart(groupStart);
-						r.setEnd(end);
-//						r.setElapsed(groupStart, end);
-						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
-						racerFinish1.add(r);
-						return true;
-					}
-					
-					
-					else if(channelNum == 7 && AlreadyStarted && queueSize >= 7){
-						if(enabled[0][3]){
-							double end = t.end();
-							Racer r = racerQueue1.remove();
-							r.setState(2);
-							r.setStart(groupStart);
-							r.setEnd(end);
-//							r.setElapsed(groupStart, end);
-							systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
-							racerFinish1.add(r);
-							return true;
-						}
-						
-						systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
-						return false;
-					}
-					
-					else if(channelNum == 8 && AlreadyStarted && queueSize >= 8){
-						if(enabled[1][3]){
-							double end = t.end();
-							Racer r = racerQueue1.remove();
-							r.setState(2);
-							r.setStart(groupStart);
-							r.setEnd(end);
-//							r.setElapsed(groupStart, end);
-							systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
-							racerFinish1.add(r);
-							return true;
-						}
-						
-						systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
-						return false;
-					}
-					else if(channelNum < 9 && channelNum > 1 && !AlreadyStarted)
-					{
-						return false;
-					}
-					
-					
-					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
-					return false;
-				}
+
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
 			}
+
+
+			else if(channelNum == 5 && AlreadyStarted && queueSize >= 5){
+				if(enabled[0][2]){
+					double end = t.end();
+					Racer r = racerQueue1.remove();
+					r.setState(2);
+					r.setElapsed(groupStart, end);
+					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+					racerFinish1.add(r);
+					return true;
+				}
+
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
+			}
+
+
+			else if(channelNum == 6 && AlreadyStarted && queueSize >= 6){
+				if(enabled[1][2]){
+					double end = t.end();
+					Racer r = racerQueue1.remove();
+					r.setState(2);
+					r.setElapsed(groupStart, end);
+					systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+					racerFinish1.add(r);
+					return true;
+				}
+
+
+				else if(channelNum == 7 && AlreadyStarted && queueSize >= 7){
+					if(enabled[0][3]){
+						double end = t.end();
+						Racer r = racerQueue1.remove();
+						r.setState(2);
+						r.setStart(groupStart);
+						r.setEnd(end);
+//						r.setElapsed(groupStart, end);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+						racerFinish1.add(r);
+						return true;
+					}
+
+					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+					return false;
+				}
+
+				else if(channelNum == 8 && AlreadyStarted && queueSize >= 8){
+					if(enabled[1][3]){
+						double end = t.end();
+						Racer r = racerQueue1.remove();
+						r.setState(2);
+						r.setStart(groupStart);
+						r.setEnd(end);
+//						r.setElapsed(groupStart, end);
+						systemLog.add(t.getSystemTime() + " Racer Num " + r.getNum() + " finished racing.");
+						racerFinish1.add(r);
+						return true;
+					}
+
+					systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+					return false;
+				}
+				else if(channelNum < 9 && channelNum > 1 && !AlreadyStarted)
+				{
+					return false;
+				}
+
+
+				systemLog.add(t.getSystemTime() + " Channel " + channelNum + " is not Enabled.");
+				return false;
+			}
+
 		}		
-		
+
 		systemLog.add(t.getSystemTime() + " Event Type " + eventType + " is not valid.");
 		return false;
 	}
@@ -1132,7 +1184,7 @@ public class ChronoTimer { //main program, links everything together
 		systemLog.add(t.getSystemTime() + " Printing Successful.");
 		return true;
 	}
-	
+
 	/**
 	 * Prints the last run to the GUI Print Box.
 	 * @return ArrayList<String>: runLog of the Run
@@ -1225,7 +1277,7 @@ public class ChronoTimer { //main program, links everything together
 	public boolean connectSensor(int channelNum){
 		if(channelNum % 2 != 0){ //odd
 			Sensor connect = connected[0][channelNum/2];
-			
+
 			if(connect == null){ //odd & not connected
 				connected[0][channelNum/2] = new Sensor(channelNum);
 				systemLog.add(t.getSystemTime() + " Sensor on " + channelNum + " has been connected.");
@@ -1239,7 +1291,7 @@ public class ChronoTimer { //main program, links everything together
 		}
 		else if(channelNum % 2 == 0){ //even
 			Sensor connect1 = connected[1][(channelNum/2)-1];
-			
+
 			if(connect1 == null){ //even & not connected
 				connected[1][(channelNum/2)-1] = new Sensor(channelNum);
 				systemLog.add(t.getSystemTime() + " Sensor on " + channelNum + " has been connected.");
@@ -1253,7 +1305,7 @@ public class ChronoTimer { //main program, links everything together
 		}//end else if
 		return false;
 	}
-	
+
 	/**
 	 * Disconnects a sensor from the specified channel.
 	 * @param channelNum: number of the channel you want to disconnect a sensor from (int)
@@ -1262,7 +1314,7 @@ public class ChronoTimer { //main program, links everything together
 	public boolean disconnectSensor(int channelNum){
 		if(channelNum % 2 != 0){ //odd
 			Sensor connect = connected[0][channelNum/2];
-			
+
 			if(connect != null){ //odd & connected
 				connected[0][channelNum/2] = null;
 				systemLog.add(t.getSystemTime() + " Sensor on " + channelNum + " has been disconnected.");
@@ -1276,12 +1328,12 @@ public class ChronoTimer { //main program, links everything together
 		}
 		else if(channelNum % 2 == 0){ //even
 			Sensor connect1 = connected[1][(channelNum/2)-1];
-			
+
 			if(connect1 != null){ //even & connected
 				connected[1][(channelNum/2)-1] = null;
 				systemLog.add(t.getSystemTime() + " Sensor on " + channelNum + " has been disconnected.");
 			}
-			
+
 			else if(connect1 == null){ //even & not connected
 				systemLog.add(t.getSystemTime() + " Sensor is not connected.");
 				System.out.println("Try Again - Sensor is not connected.");
@@ -1301,23 +1353,25 @@ public class ChronoTimer { //main program, links everything together
 			systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
 			return false;
 		}
-		if(eventType == 0){
+`		if(eventType == 0){
 			System.out.println("Try Again - Event Type must be set.");
 			return false;
 		}
-		if(runStarted == false){
-			System.out.println("Try Again - A Run has not been started.");
-			systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
-			return false;
-		}
 
-		if(eventType == 1){ //check to see if it's an IND event
-			if(racerRun1.size() < 2){ //refuses to execute if current runs >=2
-				System.out.println("Cannot swap, <2 racers running"); //prints error message and returns 
-				systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
-				return false;
+
+			Racer swap1 = racerRun1.remove();
+			Racer swap2 = racerRun1.remove();
+
+			Queue<Racer> swap = new LinkedList<Racer>();
+			swap.add(swap2);
+			swap.add(swap1);
+
+			while(!racerRun1.isEmpty()){
+				Racer r = racerRun1.remove();
+				swap.add(r);
 			}
-
+			racerRun1 = swap;
+			return true;
 //			Queue<Racer> copy = new LinkedList<Racer>();
 //			copy.addAll(racerFinish1);
 //
@@ -1342,23 +1396,8 @@ public class ChronoTimer { //main program, links everything together
 //		}
 //
 
-			Racer swap1 = racerRun1.remove();
-			Racer swap2 = racerRun1.remove();
-
-			Queue<Racer> swap = new LinkedList<Racer>();
-			swap.add(swap2);
-			swap.add(swap1);
-
-			while(!racerRun1.isEmpty()){
-				Racer r = racerRun1.remove();
-				swap.add(r);
-			}
-			racerRun1 = swap;
-			return true;
-
 		}
 		return false;
 	}
 
-	
 }//end ChronoTimer
