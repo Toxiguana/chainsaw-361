@@ -15,6 +15,7 @@ public class RunTime implements Runnable {
 				//thread sleeps and then runs every second
 				Thread.sleep(1);
 				//goes through the racer arrayList and updates the time of each racer
+				g.resetTextBox();
 				for(int i=0;i<run.size();i++){
 				//gets a racer from the arrayList
 				Racer r=run.get(i);
@@ -26,9 +27,9 @@ public class RunTime implements Runnable {
 				output+=time;
 				//sets the output string for the racer
 				r.setOutput(output);
+				}
 				//sends updated arrayList to gui
 				g.updateTime(run);
-				}
 			}
 		} catch (InterruptedException e) {
 			return;

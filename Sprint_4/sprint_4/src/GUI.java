@@ -303,7 +303,6 @@ public class GUI extends JFrame {
 						// runArr
 						else {
 							if (runTime.isAlive()) {
-								System.out.println("restarting thread");
 								runTime.interrupt();
 								runTime = null;
 								//txtRun.setText("");("");
@@ -1675,6 +1674,9 @@ public class GUI extends JFrame {
 			runTimeGroup.interrupt();
 			runTimeGroup=null;
 		}
+	}
+	public void resetTextBox(){
+		txtRun.setText("");
 	}
 	}
 	
