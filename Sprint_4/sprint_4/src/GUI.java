@@ -35,6 +35,7 @@ public class GUI extends JFrame {
 	ChronoTimer c;
 	Thread runTimeGroup;
 	ArrayList<Racer> runArr = new ArrayList<>();
+	private boolean group=true;
 	// function button variables
 	private JButton btnBack;
 	private JButton btnEnter;
@@ -99,6 +100,7 @@ public class GUI extends JFrame {
 	private JButton btnCancel;
 	private JLabel lblRun_1;
 	private JButton btnSetGroupNumber;
+	private JTextField textFieldExport;
 	 /**
 	 * Create the frame.
 	 */
@@ -258,6 +260,7 @@ public class GUI extends JFrame {
 							if (runTime.isAlive()) {
 								runTime.interrupt();
 								runTime = null;
+								txtRun.setText("");
 								runTime = new Thread(new RunTime(g, runArr));
 								runTime.start();
 							}
@@ -303,6 +306,7 @@ public class GUI extends JFrame {
 								System.out.println("restarting thread");
 								runTime.interrupt();
 								runTime = null;
+								txtRun.setText("");
 								runTime = new Thread(new RunTime(g, runArr));
 								runTime.start();
 							}
@@ -315,15 +319,15 @@ public class GUI extends JFrame {
 						}
 					}
 				if(c.getEventType()==5){
-					if(c.AlreadyStarted){
 						txtQueue.setText("");
 						//adding racers to runArr for updating textBox
-						Queue<Racer> run = new LinkedList<Racer>(c.racerRun1);
+						Racer[]run=c.racerRunPARGRP.clone();
 						runArr = null;
 						runArr = new ArrayList<Racer>();
-						while (!run.isEmpty()) {
-							Racer r = run.poll();
+						for(Racer r:run){
+							if(r!=null){
 							runArr.add(r);
+							}
 						}
 						// start thread if not started
 						if (runTime == null) {
@@ -335,12 +339,24 @@ public class GUI extends JFrame {
 							if (runTime.isAlive()) {
 								runTime.interrupt();
 								runTime = null;
+								txtRun.setText("");
 								runTime = new Thread(new RunTime(g, runArr));
 								runTime.start();
+								// clear finish display
+								txtFinish.setText("");
+								Queue<Racer> finish = new LinkedList<Racer>(c.racerFinish2);
+								// Setting Finish Display
+								Object[] finishArr = finish.toArray();
+								if(finishArr.length>=1){
+								txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+										+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+								
+								}
+								}
+
+							
+									}
 							}
-						}
-					}
-					}
 				}
 			}
 		});
@@ -391,11 +407,9 @@ public class GUI extends JFrame {
 						// Restarting Thread
 						if (runTime != null) {
 							if (runTime.isAlive()) {
-								if (runArr.isEmpty()) {
-									txtRun.setText("");
-								} else {
 									runTime.interrupt();
 									runTime = null;
+									txtRun.setText("");
 									runTime = new Thread(new RunTime(g, runArr));
 									runTime.start();
 								}
@@ -436,12 +450,9 @@ public class GUI extends JFrame {
 						// Restarting Thread
 						if (runTime != null) {
 							if (runTime.isAlive()) {
-								if (runArr.isEmpty()) {
-									txtRun.setText("");
-								}
-
 								runTime.interrupt();
 								runTime = null;
+								txtRun.setText("");
 								runTime = new Thread(new RunTime(g, runArr));
 								runTime.start();
 							}
@@ -457,8 +468,36 @@ public class GUI extends JFrame {
 						txtQueue.setText("Number of Racers at Finish "+c.racerFinish1.size());
 						
 					}
-				}
+					if(c.getEventType()==5){
+								// clear finish display
+								txtFinish.setText("");
+								Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
+								// Setting Finish Display
+								Object[] finishArr = run.toArray();
+								txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+										+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+								// Resetting Racer ArrayList
+								while (!run.isEmpty()) {
+									Racer r = run.poll();
+									if (runArr.contains(r)) {
+										int index = runArr.indexOf(r);
+										runArr.remove(index);
+									}
+								}
+
+								// Restarting Thread
+								if (runTime != null) {
+									if (runTime.isAlive()) {
+											runTime.interrupt();
+											runTime = null;
+											txtRun.setText("");
+											runTime = new Thread(new RunTime(g, runArr));
+											runTime.start();
+										}
+									}
+					}
 			}
+			
 		});
 		btnTrigChan2.setBounds(233, 135, 42, 26);
 		getContentPane().add(btnTrigChan2);
@@ -513,9 +552,44 @@ public class GUI extends JFrame {
 							if (runTime.isAlive()) {
 								runTime.interrupt();
 								runTime = null;
+								txtRun.setText("");
 								runTime = new Thread(new RunTime(g, runArr));
 								runTime.start();
 							}
+						}
+					}
+					if(c.getEventType()==5){
+							// clear finish display
+							txtFinish.setText("");
+							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
+							// Setting Finish Display
+							Object[] finishArr = run.toArray();
+							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							// Resetting Racer ArrayList
+							while (!run.isEmpty()) {
+								Racer r = run.poll();
+								if (runArr.contains(r)) {
+									int index = runArr.indexOf(r);
+									runArr.remove(index);
+								}
+							}
+
+							// Restarting Thread
+							if (runTime != null) {
+								if (runTime.isAlive()) {
+									if (runArr.isEmpty()) {
+										runTime.interrupt();
+										runTime=null;
+										txtRun.setText("");
+									} else {
+										runTime.interrupt();
+										runTime = null;
+										txtRun.setText("");
+										runTime = new Thread(new RunTime(g, runArr));
+										runTime.start();
+									}
+								}
 						}
 					}
 				}
@@ -533,9 +607,8 @@ public class GUI extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				if(c.getEnabled(1, 1)){
 				if (c.getEventType() == 2) {
-					// updating queue
-					txtQueue.setText("");
 					// updating queue
 					txtQueue.setText("");
 					Queue<Racer> tmp1 = new LinkedList<Racer>(c.racerQueue1);
@@ -576,16 +649,48 @@ public class GUI extends JFrame {
 					// Restarting Thread
 					if (runTime != null) {
 						if (runTime.isAlive()) {
-							if (runArr.isEmpty()) {
-								txtRun.setText("");
-							}
-
 							runTime.interrupt();
 							runTime = null;
+							txtRun.setText("");
 							runTime = new Thread(new RunTime(g, runArr));
 							runTime.start();
 						}
 					}
+				}
+				if(c.getEventType()==5){
+							// clear finish display
+							txtFinish.setText("");
+							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
+							// Setting Finish Display
+							Object[] finishArr = run.toArray();
+							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							// Resetting Racer ArrayList
+							while (!run.isEmpty()) {
+								Racer r = run.poll();
+								if (runArr.contains(r)) {
+									int index = runArr.indexOf(r);
+									runArr.remove(index);
+								}
+							}
+
+							// Restarting Thread
+							if (runTime != null) {
+								if (runTime.isAlive()) {
+									if (runArr.isEmpty()) {
+										runTime.interrupt();
+										runTime=null;
+										txtRun.setText("");
+									} else {
+										runTime.interrupt();
+										runTime = null;
+										txtRun.setText("");
+										runTime = new Thread(new RunTime(g, runArr));
+										runTime.start();
+									}
+								}
+					}
+				}
 				}
 			}
 		});
@@ -601,6 +706,43 @@ public class GUI extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				if (c.getEnabled(0, 2)) {
+					if (c.getEventType() == 5) {
+						if (c.racerRunPARGRP[4]!=null) {
+							// clear finish display
+							txtFinish.setText("");
+							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
+							// Setting Finish Display
+							Object[] finishArr = run.toArray();
+							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							// Resetting Racer ArrayList
+							while (!run.isEmpty()) {
+								Racer r = run.poll();
+								if (runArr.contains(r)) {
+									int index = runArr.indexOf(r);
+									runArr.remove(index);
+								}
+							}
+
+							// Restarting Thread
+							if (runTime != null) {
+								if (runTime.isAlive()) {
+									if (runArr.isEmpty()) {
+										runTime = null;
+										txtRun.setText("");
+									} else {
+										runTime.interrupt();
+										runTime = null;
+										txtRun.setText("");
+										runTime = new Thread(new RunTime(g, runArr));
+										runTime.start();
+									}
+								}
+							}
+						}
+					}
+				}
 			}
 		});
 		btnTrigChan5.setBounds(315, 47, 42, 26);
@@ -614,7 +756,45 @@ public class GUI extends JFrame {
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+					
 				}
+				if (c.getEnabled(1, 2)) {
+					if (c.getEventType() == 5) {
+							// clear finish display
+							txtFinish.setText("");
+							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
+							// Setting Finish Display
+							Object[] finishArr = run.toArray();
+							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							// Resetting Racer ArrayList
+							while (!run.isEmpty()) {
+								Racer r = run.poll();
+								if (runArr.contains(r)) {
+									int index = runArr.indexOf(r);
+									runArr.remove(index);
+								}
+							}
+
+							// Restarting Thread
+							if (runTime != null) {
+								if (runTime.isAlive()) {
+									if (runArr.isEmpty()) {
+										runTime.interrupt();
+										runTime = null;
+										txtRun.setText("");
+									} else {
+										runTime.interrupt();
+										runTime = null;
+										txtRun.setText("");
+										runTime = new Thread(new RunTime(g, runArr));
+										runTime.start();
+									}
+								}
+						}
+					}
+				}
+				
 			}
 		});
 		btnTrigChan6.setBounds(315, 135, 42, 26);
@@ -629,6 +809,42 @@ public class GUI extends JFrame {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				if (c.getEnabled(0, 3)) {
+					if (c.getEventType() == 5) {
+							// clear finish display
+							txtFinish.setText("");
+							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
+							// Setting Finish Display
+							Object[] finishArr = run.toArray();
+							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							// Resetting Racer ArrayList
+							while (!run.isEmpty()) {
+								Racer r = run.poll();
+								if (runArr.contains(r)) {
+									int index = runArr.indexOf(r);
+									runArr.remove(index);
+								}
+							}
+
+							// Restarting Thread
+							if (runTime != null) {
+								if (runTime.isAlive()) {
+									if (runArr.isEmpty()) {
+										runTime.interrupt();
+										runTime = null;
+										txtRun.setText("");
+									} else {
+										runTime.interrupt();
+										runTime = null;
+										txtRun.setText("");
+										runTime = new Thread(new RunTime(g, runArr));
+										runTime.start();
+									}
+								}
+							}
+					}
+				}
 			}
 		});
 		btnTrigChan7.setBounds(356, 47, 42, 26);
@@ -642,6 +858,42 @@ public class GUI extends JFrame {
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
+				}
+				if (c.getEnabled(1, 3)) {
+					if (c.getEventType() == 5) {
+							// clear finish display
+							txtFinish.setText("");
+							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
+							// Setting Finish Display
+							Object[] finishArr = run.toArray();
+							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							// Resetting Racer ArrayList
+							while (!run.isEmpty()) {
+								Racer r = run.poll();
+								if (runArr.contains(r)) {
+									int index = runArr.indexOf(r);
+									runArr.remove(index);
+								}
+							}
+
+							// Restarting Thread
+							if (runTime != null) {
+								if (runTime.isAlive()) {
+									if (runArr.isEmpty()) {
+										runTime.interrupt();
+										runTime = null;
+										txtRun.setText("");
+									} else {
+										runTime.interrupt();
+										runTime = null;
+										txtRun.setText("");
+										runTime = new Thread(new RunTime(g, runArr));
+										runTime.start();
+									}
+								}
+							}
+						}
 				}
 			}
 		});
@@ -1061,10 +1313,9 @@ public class GUI extends JFrame {
 		getContentPane().add(txtFinish);
 
 		txtRun = new JTextArea();
-		JScrollPane paneRun=new JScrollPane(txtRun);
 		txtRun.setEditable(false);
-		paneRun.setBounds(187, 352, 201, 88);
-		getContentPane().add(paneRun);
+		txtRun.setBounds(187, 352, 200, 88);
+		getContentPane().add(txtRun);
 
 		JLabel lblEventType = new JLabel("Event Type:");
 		lblEventType.setForeground(Color.WHITE);
@@ -1144,11 +1395,38 @@ public class GUI extends JFrame {
 		JButton btnEndRun = new JButton("End Run");
 		btnEndRun.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				if (tglChan1.isSelected()) {
+					tglChan1.setSelected(false);
+				}
+				if (tglChan2.isSelected()) {
+					tglChan2.setSelected(false);
+				}
+				if (tglChan3.isSelected()) {
+					tglChan3.setSelected(false);
+				}
+				if (tglChan4.isSelected()) {
+					tglChan4.setSelected(false);
+				}
+				if (tglChan5.isSelected()) {
+					tglChan5.setSelected(false);
+				}
+				if (tglChan6.isSelected()) {
+					tglChan6.setSelected(false);
+				}
+				if (tglChan7.isSelected()) {
+					tglChan7.setSelected(false);
+				}
+				if (tglChan8.isSelected()) {
+					tglChan8.setSelected(false);
+				}
 				try {
 					c.sendCommand("ENDRUN");
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
+				txtRun.setText("");
+				txtQueue.setText("");
+				txtFinish.setText("");
 			}
 		});
 		btnEndRun.setBounds(0, 200, 117, 29);
@@ -1188,12 +1466,7 @@ public class GUI extends JFrame {
 						runArr.add(r);
 					}
 					// start thread if not started
-					if (runTime == null) {
-						runTime = new Thread(new RunTime(g, runArr));
-						runTime.start();
-					} else {
-						// if thread is running stop thread and restart with
-						// new runArr
+					if (runTime != null) {
 						if (runTime.isAlive()) {
 							runTime.interrupt();
 							runTime = null;
@@ -1207,11 +1480,24 @@ public class GUI extends JFrame {
 						Object[] finishArr = finish.toArray();
 						txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
 								+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
-					if(runArr.size()==0){
-						txtRun.setText("");
-					}
+						if (runArr.size() == 0) {
+							txtRun.setText("");
+						}
 					}
 				}
+					if(c.getEventType()==4){
+						if (runTimeGroup != null) {
+							// clear finish display
+							txtFinish.setText("");
+							Queue<Racer> finish = new LinkedList<Racer>(c.racerFinish1);
+							// Setting Finish Display
+							Object[] finishArr = finish.toArray();
+							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							txtQueue.setText("Number of Racers at Finish " + c.racerFinish1.size());
+
+						}
+					}
 			}
 		});
 		btnDnf.setBounds(0, 240, 117, 29);
@@ -1265,7 +1551,7 @@ public class GUI extends JFrame {
 		btnSetGroupNumber = new JButton("Set Group Number");
 		btnSetGroupNumber.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (c.getEventType() == 4) {
+				if (c.getEventType() == 4||c.getEventType()==0) {
 					if (!numTxtFld.getText().equals("")) {
 						try {
 							c.sendCommand("GROUP " + numTxtFld.getText());
@@ -1285,7 +1571,11 @@ public class GUI extends JFrame {
 		btnClear.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					c.sendCommand("CLEAR");
+					if (!numTxtFld.getText().equals("")) {
+					String res=numTxtFld.getText();
+					c.sendCommand("CLEAR "+res);
+					numTxtFld.setText("");
+					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
 				}
@@ -1295,13 +1585,13 @@ public class GUI extends JFrame {
 		getContentPane().add(btnClear);
 		
 		textTime = new JTextField();
-		textTime.setBounds(10, 373, 130, 26);
+		textTime.setBounds(10, 347, 130, 26);
 		getContentPane().add(textTime);
 		textTime.setColumns(10);
 		
 		JLabel lblhoursminutesseconds = new JLabel("(Hours:Minutes:Seconds)");
 		lblhoursminutesseconds.setForeground(Color.WHITE);
-		lblhoursminutesseconds.setBounds(0, 362, 156, 16);
+		lblhoursminutesseconds.setBounds(0, 336, 156, 16);
 		getContentPane().add(lblhoursminutesseconds);
 		
 		JButton btnSetTime = new JButton("Set Time");
@@ -1319,17 +1609,55 @@ public class GUI extends JFrame {
 				}
 			}
 		});
-		btnSetTime.setBounds(0, 398, 117, 29);
+		btnSetTime.setBounds(0, 373, 117, 29);
 		getContentPane().add(btnSetTime);
+		
+		JButton btnExport = new JButton("Export");
+		btnExport.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+				if(!textFieldExport.getText().equals("")){
+					String res=textFieldExport.getText();
+					c.sendCommand("EXPORT "+res);
+					textFieldExport.setText("");
+				}
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			}
+		});
+		btnExport.setBounds(0, 397, 117, 29);
+		getContentPane().add(btnExport);
+		
+		textFieldExport = new JTextField();
+		textFieldExport.setColumns(10);
+		textFieldExport.setBounds(90, 425, 50, 26);
+		getContentPane().add(textFieldExport);
+		
+		JLabel lblRunNumber = new JLabel("Run Number:");
+		lblRunNumber.setForeground(Color.WHITE);
+		lblRunNumber.setBounds(0, 430, 85, 16);
+		getContentPane().add(lblRunNumber);
 	}
 
 	public void updateTime(ArrayList<Racer> run) {
 		runArr = run;
-		txtRun.setText("");
+		if(run.size()>=0){
+		try{txtRun.setText("");
+		}catch(Exception ex){
+		}
+		}
 		if (c.getEventType() == 1 || c.getEventType() == 2||c.getEventType()==5) {
+			int num=1;
+			if(run.size()>=1){
 			for (int i = 0; i < run.size(); i++) {
+				if(num<=5){
+				num++;
 				Racer r = run.get(i);
 				txtRun.append(r.getOutput() + " R" + "\n");
+				}
+			}
 			}
 		}
 
