@@ -1074,7 +1074,7 @@ public class ChronoTimer { //main program, links everything together
 	}
 
 	/**
-	 * Prints a Run to the Console.
+	 * Prints the specified run to the Console.
 	 * @param rNum: number of the run you want to print (int)
 	 * @return boolean: whether or not print() was successful
 	 */
@@ -1102,7 +1102,11 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 	
-	public ArrayList<String> printGUI(){ //prints the last run to the GUI print box
+	/**
+	 * Prints the last run to the GUI Print Box.
+	 * @return ArrayList<String>: runLog of the Run
+	 */
+	public ArrayList<String> printGUI(){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " GUIPrint Unsuccessful.");
@@ -1120,7 +1124,12 @@ public class ChronoTimer { //main program, links everything together
 		}
 	}
 
-	public boolean export(int rNum){ //exports run to a file
+	/**
+	 * Exports the specified run to a file.
+	 * @param rNum: number of the run you want to export (int)
+	 * @return boolean: whether or not export() was successful
+	 */
+	public boolean export(int rNum){
 		if(rNum > runList.size()){
 			System.out.println("Try Again - " + rNum + " is not a valid run number.");
 			systemLog.add(t.getSystemTime() + " " + rNum + " is not a valid run number.");
@@ -1148,7 +1157,13 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 
-	public boolean setGroupRacerNum(int racerNum){ //ability to set group racer num after in queue1
+	/**
+	 * Setting Group Racer Num after placed in racerFinish1.
+	 * Puts that Racer into racerFinish2.
+	 * @param racerNum: number of the racer you want to add (int)
+	 * @return boolean: whether or not setGroupRacerNum() was successful
+	 */
+	public boolean setGroupRacerNum(int racerNum){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " SetGroupRacerNum Unsuccessful.");
@@ -1171,7 +1186,12 @@ public class ChronoTimer { //main program, links everything together
 		return true;
 	}
 
-	public boolean connectSensor(int channelNum){ //connects sensor
+	/**
+	 * Connects a sensor to the specified channel.
+	 * @param channelNum: number of the channel you want to connect a sensor to (int)
+	 * @return boolean: whether or not connectSensor() was successful
+	 */
+	public boolean connectSensor(int channelNum){
 		if(channelNum % 2 != 0){ //odd
 			Sensor connect = connected[0][channelNum/2];
 			
@@ -1203,7 +1223,12 @@ public class ChronoTimer { //main program, links everything together
 		return false;
 	}
 	
-	public boolean disconnectSensor(int channelNum){ //disconnects sensor
+	/**
+	 * Disconnects a sensor from the specified channel.
+	 * @param channelNum: number of the channel you want to disconnect a sensor from (int)
+	 * @return boolean: whether or not disconnectSensor() was successful
+	 */
+	public boolean disconnectSensor(int channelNum){
 		if(channelNum % 2 != 0){ //odd
 			Sensor connect = connected[0][channelNum/2];
 			
@@ -1235,7 +1260,11 @@ public class ChronoTimer { //main program, links everything together
 		return false;
 	}
 
-	public boolean swap(){ //switches first two racers
+	/**
+	 * Switches first two racers started in racerRun.
+	 * @return boolean: whether or not the swap() was successful
+	 */
+	public boolean swap(){ 
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
