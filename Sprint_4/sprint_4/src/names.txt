@@ -9,7 +9,7 @@
 9:Spongebob:Squarepants
 10:Krusty:Krab
 11:Jeremy:Clarkson
-12:Captain:Slow
+12:Binks:JarJar
 13:Richard:Hammond
 14:Stan:Marsh
 15:Sterling:Archer
