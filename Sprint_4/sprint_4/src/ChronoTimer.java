@@ -1350,30 +1350,6 @@ public class ChronoTimer { //main program, links everything together
 				return false;
 			}
 
-//			Queue<Racer> copy = new LinkedList<Racer>();
-//			copy.addAll(racerFinish1);
-//
-//			int startSize = racerFinish1.size(); //initial size of list of finished competitors
-//			while(racerFinish1.size() == startSize+1){ //when the list of finished competitors is incremented
-//				while(racerFinish1.size() == startSize+2){ //when the list of finished racers increments by 2
-//					for(int i = -2; i < racerFinish1.size(); i++){//FOR loop removes all but the most recent 2 entries to the "finished" queue
-//						racerFinish1.remove();
-//					}
-//					Racer hold = racerFinish1.remove();
-//					copy.add(racerFinish1.remove());
-//					copy.add(hold);
-//					racerFinish1 = copy;
-//				}
-//			}
-//			return true;
-//		}
-//		else {
-//			System.out.println("Swap can only be called during IND events; wrong event type.");
-//			systemLog.add(t.getSystemTime() + " Swap Unsuccessful - Wrong Event Type.");
-//			return false;
-//		}
-//
-
 			Racer swap1 = racerRun1.remove();
 			Racer swap2 = racerRun1.remove();
 
@@ -1386,9 +1362,11 @@ public class ChronoTimer { //main program, links everything together
 				swap.add(r);
 			}
 			racerRun1 = swap;
+			systemLog.add(t.getSystemTime() + " Swap Successful.");
 			return true;
 
 		}
+		systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
 		return false;
 	}
 
@@ -1398,33 +1376,57 @@ public class ChronoTimer { //main program, links everything together
 	 * @return boolean: whether or not clear() was successful
 	 */
 	public boolean clear(int num){
+		if(!isPowerOn()) {
+			System.out.println("Try Again - Power must be 'On'.");
+			systemLog.add(t.getSystemTime() + " Clear Unsuccessful.");
+			return false;
+		}
+		if(eventType == 0){
+			System.out.println("Try Again - Event Type must be set.");
+			systemLog.add(t.getSystemTime() + " Clear Unsuccessful.");
+			return false;
+		}
+		if(eventType == 4){
+			System.out.println("Try Again - GRP Runs do not support clear.");
+			systemLog.add(t.getSystemTime() + " Clear Unsuccessful.");
+			return false;
+		}
+		if(runStarted == false){
+			System.out.println("Try Again - A Run has not been started.");
+			systemLog.add(t.getSystemTime() + " Clear Unsuccessful.");
+			return false;
+		}
+		
 		Queue<Racer> rc1 = new LinkedList<Racer>();
 		Queue<Racer> rc2 = new LinkedList<Racer>();
 
-		boolean ret = false;
-
 		for(int i = 0; i < racerQueue1.size(); i++){
-			if(racerQueue1.peek().getNum()!=num){
+			if(racerQueue1.peek().getNum() != num){
 				rc1.add(racerQueue1.remove());
 			}		
-			else{racerQueue1.remove();
-			ret = true;
-			break;
+			else{
+				racerQueue1.remove();
+				rc1.addAll(racerQueue1);
+				racerQueue1 = rc1;
+				systemLog.add(t.getSystemTime() + " Clear Successful.");
+				return true;
 			}
 		}
-		racerQueue1 = rc1;
-
 
 		for(int i = 0; i < racerQueue2.size(); i++){
-			if(racerQueue2.peek().getNum()!=num){
+			if(racerQueue2.peek().getNum() != num){
 				rc2.add(racerQueue2.remove());
 			}		
-			else{racerQueue2.remove();
-			ret = true;
-			break;		
+			else{
+				racerQueue2.remove();
+				rc2.addAll(racerQueue2);
+				racerQueue2 = rc2;
+				systemLog.add(t.getSystemTime() + " Clear Successful.");
+				return true;
 			}
-			racerQueue2 = rc2;
-		} return ret;
+		} 
+		systemLog.add(t.getSystemTime() + " Clear Unsuccessful.");
+		return false;
 	} 
 	
 }//end ChronoTimer
