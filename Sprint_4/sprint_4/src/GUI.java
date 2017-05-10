@@ -328,6 +328,12 @@ public class GUI extends JFrame {
 					}
 					if(c.getEventType()==4){
 						if(runTimeGroup==null){
+							if(runTime!=null){
+								if(runTime.isAlive()){
+									runTime.interrupt();
+									runTime=null;
+								}
+							}
 							runTimeGroup=new Thread(new RuntimeGroup(g,c));
 							runTimeGroup.start();
 						}
@@ -407,8 +413,10 @@ public class GUI extends JFrame {
 						Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
 						// Setting Finish Display
 						Object[] finishArr = run.toArray();
+						if(finishArr.length>=1){
 						txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
 								+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+						}
 						// Resetting Racer ArrayList
 						while (!run.isEmpty()) {
 							Racer r = run.poll();
@@ -447,8 +455,10 @@ public class GUI extends JFrame {
 						Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
 						// Setting Finish Display
 						Object[] finishArr = run.toArray();
+						if(finishArr.length>=1){
 						txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
 								+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F \n");
+						}
 						if (finishArr.length >= 2) {
 							txtFinish.append(+((Racer) finishArr[finishArr.length - 2]).getNum() + " "
 									+ ((Racer) finishArr[finishArr.length - 2]).getElapsedTime() + " F");
@@ -579,9 +589,11 @@ public class GUI extends JFrame {
 							txtFinish.setText("");
 							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
 							// Setting Finish Display
-							Object[] finishArr = run.toArray();
-							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
-									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							if(run.size()>=1){
+								Object[] finishArr = run.toArray();
+								txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+										+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+								}
 							// Resetting Racer ArrayList
 							while (!run.isEmpty()) {
 								Racer r = run.poll();
@@ -640,8 +652,10 @@ public class GUI extends JFrame {
 					Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
 					// Setting Finish Display
 					Object[] finishArr = run.toArray();
+					if(finishArr.length>=1){
 					txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
 							+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F \n");
+					}
 					if (finishArr.length >= 2) {
 						txtFinish.append(+((Racer) finishArr[finishArr.length - 2]).getNum() + " "
 								+ ((Racer) finishArr[finishArr.length - 2]).getElapsedTime() + " F");
@@ -678,9 +692,11 @@ public class GUI extends JFrame {
 							txtFinish.setText("");
 							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
 							// Setting Finish Display
-							Object[] finishArr = run.toArray();
-							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
-									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							if(run.size()>=1){
+								Object[] finishArr = run.toArray();
+								txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+										+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+								}
 							// Resetting Racer ArrayList
 							while (!run.isEmpty()) {
 								Racer r = run.poll();
@@ -728,9 +744,11 @@ public class GUI extends JFrame {
 							txtFinish.setText("");
 							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
 							// Setting Finish Display
-							Object[] finishArr = run.toArray();
-							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
-									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							if(run.size()>=1){
+								Object[] finishArr = run.toArray();
+								txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+										+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+								}
 							// Resetting Racer ArrayList
 							while (!run.isEmpty()) {
 								Racer r = run.poll();
@@ -778,9 +796,11 @@ public class GUI extends JFrame {
 							txtFinish.setText("");
 							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
 							// Setting Finish Display
-							Object[] finishArr = run.toArray();
-							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
-									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							if(run.size()>=1){
+								Object[] finishArr = run.toArray();
+								txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
+										+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+								}
 							// Resetting Racer ArrayList
 							while (!run.isEmpty()) {
 								Racer r = run.poll();
@@ -829,9 +849,11 @@ public class GUI extends JFrame {
 							txtFinish.setText("");
 							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
 							// Setting Finish Display
+							if(run.size()>=1){
 							Object[] finishArr = run.toArray();
 							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
 									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							}
 							// Resetting Racer ArrayList
 							while (!run.isEmpty()) {
 								Racer r = run.poll();
@@ -880,8 +902,10 @@ public class GUI extends JFrame {
 							Queue<Racer> run = new LinkedList<Racer>(c.racerFinish2);
 							// Setting Finish Display
 							Object[] finishArr = run.toArray();
+							if(finishArr.length>=1){
 							txtFinish.append(+((Racer) finishArr[finishArr.length - 1]).getNum() + " "
 									+ ((Racer) finishArr[finishArr.length - 1]).getElapsedTime() + " F");
+							}
 							// Resetting Racer ArrayList
 							while (!run.isEmpty()) {
 								Racer r = run.poll();
