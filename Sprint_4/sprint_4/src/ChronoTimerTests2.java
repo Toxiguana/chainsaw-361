@@ -2,7 +2,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class ChronoTimerTests2 { //PARIND Tests
+public class ChronoTimerTests2 { //Sprint 2 Tests
 
 	ChronoTimer t = new ChronoTimer();
 	Time t1 = new Time();

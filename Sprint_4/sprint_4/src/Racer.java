@@ -73,6 +73,6 @@ public class Racer { //used to represent a person and store data about their rac
 		this.stateRacer = sR;
 	}
 	public void setOutput(String s){
-		output=s;
+		this.output = s;
 	}
 }

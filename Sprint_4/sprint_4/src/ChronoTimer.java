@@ -3,7 +3,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.Queue;
  
-public class ChronoTimer { //main program, links everything together
+public class ChronoTimer {
 
 	//Queues of Racers
 	Queue<Racer> racerQueue1 = new LinkedList<Racer>(); //beginning1
@@ -13,26 +13,25 @@ public class ChronoTimer { //main program, links everything together
 	Queue<Racer> racerFinish1 = new LinkedList<Racer>(); //done w/o numbers
 	Queue<Racer> racerFinish2 = new LinkedList<Racer>(); //done w/ numbers
 	
-	Racer[] racerRunPARGRP = new Racer[8];
+	Racer[] racerRunPARGRP = new Racer[8]; //array for assigning racers to a "lane" //acts as runQueue for PARGRP
 
 	ArrayList<String> systemLog = new ArrayList<String>(); //stores one run at a time
 
 	ArrayList<Run> runList = new ArrayList<Run>(); //list of previous runs
 	private int runNum = 1; //number of the current run
-
 	
-	private int queueSize = 0;// Is used in trigger to keep track of the size of racerQueue1
-	public boolean AlreadyStarted = false; // Keeps track of whether or not race has started, for PARGRP
+	private int queueSize = 0; //used in trigger to keep track of the size of racerQueue1
+	public boolean AlreadyStarted = false; //whether or not race has started, for PARGRP
 	
-	private boolean power = false;
+	private boolean power = false; //power on or off
 	Time t = new Time(); //time instance to do functions
 
-	private boolean[][] enabled = new boolean[2][4]; //array holding enable for each channel
+	private boolean[][] enabled = new boolean[2][4]; //array holding enabled for each channel
 	public Sensor[][] connected = new Sensor[2][4]; //array holding connected for each sensor	
 	private boolean runStarted = false; //a run must be created before almost everything else
 
 	private int eventType = 0; //0 is not set, 1 is IND, 2 is PARIND, 3 is ending run, 4 is GRP, 5 is PARGRP
-	private int queueNum = 1; //keeps track of which beginning queue to add new racer to
+	private int queueNum = 1; //keeps track of which beginning queue to add new racer to for PARIND
 
 	private int placeHoldNum = 1; //keeps track of placeholderNum for GRP race finishes
 	public double groupStart = 0.0; //stores start time for GRP races
@@ -41,8 +40,9 @@ public class ChronoTimer { //main program, links everything together
 	private int minutes = 0;
 	private double seconds = 0.0;
 	
-	static ChronoTimer T = new ChronoTimer();
-	static Server server = new Server(T.racerFinish1, T.racerFinish2, T.runList);
+	static ChronoTimer T = new ChronoTimer(); //instance for Server
+	static Server server = new Server(T.racerFinish1, T.racerFinish2, T.runList); //instance for Server2
+	
 	/**
 	 * Runs the ChronoTimer.
 	 * @param args: its the main method (String[])
@@ -50,9 +50,6 @@ public class ChronoTimer { //main program, links everything together
 	 */
 	public static void main(String args[]) throws IOException{
 		Simulator sim = new Simulator();
-//		ChronoTimer t = new ChronoTimer();
-		
-
 		String command; //input from simulator
 
 		do{
@@ -1104,7 +1101,7 @@ public class ChronoTimer { //main program, links everything together
 	 * @param racerNum: number of the racer you want to add (int)
 	 * @return boolean: whether or not addRacer() was successful
 	 */
-	public boolean addRacer(int racerNum){ 
+	public boolean addRacer(int racerNum){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " Adding Racer Unsuccessful.");
@@ -1347,7 +1344,7 @@ public class ChronoTimer { //main program, links everything together
 	 * Switches first two racers started in racerRun.
 	 * @return boolean: whether or not the swap() was successful
 	 */
-	public boolean swap(){ 
+	public boolean swap(){
 		if(!isPowerOn()) {
 			System.out.println("Try Again - Power must be 'On'.");
 			systemLog.add(t.getSystemTime() + " Swap Unsuccessful.");
