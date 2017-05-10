@@ -1577,6 +1577,56 @@ public class GUI extends JFrame {
 					}
 				} catch (IOException e1) {
 					e1.printStackTrace();
+					
+				}
+				if(c.getEventType()==1){
+					Queue<Racer> tmp = new LinkedList<Racer>(c.racerQueue1);
+					int num = 1;
+					txtQueue.setText("");
+					if (!tmp.isEmpty()) {
+						while (num <= 3) {
+							Racer r = tmp.poll();
+							num++;
+							if (r != null) {
+								txtQueue.append("NUM " + r.getNum() + "\n");
+							}
+						}
+					}
+				}
+				if(c.getEventType()==2){
+					Queue<Racer> queue1 = new LinkedList<Racer>(c.racerQueue1);
+					Queue<Racer> queue2 = new LinkedList<Racer>(c.racerQueue2);
+					txtQueue.setText("");
+					Racer r1 = queue1.poll();
+					Racer r2 = queue2.poll();
+					if (r1 != null) {
+						txtQueue.append("NUM " + r1.getNum() + "\n");
+					}
+					if (r2 != null) {
+						txtQueue.append("NUM " + r2.getNum() + "\n");
+					}
+				}
+				if(c.getEventType()==5){
+					int rowCount = 0;
+					int num = 0;
+					txtQueue.setText("");
+					Queue<Racer> tmp1 = new LinkedList<Racer>(c.racerQueue1);
+					while (!tmp1.isEmpty()) {
+						Racer r=tmp1.poll();
+						if (num <= 7) {
+							if (rowCount <= 2) {
+								txtQueue.append("NUM " + r.getNum() + "     ");
+								rowCount++;
+								num++;
+							} else {
+								rowCount = 0;
+								txtQueue.append("\n");
+								txtQueue.append("NUM " + r.getNum() + "     ");
+								rowCount++;
+								num++;
+							}
+						}
+					}
 				}
 			}
 		});
