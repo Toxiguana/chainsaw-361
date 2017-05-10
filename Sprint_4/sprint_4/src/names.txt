@@ -45,6 +45,6 @@
 45:Richard:Stallman
 46:Lana:Kane
 47:President:Duck
-48:Adam:Sandler
+48:Cartman:Eric
 49:Linus:Torvalds
 50:Evil:Spock
