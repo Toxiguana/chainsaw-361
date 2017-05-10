@@ -880,6 +880,7 @@ public class ChronoTimer { //main program, links everything together
 							RacerSwitch.setStart(groupStart);
 							racerRun1.add(RacerSwitch);
 						}
+						queueSize = racerRun1.size();
 						systemLog.add(t.getSystemTime() + " Group of Parellel Racers " + " started racing.");
 						AlreadyStarted = true;
 						return true;
